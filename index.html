@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard da Moniqui</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#080202;--bg1:#120606;--bg2:#1C0A0A;--bg3:#261010;--bghov:#2E1515;
+  --r900:#5C0A0A;--r800:#7A1010;--r700:#9A1515;--r600:#B81C1C;--r500:#D42020;--r400:#E84040;--r300:#F07070;
+  --gold:#C9A227;--goldl:#E0BA40;
+  --t100:#F5EAEA;--t200:#D0BEBE;--t300:#A08888;--t400:#705858;
+  --bdr:#2E1515;--bdrb:#4A2020;
+  --green:#1DB954;--blue:#3498DB;--orange:#E67E22;--purple:#8E44AD;
+}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg0);color:var(--t100);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:var(--r800);border-radius:3px}
+
+/* ── NAV ── */
+nav{background:var(--bg1);border-bottom:1px solid var(--bdr);padding:0 20px;display:flex;align-items:center;gap:4px;height:54px;position:sticky;top:0;z-index:100;overflow-x:auto;overflow-y:hidden}
+nav::-webkit-scrollbar{height:0}
+.nav-brand{font-size:17px;font-weight:800;color:var(--t100);margin-right:12px;white-space:nowrap;flex-shrink:0}
+.nav-brand span{color:var(--gold)}
+.nb{background:none;border:none;color:var(--t300);padding:6px 12px;border-radius:18px;font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.nb:hover{color:var(--t100);background:var(--bg3)}
+.nb.active{background:var(--bg3);color:var(--t100);border:1px solid var(--bdrb)}
+.nbadge{background:var(--r600);color:#fff;font-size:10px;padding:1px 5px;border-radius:9px;margin-left:3px}
+.nav-sp{flex:1;min-width:8px}
+.nav-rev{font-size:12px;color:var(--t300);white-space:nowrap;flex-shrink:0}
+.nav-rev strong{color:var(--gold)}
+.btn-p{background:var(--r600);color:#fff;border:none;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap;flex-shrink:0}
+.btn-p:hover{background:var(--r500)}
+.btn-s{background:var(--bg3);color:var(--t200);border:1px solid var(--bdrb);padding:7px 14px;border-radius:7px;font-size:13px;cursor:pointer;transition:all .2s}
+.btn-s:hover{background:var(--bghov);color:var(--t100)}
+.btn-d{background:var(--r800);color:#fff;border:none;padding:7px 14px;border-radius:7px;font-size:13px;cursor:pointer}
+.btn-d:hover{background:var(--r700)}
+
+/* ── LAYOUT ── */
+main{padding:24px 20px;max-width:1380px;margin:0 auto;width:100%}
+.view{display:none}.view.active{display:block}
+.ph{margin-bottom:24px}.ph h1{font-size:26px;font-weight:800;color:var(--t100)}.ph h1 span{color:var(--gold);font-style:italic}.ph p{color:var(--t300);font-size:13px;margin-top:3px}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--r900) 100%);border:1px solid var(--bdrb);border-radius:14px;padding:28px;margin-bottom:20px;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.hero-rev{min-width:180px}
+.hlbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t300);margin-bottom:6px}
+.hamt{font-size:38px;font-weight:800;color:var(--t100);line-height:1}
+.hamt .cur{font-size:22px;color:var(--t300)}
+.hsub{color:var(--t300);font-size:13px;margin-top:6px}
+.hero-prog{flex:1;min-width:240px}
+.pm{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pml{font-size:13px;color:var(--t200)}.pmp{font-size:19px;font-weight:700;color:var(--gold)}
+.pb{height:9px;background:rgba(255,255,255,.1);border-radius:5px;overflow:hidden;margin-bottom:7px}
+.pbf{height:100%;background:linear-gradient(90deg,var(--r700),var(--gold));border-radius:5px;transition:width .6s ease}
+.prem{font-size:12px;color:var(--t300)}
+.hero-prods{min-width:190px}
+.hprod{margin-bottom:10px}
+.hplbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t400);margin-bottom:2px}
+.hpval{font-size:18px;font-weight:700;color:var(--t100)}
+.hpval .cnt{font-size:12px;font-weight:400;color:var(--t300);margin-left:3px}
+.hpsub{font-size:12px;color:var(--t300)}
+
+/* ── STAT CARDS ── */
+.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.sc{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:18px;text-align:center}
+.sdot{width:7px;height:7px;border-radius:50%;margin:0 auto 7px}
+.slbl{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--t400);margin-bottom:10px}
+.sval{font-size:30px;font-weight:700;color:var(--t100);line-height:1;margin-bottom:3px}
+.ssub{font-size:11px;color:var(--t300)}
+
+/* ── BOTTOM GRID ── */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ic{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:18px}
+.ict{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--t400);margin-bottom:14px}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bdr)}
+.ir:last-child{border-bottom:none}.irl{font-size:13px;color:var(--t200)}.irv{font-size:13px;color:var(--t100);font-weight:600}
+.br{padding:5px 0}.brh{display:flex;justify-content:space-between;margin-bottom:5px}.brl{font-size:12px;color:var(--t200)}.brc{font-size:12px;color:var(--t300)}
+.brt{height:4px;background:var(--bg3);border-radius:2px}.brf{height:100%;border-radius:2px}
+
+/* ── LEADS ── */
+.ltbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.sb{flex:1;min-width:160px;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:9px 14px;color:var(--t100);font-size:13px;outline:none}
+.sb::placeholder{color:var(--t400)}.sb:focus{border-color:var(--r600)}
+.fs{background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:9px 10px;color:var(--t100);font-size:13px;outline:none;cursor:pointer}
+.twrap{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;overflow:hidden;overflow-x:auto}
+.lt{width:100%;border-collapse:collapse;min-width:600px}
+.lt th{text-align:left;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--t400);padding:11px 14px;border-bottom:1px solid var(--bdr);background:var(--bg1);white-space:nowrap}
+.lt td{padding:12px 14px;font-size:13px;color:var(--t200);border-bottom:1px solid var(--bdr)}
+.lt tr:last-child td{border-bottom:none}
+.lt tbody tr{cursor:pointer;transition:background .15s}.lt tbody tr:hover{background:var(--bghov)}
+.lnc{color:var(--t100)!important;font-weight:500}
+.sbadge{display:inline-block;padding:2px 9px;border-radius:11px;font-size:11px;font-weight:600}
+.s-novo{background:rgba(232,64,64,.18);color:var(--r400)}
+.s-qualificado{background:rgba(230,126,34,.18);color:#F0A050}
+.s-aplicou{background:rgba(52,152,219,.18);color:#60B8F0}
+.s-negociacao{background:rgba(142,68,173,.18);color:#C080F0}
+.s-fechado{background:rgba(29,185,84,.18);color:var(--green)}
+
+/* ── CSV ── */
+.dz{border:2px dashed var(--bdrb);border-radius:14px;padding:50px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg2);margin-bottom:20px}
+.dz:hover,.dz.drag-over{border-color:var(--r500);background:var(--bg3)}
+.dz-ico{font-size:44px;margin-bottom:12px}.dz-ttl{font-size:17px;font-weight:600;color:var(--t100);margin-bottom:6px}.dz-sub{font-size:13px;color:var(--t300)}
+
+/* ── ANALYZE ── */
+.alayout{display:flex;gap:18px;align-items:flex-start}
+.aside{width:270px;flex-shrink:0;background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;overflow:hidden;position:sticky;top:72px;max-height:calc(100vh - 90px);display:flex;flex-direction:column}
+.aside-srch{padding:10px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.aside-srch input{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:7px 11px;color:var(--t100);font-size:12px;outline:none}
+.aside-list{overflow-y:auto;flex:1}
+.ait{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--bdr);transition:background .15s}
+.ait:hover{background:var(--bg3)}.ait.sel{background:var(--bghov);border-left:3px solid var(--r500)}
+.av{width:34px;height:34px;border-radius:50%;background:var(--r800);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.ai-info{flex:1;min-width:0}.ain{font-size:13px;font-weight:500;color:var(--t100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ais{font-size:11px;color:var(--t300)}
+.apanel{flex:1;min-width:0}
+.ae{display:flex;flex-direction:column;align-items:center;justify-content:center;height:350px;color:var(--t400);font-size:14px;background:var(--bg2);border:1px solid var(--bdr);border-radius:11px}
+.ae-ico{font-size:36px;margin-bottom:10px}
+
+/* ── LEAD DETAIL ── */
+.ldc{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:22px;margin-bottom:14px}
+.ldh{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.ldav{width:46px;height:46px;border-radius:50%;background:var(--r800);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;flex-shrink:0}
+.ldn{font-size:19px;font-weight:700;color:var(--t100)}.ldig{font-size:12px;color:var(--t300)}
+.ldhr{margin-left:auto}
+.ligrid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.lii{padding:11px 0;border-bottom:1px solid var(--bdr)}
+.lii:nth-child(odd){padding-right:18px}.lii:nth-child(even){padding-left:18px;border-left:1px solid var(--bdr)}
+.liil{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t400);margin-bottom:3px}
+.liiv{font-size:13px;color:var(--t100)}
+.wal{color:#25D366!important;text-decoration:none;font-weight:500}
+.wal:hover{text-decoration:underline}
+
+/* ── FIT METERS ── */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.fc{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:18px;text-align:center}
+.fclbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t400);margin-bottom:7px}
+.fcpct{font-size:34px;font-weight:800;color:var(--gold)}
+.fbt{height:5px;background:var(--bg3);border-radius:3px;margin-top:9px}
+.fbf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--r700),var(--gold))}
+
+/* ── ANALYSIS ── */
+.asec{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:22px;margin-bottom:14px}
+.asec.hl{border-color:var(--r700);background:linear-gradient(135deg,var(--bg2),var(--bg3))}
+.asec-lbl{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--r400);margin-bottom:5px}
+.asec-h{font-size:17px;font-weight:700;color:var(--t100);margin-bottom:4px}
+.asec-s{font-size:13px;color:var(--t300)}
+.asec-t{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--t400);margin-bottom:11px}
+.blist{list-style:none}
+.blist li{display:flex;gap:7px;padding:5px 0;font-size:13px;color:var(--t200)}
+.bdot{color:var(--r400);flex-shrink:0}
+.abox{background:var(--bg1);border-left:3px solid var(--r600);padding:14px;border-radius:0 7px 7px 0;font-size:13px;color:var(--t200);font-style:italic;line-height:1.6}
+.oitem{margin-bottom:18px}.oitem:last-child{margin-bottom:0}
+.olbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--r400);margin-bottom:3px}
+.otxt{font-size:13px;font-weight:600;color:var(--t100);margin-bottom:5px}
+.oblbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:3px}
+.obtxt{font-size:12px;color:var(--t200);line-height:1.5}
+.trig{display:flex;gap:11px;padding:11px;background:var(--bg3);border-radius:7px;margin-bottom:7px;align-items:flex-start}
+.tnum{width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--bg0);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.ttxt{font-size:12px;color:var(--t200);line-height:1.5}
+.aacts{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+
+/* ── LOADING ── */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px;color:var(--t300)}
+.spin{width:30px;height:30px;border:3px solid var(--bg3);border-top-color:var(--r500);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── CONFIG ── */
+.ccard{background:var(--bg2);border:1px solid var(--bdr);border-radius:11px;padding:24px;max-width:580px;margin-bottom:18px}
+.cttl{font-size:14px;font-weight:600;color:var(--t100);margin-bottom:18px}
+.fg{margin-bottom:16px}
+.fl{display:block;font-size:11px;letter-spacing:.5px;color:var(--t300);margin-bottom:5px}
+.fi{width:100%;background:var(--bg1);border:1px solid var(--bdr);border-radius:7px;padding:9px 12px;color:var(--t100);font-size:13px;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--r600)}
+.fh{font-size:11px;color:var(--t400);margin-top:3px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--bg3);border:1px solid var(--bdrb);border-radius:9px;padding:12px 18px;font-size:13px;color:var(--t100);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:var(--green)}.toast.err{border-color:var(--r500)}
+
+/* ── MODALS ── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.mo.show{display:flex}
+.md{background:var(--bg2);border:1px solid var(--bdrb);border-radius:14px;padding:26px;width:100%;max-width:460px}
+.md.md-lg{max-width:520px}
+.mttl{font-size:17px;font-weight:700;color:var(--t100);margin-bottom:7px}
+.msub{font-size:13px;color:var(--t300);margin-bottom:18px}
+.macts{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:50px;color:var(--t400)}
+.empty-ico{font-size:36px;margin-bottom:10px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .sgrid{grid-template-columns:repeat(3,1fr)}
+  .bgrid{grid-template-columns:1fr}
+  .hero{gap:22px}
+  .ligrid{grid-template-columns:1fr}
+  .lii:nth-child(even){padding-left:0;border-left:none}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  main{padding:16px 12px}
+  .alayout{flex-direction:column}
+  .aside{width:100%;position:relative;top:0;max-height:none}
+  .aside-list{max-height:280px}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:18px}
+  .hamt{font-size:28px}
+  .ltbar{flex-direction:column}
+  .sb,.fs{width:100%}
+  .ldh{gap:10px}
+  .ldhr{margin-left:0;width:100%}
+  .ldhr .btn-p{width:100%}
+  .aacts{flex-direction:column}
+  .aacts a,.aacts button{width:100%;text-align:center;justify-content:center}
+  nav{padding:0 12px;gap:2px}
+  .nav-brand{font-size:15px}
+  .nb{padding:5px 8px;font-size:12px}
+  .nav-rev{display:none}
+}
+@media(max-width:420px){
+  .sgrid{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">Moniqui <span>Social</span></div>
+  <button class="nb active" onclick="show('dashboard')" data-view="dashboard">Visão Geral</button>
+  <button class="nb" onclick="show('leads')" data-view="leads">Leads <span class="nbadge" id="bdg-leads">0</span></button>
+  <button class="nb" onclick="show('import')" data-view="import">Importar CSV</button>
+  <button class="nb" onclick="show('analyze')" data-view="analyze">Analisar Lead <span class="nbadge" id="bdg-new">0</span></button>
+  <button class="nb" onclick="show('config')" data-view="config">Config</button>
+  <div class="nav-sp"></div>
+  <div class="nav-rev">Faturado: <strong id="nav-rev">R$ 0</strong></div>
+  <button class="btn-p" onclick="openNL()">+ Novo Lead</button>
+</nav>
+
+<main>
+<!-- DASHBOARD -->
+<div class="view active" id="view-dashboard">
+  <div class="ph"><h1>Dashboard de <span>Vendas</span></h1><p id="dash-sub">Moniqui Social · 0 leads · 0 vendas</p></div>
+  <div class="hero">
+    <div class="hero-rev">
+      <div class="hlbl">Faturado no Mês</div>
+      <div class="hamt"><span class="cur">R$</span> <span id="h-amt">0</span></div>
+      <div class="hsub"><span id="h-sales">0</span> vendas fechadas</div>
+    </div>
+    <div class="hero-prog">
+      <div class="pm"><span class="pml">Meta — R$ <span id="meta-lbl">15.000</span></span><span class="pmp" id="prog-pct">0%</span></div>
+      <div class="pb"><div class="pbf" id="prog-fill" style="width:0%"></div></div>
+      <div class="prem" id="prog-rem">Faltam R$ 15.000 para a meta</div>
+    </div>
+    <div class="hero-prods">
+      <div class="hprod">
+        <div class="hplbl">Gerenciamento de Redes</div>
+        <div class="hpval" id="p-ger">0 <span class="cnt">vendas</span></div>
+        <div class="hpsub" id="p-ger-r">R$ 0</div>
+      </div>
+      <div class="hprod">
+        <div class="hplbl">Análise de Perfil</div>
+        <div class="hpval" id="p-anl">0 <span class="cnt">vendas</span></div>
+        <div class="hpsub" id="p-anl-r">R$ 0</div>
+      </div>
+    </div>
+  </div>
+  <div class="sgrid" id="pipe-grid"></div>
+  <div class="bgrid">
+    <div class="ic">
+      <div class="ict">Resumo Geral</div>
+      <div class="ir"><span class="irl">Faturamento Total</span><span class="irv" id="s-rev">R$ 0</span></div>
+      <div class="ir"><span class="irl">Vendas Fechadas</span><span class="irv" id="s-sales">0</span></div>
+      <div class="ir"><span class="irl">Ticket Médio</span><span class="irv" id="s-ticket">R$ 0</span></div>
+      <div class="ir"><span class="irl">Total de Leads</span><span class="irv" id="s-leads">0</span></div>
+    </div>
+    <div class="ic"><div class="ict">Por Produto</div><div id="prod-brk"><div class="empty" style="padding:16px"><span style="font-size:12px;color:var(--t400)">Sem vendas ainda</span></div></div></div>
+    <div class="ic"><div class="ict">Por Que Buscam</div><div id="why-brk"><div class="empty" style="padding:16px"><span style="font-size:12px;color:var(--t400)">Aguardando leads</span></div></div></div>
+  </div>
+</div>
+
+<!-- LEADS -->
+<div class="view" id="view-leads">
+  <div class="ph"><h1>Seus <span>Leads</span></h1></div>
+  <div class="ltbar">
+    <input type="text" class="sb" placeholder="Buscar lead..." id="ls-search" oninput="renderTable()">
+    <select class="fs" id="ls-status" onchange="renderTable()">
+      <option value="">Todos os status</option>
+      <option value="novo">Novo</option>
+      <option value="qualificado">Qualificado</option>
+      <option value="aplicou">Aplicou</option>
+      <option value="negociacao">Negociação</option>
+      <option value="fechado">Fechado</option>
+    </select>
+    <select class="fs" id="ls-prod" onchange="renderTable()">
+      <option value="">Todos os produtos</option>
+      <option value="Gerenciamento de Redes">Gerenciamento</option>
+      <option value="Análise de Perfil">Análise de Perfil</option>
+    </select>
+  </div>
+  <div class="twrap">
+    <table class="lt">
+      <thead><tr><th>Nome</th><th>WhatsApp</th><th>Instagram</th><th>Faturamento</th><th>Interesse</th><th>Status</th><th>Ação</th></tr></thead>
+      <tbody id="leads-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- IMPORT -->
+<div class="view" id="view-import">
+  <div class="ph"><h1>Importar <span>CSV</span></h1><p>Suba o CSV do seu formulário Google Forms ou similar</p></div>
+  <div class="dz" id="dz" onclick="document.getElementById('csv-in').click()">
+    <div class="dz-ico">📊</div>
+    <div class="dz-ttl">Arraste seu CSV aqui ou clique para selecionar</div>
+    <div class="dz-sub">Suporta .csv exportado do Google Forms, Typeform e outros</div>
+    <input type="file" id="csv-in" accept=".csv" style="display:none" onchange="handleCSV(this.files[0])">
+  </div>
+  <div class="ccard">
+    <div class="cttl">📋 Colunas esperadas no CSV</div>
+    <div style="background:var(--bg3);border-radius:7px;padding:14px;font-size:12px;color:var(--t300);font-family:monospace;line-height:1.8">
+      <span style="color:var(--gold)">Nome</span> · <span style="color:var(--gold)">WhatsApp</span> · <span style="color:var(--gold)">Instagram</span> · <span style="color:var(--gold)">Faturamento mensal</span> · <span style="color:var(--gold)">Maior dificuldade / dor</span> · <span style="color:var(--gold)">Interesse em qual serviço</span>
+      <br><span style="color:var(--t400);font-size:11px">O sistema detecta automaticamente as colunas — nomes exatos não são obrigatórios.</span>
+    </div>
+  </div>
+  <div id="csv-prev" style="display:none">
+    <div class="twrap" style="margin-bottom:14px">
+      <table class="lt">
+        <thead><tr><th>Nome</th><th>WhatsApp</th><th>Instagram</th><th>Faturamento</th><th>Dificuldade</th><th>Interesse</th></tr></thead>
+        <tbody id="csv-prev-body"></tbody>
+      </table>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-p" id="btn-import" onclick="confirmImport()">✓ Confirmar Importação</button>
+      <button class="btn-s" onclick="cancelImport()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYZE -->
+<div class="view" id="view-analyze">
+  <div class="ph"><h1>Analisar <span>Lead</span></h1><p>Selecione um lead e analise com IA</p></div>
+  <div class="alayout">
+    <div class="aside">
+      <div class="aside-srch"><input type="text" placeholder="Buscar lead..." id="as-search" oninput="renderSidebar()"></div>
+      <div class="aside-list" id="aside-list"></div>
+    </div>
+    <div class="apanel" id="apanel">
+      <div class="ae"><div class="ae-ico">👆</div><div>Selecione um lead para analisar</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div class="view" id="view-config">
+  <div class="ph"><h1><span>Configurações</span></h1></div>
+  <div class="ccard">
+    <div class="cttl">🤖 Inteligência Artificial (Claude)</div>
+    <div class="fg">
+      <label class="fl">Chave da API Anthropic</label>
+      <input type="password" class="fi" id="api-key" placeholder="sk-ant-api03-...">
+      <div class="fh">Necessário para analisar leads com IA. <a href="https://console.anthropic.com" target="_blank" style="color:var(--r400)">Obter chave →</a></div>
+    </div>
+    <button class="btn-p" onclick="saveConf()">Salvar</button>
+  </div>
+  <div class="ccard">
+    <div class="cttl">🎯 Meta de Faturamento</div>
+    <div class="fg">
+      <label class="fl">Meta Mensal (R$)</label>
+      <input type="number" class="fi" id="meta-in" value="15000">
+    </div>
+    <button class="btn-p" onclick="saveMeta()">Salvar Meta</button>
+  </div>
+  <div class="ccard">
+    <div class="cttl">🗑️ Dados</div>
+    <p style="font-size:13px;color:var(--t300);margin-bottom:14px">Remove todos os leads. Não pode ser desfeito.</p>
+    <button class="btn-d" onclick="document.getElementById('mo-clear').classList.add('show')">Limpar todos os dados</button>
+  </div>
+</div>
+</main>
+
+<!-- MODAL CLEAR -->
+<div class="mo" id="mo-clear">
+  <div class="md">
+    <div class="mttl">Limpar todos os dados?</div>
+    <div class="msub">Todos os leads serão removidos permanentemente.</div>
+    <div class="macts">
+      <button class="btn-s" onclick="document.getElementById('mo-clear').classList.remove('show')">Cancelar</button>
+      <button class="btn-d" onclick="clearAll()">Sim, limpar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NEW LEAD -->
+<div class="mo" id="mo-nl">
+  <div class="md md-lg">
+    <div class="mttl">Novo Lead</div>
+    <div class="fg"><label class="fl">Nome *</label><input type="text" class="fi" id="nl-nome" placeholder="Nome completo"></div>
+    <div class="fg"><label class="fl">WhatsApp *</label><input type="text" class="fi" id="nl-wa" placeholder="(11) 99999-9999"></div>
+    <div class="fg"><label class="fl">Instagram</label><input type="text" class="fi" id="nl-ig" placeholder="@usuario"></div>
+    <div class="fg">
+      <label class="fl">Faturamento Mensal</label>
+      <select class="fi" id="nl-fat"><option value="">Selecione...</option><option>Até R$5k</option><option>R$5k a R$10k</option><option>R$10k a R$30k</option><option>Acima de R$30k</option></select>
+    </div>
+    <div class="fg"><label class="fl">Maior Dificuldade / Dor</label><textarea class="fi" id="nl-dif" rows="2" placeholder="O que a pessoa mais precisa resolver..."></textarea></div>
+    <div class="fg">
+      <label class="fl">Interesse em qual Serviço</label>
+      <select class="fi" id="nl-int"><option value="">Selecione...</option><option>Gerenciamento de Redes</option><option>Análise de Perfil</option><option>Não sabe ainda</option></select>
+    </div>
+    <div class="macts">
+      <button class="btn-s" onclick="closeNL()">Cancelar</button>
+      <button class="btn-p" onclick="saveNL()">Salvar Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL STATUS -->
+<div class="mo" id="mo-status">
+  <div class="md">
+    <div class="mttl">Atualizar Status</div>
+    <div style="display:grid;gap:7px;margin-bottom:14px">
+      <button class="btn-s" style="text-align:left;padding:11px 14px" onclick="pickStatus('novo')"><span class="sbadge s-novo">Novo</span></button>
+      <button class="btn-s" style="text-align:left;padding:11px 14px" onclick="pickStatus('qualificado')"><span class="sbadge s-qualificado">Qualificado</span></button>
+      <button class="btn-s" style="text-align:left;padding:11px 14px" onclick="pickStatus('aplicou')"><span class="sbadge s-aplicou">Aplicou</span></button>
+      <button class="btn-s" style="text-align:left;padding:11px 14px" onclick="pickStatus('negociacao')"><span class="sbadge s-negociacao">Negociação</span></button>
+      <button class="btn-s" style="text-align:left;padding:11px 14px" onclick="pickStatus('fechado')"><span class="sbadge s-fechado">Fechado ✓</span></button>
+    </div>
+    <div id="val-grp" style="display:none" class="fg">
+      <label class="fl">Valor da Venda (R$)</label>
+      <input type="number" class="fi" id="val-in" placeholder="ex: 997">
+    </div>
+    <div class="macts">
+      <button class="btn-s" onclick="closeStatus()">Cancelar</button>
+      <button class="btn-p" onclick="confirmStatus()">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════
+//  STATE
+// ═══════════════════════════════
+let S = { leads:[], cfg:{ apiKey:'', goal:15000 }, selId:null, pStatus:null, pStatusId:null };
+let csvBuf = [];
+let toastT;
+
+// ═══════════════════════════════
+//  PERSISTENCE
+// ═══════════════════════════════
+function load(){
+  try{
+    const l=localStorage.getItem('mq_leads'); if(l) S.leads=JSON.parse(l);
+    const c=localStorage.getItem('mq_cfg'); if(c) S.cfg={...S.cfg,...JSON.parse(c)};
+  }catch(e){}
+}
+function saveLeads(){ localStorage.setItem('mq_leads',JSON.stringify(S.leads)); }
+function saveCfg(){ localStorage.setItem('mq_cfg',JSON.stringify(S.cfg)); }
+
+// ═══════════════════════════════
+//  UTILS
+// ═══════════════════════════════
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+function fc(v){ return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0); }
+function fcs(v){ return (v||0).toLocaleString('pt-BR'); }
+function ini(n){ return (n||'?').split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase(); }
+function wa(p){ return (p||'').replace(/\D/g,''); }
+function slbl(s){ return {novo:'Novo',qualificado:'Qualificado',aplicou:'Aplicou',negociacao:'Negociação',fechado:'Fechado'}[s]||s; }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ═══════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════
+function show(v){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelector('[data-view="'+v+'"]').classList.add('active');
+  if(v==='dashboard') dash();
+  if(v==='leads') renderTable();
+  if(v==='analyze'){ renderSidebar(); if(S.selId) renderPanel(S.selId); }
+}
+
+// ═══════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════
+function dash(){
+  const leads=S.leads, goal=S.cfg.goal;
+  const closed=leads.filter(l=>l.status==='fechado');
+  const rev=closed.reduce((a,l)=>a+(parseFloat(l.valor)||0),0);
+  const ger=closed.filter(l=>(l.interesse||'').toLowerCase().includes('gerenciamento'));
+  const anl=closed.filter(l=>(l.interesse||'').toLowerCase().includes('análise')||(l.interesse||'').toLowerCase().includes('analise'));
+  const gerR=ger.reduce((a,l)=>a+(parseFloat(l.valor)||0),0);
+  const anlR=anl.reduce((a,l)=>a+(parseFloat(l.valor)||0),0);
+  const pct=Math.min(Math.round(rev/goal*100),100);
+  const rem=Math.max(goal-rev,0);
+
+  document.getElementById('h-amt').textContent=fcs(rev);
+  document.getElementById('h-sales').textContent=closed.length;
+  document.getElementById('nav-rev').textContent=fc(rev);
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('meta-lbl').textContent=fcs(goal);
+  document.getElementById('prog-rem').textContent=rem>0?'Faltam '+fc(rem)+' para a meta':'🎉 Meta atingida!';
+  document.getElementById('p-ger').innerHTML=ger.length+' <span class="cnt">vendas</span>';
+  document.getElementById('p-ger-r').textContent=fc(gerR);
+  document.getElementById('p-anl').innerHTML=anl.length+' <span class="cnt">vendas</span>';
+  document.getElementById('p-anl-r').textContent=fc(anlR);
+  document.getElementById('dash-sub').textContent='Moniqui Social · '+leads.length+' leads · '+closed.length+' vendas';
+
+  // Pipeline
+  const pipe=[
+    {k:'novo',l:'NOVO',c:'#E84040'},
+    {k:'qualificado',l:'QUALIFICADO',c:'#E67E22'},
+    {k:'aplicou',l:'APLICOU',c:'#3498DB'},
+    {k:'negociacao',l:'NEGOCIAÇÃO',c:'#8E44AD'},
+    {k:'fechado',l:'FECHADO',c:'#1DB954'}
+  ];
+  document.getElementById('pipe-grid').innerHTML=pipe.map(p=>{
+    const cnt=leads.filter(l=>l.status===p.k).length;
+    const r=leads.filter(l=>l.status===p.k).reduce((a,l)=>a+(parseFloat(l.valor)||0),0);
+    return `<div class="sc"><div class="sdot" style="background:${p.c}"></div><div class="slbl">${p.l}</div><div class="sval">${cnt}</div><div class="ssub">${r>0?fc(r):'—'}</div></div>`;
+  }).join('');
+
+  document.getElementById('bdg-leads').textContent=leads.length;
+  document.getElementById('bdg-new').textContent=leads.filter(l=>l.status==='novo'||l.status==='qualificado').length;
+
+  document.getElementById('s-rev').textContent=fc(rev);
+  document.getElementById('s-sales').textContent=closed.length;
+  document.getElementById('s-ticket').textContent=closed.length?fc(rev/closed.length):fc(0);
+  document.getElementById('s-leads').textContent=leads.length;
+
+  // Products
+  const pm={};
+  leads.forEach(l=>{ const k=l.interesse||'Não informado'; if(!pm[k]) pm[k]={c:0,r:0}; pm[k].c++; if(l.status==='fechado') pm[k].r+=parseFloat(l.valor)||0; });
+  const pkeys=Object.keys(pm); const maxpc=Math.max(...pkeys.map(k=>pm[k].c),1);
+  const pc=['#D42020','#E67E22','#3498DB','#8E44AD'];
+  document.getElementById('prod-brk').innerHTML=pkeys.length?pkeys.map((k,i)=>`
+    <div class="br"><div class="brh"><span class="brl">${esc(k)}</span><span class="brc">${pm[k].c}x · ${fc(pm[k].r)}</span></div>
+    <div class="brt"><div class="brf" style="width:${Math.round(pm[k].c/maxpc*100)}%;background:${pc[i%pc.length]}"></div></div></div>
+  `).join(''):'<div class="empty" style="padding:16px"><span style="font-size:12px;color:var(--t400)">Sem dados</span></div>';
+
+  // Why
+  const kw={};
+  leads.forEach(l=>{
+    if(!l.dificuldade) return;
+    const t=(l.dificuldade||'').toLowerCase();
+    const cats=[
+      {k:'Não sabe o que postar',w:['postar','conteúdo','post','ideia','tema','criativo']},
+      {k:'Falta de tempo',w:['tempo','ocupad','atarefer','sobra']},
+      {k:'Poucos seguidores',w:['seguidor','crescer','alcance','audiência']},
+      {k:'Não converte em vendas',w:['venda','converter','cliente','compra','faturar']},
+      {k:'Não sabe se posicionar',w:['posicion','nicho','persona','autoridade','identidade']},
+      {k:'Engajamento baixo',w:['engaj','like','comentário','interação']}
+    ];
+    let matched=false;
+    cats.forEach(c=>{ if(c.w.some(w=>t.includes(w))){ kw[c.k]=(kw[c.k]||0)+1; matched=true; } });
+    if(!matched) kw['Outros motivos']=(kw['Outros motivos']||0)+1;
+  });
+  const kws=Object.entries(kw).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxkw=kws.length?kws[0][1]:1;
+  const kwc=['#3498DB','#E74C3C','#E67E22','#8E44AD','#1DB954'];
+  document.getElementById('why-brk').innerHTML=kws.length?kws.map(([k,v],i)=>`
+    <div class="br"><div class="brh"><span class="brl">${esc(k)}</span><span class="brc">${v}</span></div>
+    <div class="brt"><div class="brf" style="width:${Math.round(v/maxkw*100)}%;background:${kwc[i%kwc.length]}"></div></div></div>
+  `).join(''):'<div class="empty" style="padding:16px"><span style="font-size:12px;color:var(--t400)">Aguardando leads</span></div>';
+}
+
+// ═══════════════════════════════
+//  LEADS TABLE
+// ═══════════════════════════════
+function renderTable(){
+  const q=(document.getElementById('ls-search').value||'').toLowerCase();
+  const sf=document.getElementById('ls-status').value;
+  const pf=document.getElementById('ls-prod').value;
+  const filtered=S.leads.filter(l=>{
+    const ms=!q||l.nome.toLowerCase().includes(q)||(l.whatsapp||'').includes(q)||(l.instagram||'').toLowerCase().includes(q);
+    const mst=!sf||l.status===sf;
+    const mp=!pf||l.interesse===pf;
+    return ms&&mst&&mp;
+  });
+  const tb=document.getElementById('leads-body');
+  if(!filtered.length){ tb.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:36px;color:var(--t400)">Nenhum lead encontrado</td></tr>`; return; }
+  tb.innerHTML=filtered.map(l=>{
+    const w=wa(l.whatsapp||'');
+    return `<tr onclick="goAnalyze('${l.id}')">
+      <td class="lnc"><div style="display:flex;align-items:center;gap:8px"><div class="av" style="width:26px;height:26px;font-size:10px">${ini(l.nome)}</div>${esc(l.nome)}</div></td>
+      <td>${w?`<a href="https://wa.me/55${w}" target="_blank" class="wal" onclick="event.stopPropagation()">📱 ${esc(l.whatsapp)}</a>`:'—'}</td>
+      <td>${l.instagram?`<a href="https://instagram.com/${esc(l.instagram.replace('@',''))}" target="_blank" style="color:var(--t300);text-decoration:none" onclick="event.stopPropagation()">${esc(l.instagram)}</a>`:'—'}</td>
+      <td>${esc(l.faturamento||'—')}</td>
+      <td><span style="font-size:12px">${esc(l.interesse||'—')}</span></td>
+      <td><span class="sbadge s-${l.status}" style="cursor:pointer" onclick="event.stopPropagation();openStatus('${l.id}')">${slbl(l.status)}</span></td>
+      <td><button class="btn-s" style="padding:3px 9px;font-size:11px" onclick="event.stopPropagation();delLead('${l.id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+function goAnalyze(id){ S.selId=id; show('analyze'); }
+function delLead(id){ if(!confirm('Remover este lead?')) return; S.leads=S.leads.filter(l=>l.id!==id); saveLeads(); renderTable(); dash(); toast('Lead removido','ok'); }
+
+// ═══════════════════════════════
+//  CSV IMPORT
+// ═══════════════════════════════
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)handleCSV(f)});
+
+function handleCSV(file){
+  Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(r){
+    const rows=r.data; if(!rows.length){toast('CSV vazio','err');return;}
+    const hd=Object.keys(rows[0]);
+    const fc2=kws=>hd.find(h=>kws.some(k=>h.toLowerCase().includes(k.toLowerCase())));
+    const cN=fc2(['nome','name']);
+    const cW=fc2(['whatsapp','telefone','fone','phone','celular','zap','número','numero']);
+    const cI=fc2(['instagram','insta','@']);
+    const cF=fc2(['faturamento','renda','receita','mensal','quanto','ganha']);
+    const cD=fc2(['dificuldade','dor','precisa','problema','desafio','busca','maior']);
+    const cInt=fc2(['interesse','serviço','servico','produto','quer','qual']);
+    csvBuf=rows.map(row=>({
+      id:uid(),
+      nome:cN?(row[cN]||''):'',
+      whatsapp:cW?(row[cW]||''):'',
+      instagram:cI?(row[cI]||''):'',
+      faturamento:cF?(row[cF]||''):'',
+      dificuldade:cD?(row[cD]||''):'',
+      interesse:cInt?(row[cInt]||''):'',
+      status:'novo',valor:0,dataCadastro:new Date().toISOString()
+    })).filter(x=>x.nome);
+    if(!csvBuf.length){toast('Nenhum lead com nome encontrado','err');return;}
+    document.getElementById('csv-prev').style.display='block';
+    document.getElementById('btn-import').textContent='✓ Importar '+csvBuf.length+' lead(s)';
+    document.getElementById('csv-prev-body').innerHTML=csvBuf.slice(0,10).map(r=>`<tr>
+      <td class="lnc">${esc(r.nome)}</td><td>${esc(r.whatsapp||'—')}</td><td>${esc(r.instagram||'—')}</td>
+      <td>${esc(r.faturamento||'—')}</td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc((r.dificuldade||'—').substring(0,50))}</td>
+      <td>${esc(r.interesse||'—')}</td></tr>`).join('')+
+      (csvBuf.length>10?`<tr><td colspan="6" style="text-align:center;color:var(--t400);padding:10px">...e mais ${csvBuf.length-10} leads</td></tr>`:'');
+    toast(csvBuf.length+' leads detectados','ok');
+  },error:()=>toast('Erro ao ler CSV','err')});
+}
+function confirmImport(){
+  const ex=new Set(S.leads.map(l=>wa(l.whatsapp)));
+  const news=csvBuf.filter(l=>{const w=wa(l.whatsapp);return !(w&&ex.has(w));});
+  S.leads=[...S.leads,...news]; saveLeads();
+  document.getElementById('csv-prev').style.display='none'; csvBuf=[];
+  toast(news.length+' leads importados!','ok'); dash();
+}
+function cancelImport(){ csvBuf=[]; document.getElementById('csv-prev').style.display='none'; }
+
+// ═══════════════════════════════
+//  ANALYZE SIDEBAR
+// ═══════════════════════════════
+function renderSidebar(){
+  const q=(document.getElementById('as-search').value||'').toLowerCase();
+  const f=S.leads.filter(l=>!q||l.nome.toLowerCase().includes(q));
+  document.getElementById('aside-list').innerHTML=!f.length
+    ?'<div style="padding:18px;text-align:center;color:var(--t400);font-size:12px">Nenhum lead</div>'
+    :f.map(l=>`<div class="ait${S.selId===l.id?' sel':''}" onclick="renderPanel('${l.id}')">
+      <div class="av">${ini(l.nome)}</div>
+      <div class="ai-info"><div class="ain">${esc(l.nome)}</div><div class="ais">${esc(l.interesse||l.faturamento||'—')}</div></div>
+      <span class="sbadge s-${l.status}" style="font-size:10px;padding:1px 6px">${slbl(l.status)}</span>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════
+//  LEAD PANEL
+// ═══════════════════════════════
+function renderPanel(id){
+  S.selId=id; renderSidebar();
+  const l=S.leads.find(x=>x.id===id); if(!l) return;
+  const w=wa(l.whatsapp||'');
+  const panel=document.getElementById('apanel');
+  panel.innerHTML=`
+    <div class="ldc">
+      <div class="ldh">
+        <div class="ldav">${ini(l.nome)}</div>
+        <div><div class="ldn">${esc(l.nome)}</div><div class="ldig">${esc(l.instagram||'')}</div></div>
+        <div class="ldhr"><button class="btn-p" onclick="runAI('${l.id}')">🤖 Analisar com IA</button></div>
+      </div>
+      <div class="ligrid">
+        <div class="lii"><div class="liil">WhatsApp</div><div class="liiv">${w?`<a href="https://wa.me/55${w}" target="_blank" class="wal">📱 ${esc(l.whatsapp)} — abrir WhatsApp</a>`:'—'}</div></div>
+        <div class="lii"><div class="liil">Faturamento mensal</div><div class="liiv">${esc(l.faturamento||'—')}</div></div>
+        <div class="lii"><div class="liil">Vende principalmente através de</div><div class="liiv">${esc(l.instagram||'—')}</div></div>
+        <div class="lii"><div class="liil">Precisa de</div><div class="liiv">${esc(l.dificuldade||'—')}</div></div>
+        <div class="lii"><div class="liil">Interesse em</div><div class="liiv">${esc(l.interesse||'—')}</div></div>
+        <div class="lii"><div class="liil">Status</div><div class="liiv"><span class="sbadge s-${l.status}">${slbl(l.status)}</span></div></div>
+      </div>
+    </div>
+    <div class="aacts">
+      <button class="btn-s" onclick="openStatus('${l.id}')">✏️ Mudar Status</button>
+      ${w?`<a href="https://wa.me/55${w}" target="_blank" class="btn-p" style="text-decoration:none;display:inline-block">💬 Abrir WhatsApp</a>`:''}
+      <button class="btn-s" onclick="runAI('${l.id}')">🤖 Gerar Nova Análise</button>
+    </div>
+    ${l.analise?renderAI(l.analise):`<div class="ae" style="height:200px"><div class="ae-ico">🤖</div><div>Clique em "Analisar com IA" para gerar análise personalizada</div></div>`}
+  `;
+}
+
+function renderAI(a){
+  return `
+    <div class="fgrid">
+      <div class="fc"><div class="fclbl">Gerenciamento de Redes</div><div class="fcpct">${a.fitGerenciamento||0}%</div><div class="fbt"><div class="fbf" style="width:${a.fitGerenciamento||0}%"></div></div></div>
+      <div class="fc"><div class="fclbl">Análise de Perfil</div><div class="fcpct">${a.fitAnalise||0}%</div><div class="fbt"><div class="fbf" style="width:${a.fitAnalise||0}%"></div></div></div>
+    </div>
+    <div class="asec hl">
+      <div class="asec-lbl">${esc(a.produtoRecomendado||'')}</div>
+      <div class="asec-h">${esc(a.headlinePrincipal||'')}</div>
+      <div class="asec-s">${esc(a.subtitulo||'')}</div>
+    </div>
+    <div class="asec">
+      <div class="asec-t">Análise Detalhada</div>
+      <ul class="blist">${(a.pontosPrincipais||[]).map(p=>`<li><span class="bdot">●</span> ${esc(p)}</li>`).join('')}</ul>
+    </div>
+    <div class="asec">
+      <div class="asec-t">Como Abordar</div>
+      <div class="abox">${esc(a.comoAbordar||'')}</div>
+    </div>
+    <div class="asec">
+      <div class="asec-t">Quebras de Objeção</div>
+      ${(a.objecoes||[]).map(o=>`<div class="oitem">
+        <div class="olbl">Objeção Provável</div>
+        <div class="otxt">"${esc(o.objecao)}"</div>
+        <div class="oblbl">Como Quebrar</div>
+        <div class="obtxt">${esc(o.comoQuebrar)}</div>
+      </div>`).join('')}
+    </div>
+    <div class="asec">
+      <div class="asec-t">Gatilhos para Usar</div>
+      ${(a.gatilhos||[]).map((g,i)=>`<div class="trig"><div class="tnum">${i+1}</div><div class="ttxt">${esc(g)}</div></div>`).join('')}
+    </div>
+  `;
+}
+
+// ═══════════════════════════════
+//  AI ANALYSIS
+// ═══════════════════════════════
+async function runAI(id){
+  const l=S.leads.find(x=>x.id===id); if(!l) return;
+  if(!S.cfg.apiKey){ toast('Configure a chave da API!','err'); show('config'); return; }
+  const panel=document.getElementById('apanel');
+  const w=wa(l.whatsapp||'');
+
+  // Rebuild panel with loading
+  panel.innerHTML=`
+    <div class="ldc">
+      <div class="ldh">
+        <div class="ldav">${ini(l.nome)}</div>
+        <div><div class="ldn">${esc(l.nome)}</div><div class="ldig">${esc(l.instagram||'')}</div></div>
+        <div class="ldhr"><button class="btn-p" disabled>⏳ Analisando...</button></div>
+      </div>
+    </div>
+    <div class="loading"><div class="spin"></div><div>Analisando lead com IA...</div></div>
+  `;
+
+  const prompt=`Você é uma especialista em vendas de serviços de social media. Analise este lead e gere uma análise completa de vendas em português brasileiro.
+
+LEAD:
+- Nome: ${l.nome}
+- Faturamento mensal: ${l.faturamento||'não informado'}
+- Maior dificuldade / dor: ${l.dificuldade||'não informado'}
+- Interesse em: ${l.interesse||'não informado'}
+- Instagram: ${l.instagram||'não informado'}
+
+PRODUTOS DA CONSULTORA:
+1. Gerenciamento de Redes Sociais — gestão completa das redes (Instagram, TikTok, etc.)
+2. Análise de Perfil — diagnóstico completo + plano de ação estratégico
+
+Responda APENAS com JSON válido (sem markdown, sem texto extra):
+{
+  "fitGerenciamento": 75,
+  "fitAnalise": 40,
+  "produtoRecomendado": "Gerenciamento de Redes",
+  "headlinePrincipal": "Título curto e impactante sobre o perfil do lead",
+  "subtitulo": "Frase complementar sobre o potencial ou situação",
+  "pontosPrincipais": ["Ponto 1","Ponto 2","Ponto 3"],
+  "comoAbordar": "Script personalizado de abordagem no WhatsApp (2-3 frases, tom natural e amigável, primeira pessoa)",
+  "objecoes": [
+    {"objecao": "Objeção provável 1","comoQuebrar": "Como responder com empatia"},
+    {"objecao": "Objeção provável 2","comoQuebrar": "Como responder com empatia"}
+  ],
+  "gatilhos": [
+    "Gatilho de urgência personalizado para este lead",
+    "Gatilho de exclusividade personalizado"
+  ]
+}`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':S.cfg.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:1600,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error?.message||'Erro na API');
+    let txt=data.content[0].text;
+    const m=txt.match(/\{[\s\S]*\}/); if(m) txt=m[0];
+    const ai=JSON.parse(txt);
+    l.analise=ai; saveLeads();
+    renderPanel(id);
+    toast('Análise gerada!','ok');
+  }catch(err){
+    renderPanel(id);
+    toast('Erro: '+err.message,'err');
+  }
+}
+
+// ═══════════════════════════════
+//  STATUS MODAL
+// ═══════════════════════════════
+function openStatus(id){
+  S.pStatusId=id; S.pStatus=null;
+  document.getElementById('val-grp').style.display='none';
+  document.getElementById('val-in').value='';
+  document.getElementById('mo-status').classList.add('show');
+}
+function closeStatus(){ document.getElementById('mo-status').classList.remove('show'); }
+function pickStatus(s){
+  S.pStatus=s;
+  document.getElementById('val-grp').style.display=s==='fechado'?'block':'none';
+}
+function confirmStatus(){
+  if(!S.pStatus){ closeStatus(); return; }
+  const l=S.leads.find(x=>x.id===S.pStatusId); if(!l) return;
+  l.status=S.pStatus;
+  if(S.pStatus==='fechado'){
+    const v=parseFloat(document.getElementById('val-in').value);
+    if(!isNaN(v)&&v>0) l.valor=v;
+  }
+  saveLeads(); closeStatus(); renderTable(); dash();
+  if(S.selId===S.pStatusId) renderPanel(S.pStatusId);
+  renderSidebar();
+  toast('Status: '+slbl(S.pStatus),'ok');
+}
+
+// ═══════════════════════════════
+//  NEW LEAD
+// ═══════════════════════════════
+function openNL(){ document.getElementById('mo-nl').classList.add('show'); }
+function closeNL(){ document.getElementById('mo-nl').classList.remove('show'); }
+function saveNL(){
+  const nome=document.getElementById('nl-nome').value.trim();
+  if(!nome){ toast('Nome é obrigatório','err'); return; }
+  S.leads.push({
+    id:uid(), nome,
+    whatsapp:document.getElementById('nl-wa').value.trim(),
+    instagram:document.getElementById('nl-ig').value.trim(),
+    faturamento:document.getElementById('nl-fat').value,
+    dificuldade:document.getElementById('nl-dif').value.trim(),
+    interesse:document.getElementById('nl-int').value,
+    status:'novo', valor:0, dataCadastro:new Date().toISOString()
+  });
+  saveLeads(); closeNL();
+  ['nl-nome','nl-wa','nl-ig','nl-dif'].forEach(id=>document.getElementById(id).value='');
+  toast('Lead adicionado!','ok'); dash();
+}
+
+// ═══════════════════════════════
+//  CONFIG
+// ═══════════════════════════════
+function saveConf(){
+  const k=document.getElementById('api-key').value.trim();
+  if(!k){ toast('Informe a chave da API','err'); return; }
+  S.cfg.apiKey=k; saveCfg(); toast('Configurações salvas!','ok');
+}
+function saveMeta(){
+  const v=parseFloat(document.getElementById('meta-in').value);
+  if(!isNaN(v)&&v>0){ S.cfg.goal=v; saveCfg(); toast('Meta salva!','ok'); dash(); }
+}
+function clearAll(){
+  S.leads=[]; saveLeads();
+  document.getElementById('mo-clear').classList.remove('show');
+  dash(); toast('Dados limpos','ok');
+}
+
+// ═══════════════════════════════
+//  TOAST
+// ═══════════════════════════════
+function toast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  clearTimeout(toastT); toastT=setTimeout(()=>{t.className='toast';},3200);
+}
+
+// ═══════════════════════════════
+//  INIT
+// ═══════════════════════════════
+(function init(){
+  load();
+  if(S.cfg.apiKey) document.getElementById('api-key').value=S.cfg.apiKey;
+  document.getElementById('meta-in').value=S.cfg.goal;
+
+  // Sample data if empty
+  if(!S.leads.length){
+    S.leads=[
+      {id:uid(),nome:'Ana Paula Becker',whatsapp:'11987654321',instagram:'@anapaula.mkt',faturamento:'R$5k a R$10k',dificuldade:'Não sabe o que postar e quer crescer no Instagram',interesse:'Gerenciamento de Redes',status:'qualificado',valor:0,dataCadastro:new Date().toISOString()},
+      {id:uid(),nome:'Juliana Martins',whatsapp:'21912345678',instagram:'@ju.martins',faturamento:'Até R$5k',dificuldade:'Tem pouco engajamento e não converte em vendas',interesse:'Análise de Perfil',status:'novo',valor:0,dataCadastro:new Date().toISOString()},
+      {id:uid(),nome:'Fernanda Lima',whatsapp:'31998887766',instagram:'@fernanda.lima',faturamento:'R$10k a R$30k',dificuldade:'Não tem tempo para produzir conteúdo consistente',interesse:'Gerenciamento de Redes',status:'fechado',valor:1497,dataCadastro:new Date().toISOString()},
+      {id:uid(),nome:'Carla Souza',whatsapp:'85999001122',instagram:'@carla.co',faturamento:'R$5k a R$10k',dificuldade:'Não sabe se posicionar no nicho de bem-estar',interesse:'Análise de Perfil',status:'fechado',valor:497,dataCadastro:new Date().toISOString()},
+      {id:uid(),nome:'Beatriz Santos',whatsapp:'41988776655',instagram:'@bea.santos',faturamento:'R$5k a R$10k',dificuldade:'Quer mais seguidores e reconhecimento',interesse:'Gerenciamento de Redes',status:'negociacao',valor:0,dataCadastro:new Date().toISOString()},
+      {id:uid(),nome:'Débora Martins',whatsapp:'62977665544',instagram:'@debora.mkt',faturamento:'R$10k a R$30k',dificuldade:'Conteúdo não converte em clientes',interesse:'Gerenciamento de Redes',status:'fechado',valor:1997,dataCadastro:new Date().toISOString()},
+    ];
+    saveLeads();
+  }
+  dash();
+})();
+</script>
+</body>
+</html>
