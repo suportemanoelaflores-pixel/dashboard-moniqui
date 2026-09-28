@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Diagnóstico do Perfil · Morno ou Com Molho?</title>
-<meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
+<title>Diagnóstico de Posicionamento · Morno ou Com Molho?</title>
+<meta name="description" content="Descubra o ponto do seu molho: seu perfil tá morno ou tá com molho? Diagnóstico de Posicionamento do método da Manu Flores.">
 <meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,8 @@
 html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 body{min-height:100dvh}
 b,strong{font-weight:700}
+button,a,.chip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.chip,.btn{min-height:44px}
 
 /* ── HEADER ── */
 header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
@@ -61,7 +63,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdro
 .dock-in{max-width:640px;margin:0 auto}
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .chip{font:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink);border:1.5px solid var(--molho);padding:9px 14px;border-radius:99px;cursor:pointer;transition:all .15s;text-align:left}
-.chip:hover{background:var(--molho-soft)}
+@media (hover:hover){.chip:hover{background:var(--molho-soft)}}
 form.inp{display:flex;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 5px 5px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
 form.inp:focus-within{border-color:var(--molho)}
 form.inp input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:16px;background:none;color:var(--ink)}
@@ -117,11 +119,12 @@ form.inp button svg{width:18px;height:18px}
 .scan-bar b{display:block;height:100%;width:4%;background:linear-gradient(90deg,var(--molho-2),var(--molho));border-radius:99px;transition:width .8s ease}
 .ig{background:#fff;border-radius:16px;padding:14px;display:flex;gap:14px;align-items:center;box-shadow:0 3px 14px rgba(29,38,128,.1);border:1px solid var(--line)}
 .ig-av{width:66px;height:66px;border-radius:50%;flex-shrink:0;border:3px solid var(--molho-2);background:var(--cream-2) center/cover;display:grid;place-items:center;font-weight:800;color:var(--molho);font-size:22px}
-.ig-n{font-weight:700;font-size:15px;line-height:1.25}
+.ig-n{font-weight:700;font-size:15px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ig > div:last-child{min-width:0}
 .ig-u{color:var(--molho);font-weight:700;font-size:13.5px}
 .ig-s{font-size:13px;color:var(--ink-3);margin-top:4px}
 .ig-s b{color:var(--ink);font-size:14.5px;margin-right:2px}
-.ig-s span{margin-right:12px}
+.ig-s span{margin-right:12px;white-space:nowrap;display:inline-block}
 .facts{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
 .facts h5{font-size:15px;margin-bottom:4px}
 .fx{display:flex;gap:10px;padding:9px 0;border-top:1px dashed var(--line);font-size:13.5px}
@@ -139,6 +142,10 @@ form.inp button svg{width:18px;height:18px}
 .chip.go:disabled{opacity:.35;cursor:not-allowed}
 .hint{font-size:12px;color:var(--ink-3);text-align:right;margin-bottom:8px}
 .lgpd{font-size:11.5px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+/* ── NOVA MENSAGEM ── */
+#novaMsg{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:40;border:none;background:var(--molho);color:#fff;font:inherit;font-weight:700;font-size:14px;padding:11px 18px;min-height:44px;border-radius:99px;box-shadow:0 6px 18px rgba(29,38,128,.35);transition:all .25s ease;cursor:pointer}
+#novaMsg.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 
 /* ── CLOSING ── */
 .end{background:radial-gradient(130% 80% at 0% 0%,#4452D6,var(--molho) 55%,var(--wine));color:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:0 10px 30px rgba(29,38,128,.35);position:relative;overflow:hidden}
@@ -158,6 +165,9 @@ form.inp button svg{width:18px;height:18px}
 .btn.link{background:none;color:#fff;opacity:.75;font-weight:500;font-size:13px;padding:6px}
 
 @media (max-width:420px){
+  .chip{font-size:14px;padding:10px 13px;min-height:44px}
+  .chips{gap:6px}
+  #dock{padding-top:14px}
   .hd-title{display:none}
   .msg{max-width:86%}
   .res-v{font-size:30px}
@@ -170,7 +180,7 @@ form.inp button svg{width:18px;height:18px}
 <header>
   <div class="hd">
     <div class="brand">Manu <span>Flores</span></div>
-    <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
+    <div class="hd-title">Diagnóstico de Posicionamento · Morno ou Com Molho? 🌶️</div>
     <div class="hd-sp"></div>
     <div class="prog" id="prog">0 de 14</div>
   </div>
@@ -179,6 +189,8 @@ form.inp button svg{width:18px;height:18px}
 
 <main id="chat" aria-live="polite"></main>
 
+<button type="button" id="novaMsg" aria-label="Ver nova mensagem">↓ nova mensagem</button>
+
 <div id="dock"><div class="dock-in" id="dockIn"></div></div>
 
 <script>
@@ -186,6 +198,8 @@ form.inp button svg{width:18px;height:18px}
 const AVATAR_URL = '../manu.jpg';
 /* WhatsApp que recebe as interessadas na LucraDiva (só números, com 55) */
 const WHATSAPP = '5551992691061';
+/* Cada lead vai pra planilha do Google pela função lead do Netlify (SHEET_WEBHOOK_URL) */
+const FN_LEAD = '/.netlify/functions/lead';
 
 /* ═══════════════════════════════════════════════════════════
    HELPERS DE CHAT
@@ -197,7 +211,38 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const first = n => esc((n || '').trim().split(/\s+/)[0] || '');
 const avatarHTML = () => AVATAR_URL ? `<img src="${esc(AVATAR_URL)}" alt="Manu">` : 'M';
-const scrollEnd = () => requestAnimationFrame(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}));
+const pertoDoFim = () => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 220;
+/* Antes do resultado o chat acompanha sempre. Depois do resultado, só acompanha se a pessoa já estiver lá embaixo:
+   se ela estiver lendo o resultado, a tela não é puxada e aparece o botão "nova mensagem". */
+function scrollEnd(force){
+  if (!force && S.devagar && !pertoDoFim()){ novaMsg.classList.add('on'); return; }
+  requestAnimationFrame(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}));
+}
+
+/* O chat sempre reserva embaixo o espaço exato da área de respostas, pra ela nunca cobrir a pergunta */
+const novaMsg = document.getElementById('novaMsg');
+novaMsg.onclick = () => { novaMsg.classList.remove('on'); scrollEnd(true); };
+window.addEventListener('scroll', () => { if (pertoDoFim()) novaMsg.classList.remove('on'); }, {passive: true});
+const dockEl = document.getElementById('dock');
+let dockAltura = 0;
+new ResizeObserver(() => {
+  const h = dockEl.offsetHeight;
+  if (h === dockAltura) return;
+  dockAltura = h;
+  chat.style.paddingBottom = (h + 24) + 'px';
+  scrollEnd(h > 0);
+}).observe(dockEl);
+
+/* iPhone: quando o teclado abre, a área de respostas sobe junto e o campo não fica escondido */
+if (window.visualViewport){
+  const vv = window.visualViewport;
+  const acompanhaTeclado = () => {
+    const teclado = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    dockEl.style.transform = teclado > 60 ? `translateY(-${teclado}px)` : '';
+  };
+  vv.addEventListener('resize', acompanhaTeclado);
+  vv.addEventListener('scroll', acompanhaTeclado);
+}
 
 function setProgress(n, total){
   document.getElementById('prog').textContent = `${n} de ${total}`;
@@ -228,14 +273,15 @@ async function bot(html, {wide = false, delay} = {}){
 const me = text => addRow('me', esc(text));
 const clearDock = () => { dock.innerHTML = ''; };
 
-function askText({placeholder, validate, nota}){
+function askText({placeholder, validate, nota, type = 'text', inputmode = 'text', autocomplete = 'off', mask}){
   return new Promise(resolve => {
     dock.innerHTML = `
       <form class="inp" novalidate>
-        <input type="text" placeholder="${placeholder}" autocomplete="given-name" aria-label="${placeholder}">
+        <input type="${type}" inputmode="${inputmode}" placeholder="${placeholder}" autocomplete="${autocomplete}" autocapitalize="${type === 'text' && autocomplete === 'given-name' ? 'words' : 'off'}" aria-label="${placeholder}">
         <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </form><div class="err"></div>${nota ? `<div class="lgpd">${nota}</div>` : ''}`;
     const f = dock.querySelector('form'), i = f.querySelector('input'), e = dock.querySelector('.err');
+    if (mask) i.addEventListener('input', () => { i.value = mask(i.value); });
     setTimeout(() => i.focus({preventScroll: true}), 50);
     f.addEventListener('submit', ev => {
       ev.preventDefault();
@@ -313,6 +359,14 @@ async function scanAoVivo(user){
   return perfil;
 }
 
+/* Salva/atualiza a linha da lead na planilha (mesmo ID = mesma linha). Nunca trava o chat. */
+function salvarLead(campos){
+  try {
+    fetch(FN_LEAD, {method: 'POST', keepalive: true, headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: S.leadId, campos})}).catch(() => {});
+  } catch {}
+}
+
 const fmt = n => n == null ? '?' : n >= 1e6 ? (Math.round(n / 1e5) / 10).toString().replace('.', ',') + ' mi'
   : n >= 1e3 ? (Math.round(n / 100) / 10).toString().replace('.', ',') + ' mil' : String(n);
 
@@ -352,7 +406,7 @@ function lerBio(bio, username){
 }
 
 /* Números reais do perfil + leitura no método */
-function fatosDoPerfil(p){
+function metricas(p){
   const posts = p.posts || [];
   const agora = Date.now(), dia = 864e5;
   const em30 = posts.filter(x => x.data && agora - new Date(x.data) <= 30 * dia).length;
@@ -360,6 +414,11 @@ function fatosDoPerfil(p){
   const comCurtida = posts.filter(x => x.curtidas != null && x.curtidas >= 0);
   const eng = p.seguidores > 0 && comCurtida.length
     ? comCurtida.reduce((a, x) => a + x.curtidas + (x.comentarios || 0), 0) / comCurtida.length / p.seguidores * 100 : null;
+  return {posts, em30, videos, eng};
+}
+
+function fatosDoPerfil(p){
+  const {posts, em30, videos, eng} = metricas(p);
   const out = [];
   if (p.bio){
     const b = lerBio(p.bio, p.username);
@@ -401,7 +460,7 @@ const ING = {
   personalidade:{emoji: '🌶️', nome: 'Personalidade e lado',   sub: 'opiniões, valores e pensamentos intrusivos que venceram'},
 };
 
-/* Cada opção vale de 3 (com molho) a 0 (anêmico) */
+/* Cada opção vale de 3 (com molho) a 0 (água e sal) */
 const PERGUNTAS = [
   {ing: 'vercrer', q: 'Se uma desconhecida entra no seu perfil agora, ela <b>bate o olho e entende o que você faz</b>?', ops: [
     {t: 'Sim, em 3 segundos', p: 3}, {t: 'Entende minha área, não o que eu entrego', p: 2}, {t: 'Acho que meu perfil é meio um mistério', p: 1}, {t: 'Nem eu sei explicar direito 🙈', p: 0}]},
@@ -461,7 +520,7 @@ function nivel(t){
   if (t >= 8.5) return {k: 'hot',  label: 'Com Molho 🌶️',      frase: 'Seu perfil tem sabor! Quem passa por ali lembra de você.'};
   if (t >= 6.5) return {k: 'hot',  label: 'Quase no ponto 🔥',  frase: 'Tem tempero, mas ainda falta um ingrediente pra você ser lembrada.'};
   if (t >= 4)   return {k: 'warm', label: 'Morno 🥣',          frase: 'Tá no fogão, mas sem graça: bonito, e ninguém lembra depois.'};
-  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro. E a gente resolve!'};
+  return          {k: 'cold', label: 'Água e sal 🧂',      frase: 'Seu perfil ainda tá sem tempero nenhum. E a gente resolve!'};
 }
 
 function diagnostico(k, n){
@@ -531,11 +590,11 @@ function resultadoCard(r){
   };
   return {gargalo, nivel: nv, html: `<div class="res">
     <div class="res-top ${nv.k}">
-      <div class="res-k">Temperatura do perfil</div>
+      <div class="res-k">O ponto do seu molho</div>
       <div class="res-v">${nv.label}</div>
       <div class="res-s">${nv.frase}</div>
       <div class="thermo"><div class="thermo-track"><div class="thermo-dot" data-left="${r.total * 10}"></div></div>
-        <div class="thermo-lbl"><span>🥶 Anêmico</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
+        <div class="thermo-lbl"><span>🧂 Água e sal</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
     </div>
     <div class="res-body">
       <span class="score">Nota do molho: ${r.total.toFixed(1).replace('.', ',')}/10</span>
@@ -554,20 +613,34 @@ function animateResult(root){
    FLUXO
    ═══════════════════════════════════════════════════════════ */
 async function run(){
-  const TOTAL = PERGUNTAS.length + 5;
-  chat.innerHTML = ''; S.respostas = {}; S.devagar = false; S.perfil = null;
+  const TOTAL = PERGUNTAS.length + 6;
+  chat.innerHTML = ''; S.respostas = {}; S.devagar = false; novaMsg.classList.remove('on'); S.perfil = null;
+  S.leadId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
   let n = 0;
   const avanca = () => setProgress(++n, TOTAL);
   setProgress(0, TOTAL);
 
-  await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
-  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
+  await bot('Oi, diva! Bora descobrir se o seu perfil tá <b>morno ou com molho</b>? 🌶️');
+  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem tempero, água e sal, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
   await bot('Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
-  S.nome = await askText({placeholder: 'Seu nome'});
+  S.nome = await askText({placeholder: 'Seu nome', autocomplete: 'given-name'});
   me(S.nome);
 
-  await bot(`Prazer, <b>${first(S.nome)}</b>! Agora a parte boa: qual o <b>@</b> do seu Instagram? Vou dar uma olhada nele em tempo real 👀`);
+  await bot(`Prazer, <b>${first(S.nome)}</b>! 🫶 Pra eu te mandar o resultado completo, qual o seu <b>WhatsApp</b>?`);
+  S.whatsapp = await askText({
+    placeholder: '(00) 00000-0000', type: 'tel', inputmode: 'tel', autocomplete: 'tel-national',
+    nota: 'Seus dados ficam só com a gente e são usados pra falar com você sobre o diagnóstico (LGPD).',
+    mask: v => { const d = v.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '').slice(0, 11);
+      return d.length <= 2 ? (d ? `(${d}` : '') : d.length <= 6 ? `(${d.slice(0, 2)}) ${d.slice(2)}`
+        : d.length <= 10 ? `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` : `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`; },
+    validate: v => /^\d{10,11}$/.test(v.replace(/\D/g, '')) ? '' : 'Confere o número com DDD, diva 📱',
+  });
+  me('📱 ' + S.whatsapp);
+  avanca();
+  salvarLead({'Nome': S.nome, 'WhatsApp': S.whatsapp, 'Chamar no WhatsApp': 'https://wa.me/55' + S.whatsapp.replace(/\D/g, ''), 'Etapa': '1. Deixou o WhatsApp'});
+
+  await bot('Agora a parte boa: qual o <b>@</b> do seu Instagram? Vou dar uma olhada nele em tempo real 👀');
   while (true){
     const raw = await askText({placeholder: '@seuperfil',
       nota: 'Uso só os dados públicos do seu perfil pra fazer o diagnóstico.',
@@ -590,6 +663,14 @@ async function run(){
     await bot('Sem stress! Manda o @ certinho de novo:');
   }
   avanca();
+  {
+    const m = S.perfil ? metricas(S.perfil) : null;
+    salvarLead({'Instagram': '@' + S.instagram,
+      'Seguidores': S.perfil ? S.perfil.seguidores : 'não encontrado',
+      'Posts nos últimos 30 dias': m ? m.em30 : '',
+      'Engajamento (%)': m && m.eng != null ? Math.round(m.eng * 10) / 10 : '',
+      'Etapa': '2. Mandou o @'});
+  }
 
   await bot(`Em qual nicho o <b>@${esc(S.instagram)}</b> atua?`);
   S.nicho = NICHOS[await askChoice(NICHOS)]; me(S.nicho); avanca();
@@ -602,6 +683,7 @@ async function run(){
 
   await bot('Você já <b>vende pelo seu perfil</b> hoje, ou seus clientes chegam de outro jeito?');
   S.vendePerfil = QUALI.vendePerfil[await askChoice(QUALI.vendePerfil)]; me(S.vendePerfil); avanca();
+  salvarLead({'Nicho': S.nicho, 'Maior desafio': S.desafio, 'Faturamento': S.faturamento, 'Vende pelo perfil': S.vendePerfil, 'Etapa': '3. Respondeu a qualificação'});
 
   await bot(metodoCard(), {wide: true, delay: 1000});
   await bot('Agora vou te perguntar sobre cada ingrediente. Bora? 👇', {delay: 700});
@@ -623,7 +705,10 @@ async function run(){
 
   const r = calcular();
   const card = resultadoCard(r);
-  await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
+  salvarLead({'Temperatura': card.nivel.label.replace(/\s*\S+$/u, ''), 'Nota': r.total,
+    'Ver pra crer': r.notas.vercrer, 'Problema + solução': r.notas.resolve, 'Gancho': r.notas.gancho, 'Personalidade': r.notas.personalidade,
+    'Ingrediente mais fraco': ING[card.gargalo].nome, 'Etapa': '4. Viu o resultado'});
+  await bot(`<b>${first(S.nome)}</b>, aqui tá o ponto do seu molho hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
   setTimeout(() => resRow.scrollIntoView({behavior: 'smooth', block: 'start'}), 80);
@@ -647,7 +732,7 @@ async function run(){
   await bot(r.total >= 8.5
     ? `E agora que o molho tá pronto, é hora de transformar isso em venda todo mês. É o que a gente faz na <b>Comunidade LucraDiva</b> 💸`
     : `E olha, ${first(S.nome)}: foi exatamente pra isso que eu criei a <b>Comunidade LucraDiva</b> 💸`, {delay: 900});
-  const msg = `Oi Manu! Sou a ${S.nome} (@${S.instagram}), trabalho com ${S.nicho}. Fiz o Diagnóstico do Perfil e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}.\n\nMeu maior desafio: ${S.desafio}\nFaturamento: ${S.faturamento}\nVendo pelo perfil: ${S.vendePerfil}\n\nQuero saber mais sobre a Comunidade LucraDiva! 🌶️`;
+  const msg = `Oi Manu! Sou a ${S.nome} (@${S.instagram}), trabalho com ${S.nicho}. Fiz o Diagnóstico de Posicionamento e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}.\n\nMeu maior desafio: ${S.desafio}\nFaturamento: ${S.faturamento}\nVendo pelo perfil: ${S.vendePerfil}\n\nQuero saber mais sobre a Comunidade LucraDiva! 🌶️`;
   const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   const endRow = await bot(`<div class="end">
       <span class="k">COMUNIDADE LUCRADIVA</span>
@@ -663,6 +748,7 @@ async function run(){
         <a class="btn wa" href="${wa}" target="_blank" rel="noopener">💬 Quero entrar na LucraDiva</a>
         <button class="btn link" id="refazer" type="button">↻ Refazer o diagnóstico</button>
       </div></div>`, {wide: true});
+  endRow.querySelector('.btn.wa').addEventListener('click', () => salvarLead({'Clicou no WhatsApp': 'SIM', 'Etapa': '5. Clicou no WhatsApp'}));
   endRow.querySelector('#refazer').onclick = () => { window.scrollTo({top: 0}); run(); };
 }
 

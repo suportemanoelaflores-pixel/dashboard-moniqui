@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Diagnóstico do Perfil · Morno ou Com Molho?</title>
-<meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
+<title>Diagnóstico de Posicionamento · Morno ou Com Molho?</title>
+<meta name="description" content="Descubra o ponto do seu molho: seu perfil tá morno ou tá com molho? Diagnóstico de Posicionamento do método da Manu Flores.">
 <meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,8 @@
 html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 body{min-height:100dvh}
 b,strong{font-weight:700}
+button,a,.chip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.chip,.btn{min-height:44px}
 
 /* ── HEADER ── */
 header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
@@ -61,7 +63,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdro
 .dock-in{max-width:640px;margin:0 auto}
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .chip{font:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink);border:1.5px solid var(--molho);padding:9px 14px;border-radius:99px;cursor:pointer;transition:all .15s;text-align:left}
-.chip:hover{background:var(--molho-soft)}
+@media (hover:hover){.chip:hover{background:var(--molho-soft)}}
 form.inp{display:flex;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 5px 5px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
 form.inp:focus-within{border-color:var(--molho)}
 form.inp input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:16px;background:none;color:var(--ink)}
@@ -103,6 +105,10 @@ form.inp button svg{width:18px;height:18px}
 .fix{margin-top:9px;background:var(--cream);border-left:3px solid var(--molho);border-radius:0 10px 10px 0;padding:9px 11px;font-size:13px;color:var(--ink)}
 .fix b{color:var(--molho)}
 
+/* ── NOVA MENSAGEM ── */
+#novaMsg{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:40;border:none;background:var(--molho);color:#fff;font:inherit;font-weight:700;font-size:14px;padding:11px 18px;min-height:44px;border-radius:99px;box-shadow:0 6px 18px rgba(29,38,128,.35);transition:all .25s ease;cursor:pointer}
+#novaMsg.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+
 /* ── CLOSING ── */
 .end{background:radial-gradient(130% 80% at 0% 0%,#4452D6,var(--molho) 55%,var(--wine));color:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:0 10px 30px rgba(29,38,128,.35);position:relative;overflow:hidden}
 .end::after{content:"🌶️";position:absolute;right:-8px;top:-10px;font-size:84px;opacity:.12;transform:rotate(18deg)}
@@ -114,6 +120,9 @@ form.inp button svg{width:18px;height:18px}
 .btn.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
 
 @media (max-width:420px){
+  .chip{font-size:14px;padding:10px 13px;min-height:44px}
+  .chips{gap:6px}
+  #dock{padding-top:14px}
   .hd-title{display:none}
   .msg{max-width:86%}
   .res-v{font-size:30px}
@@ -126,7 +135,7 @@ form.inp button svg{width:18px;height:18px}
 <header>
   <div class="hd">
     <div class="brand">Manu <span>Flores</span></div>
-    <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
+    <div class="hd-title">Diagnóstico de Posicionamento · Morno ou Com Molho? 🌶️</div>
     <div class="hd-sp"></div>
     <div class="prog" id="prog">0 de 11</div>
   </div>
@@ -134,6 +143,8 @@ form.inp button svg{width:18px;height:18px}
 </header>
 
 <main id="chat" aria-live="polite"></main>
+
+<button type="button" id="novaMsg" aria-label="Ver nova mensagem">↓ nova mensagem</button>
 
 <div id="dock"><div class="dock-in" id="dockIn"></div></div>
 
@@ -151,7 +162,38 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const first = n => esc((n || '').trim().split(/\s+/)[0] || '');
 const avatarHTML = () => AVATAR_URL ? `<img src="${esc(AVATAR_URL)}" alt="Manu">` : 'M';
-const scrollEnd = () => requestAnimationFrame(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}));
+const pertoDoFim = () => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 220;
+/* Antes do resultado o chat acompanha sempre. Depois do resultado, só acompanha se a pessoa já estiver lá embaixo:
+   se ela estiver lendo o resultado, a tela não é puxada e aparece o botão "nova mensagem". */
+function scrollEnd(force){
+  if (!force && S.devagar && !pertoDoFim()){ novaMsg.classList.add('on'); return; }
+  requestAnimationFrame(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}));
+}
+
+/* O chat sempre reserva embaixo o espaço exato da área de respostas, pra ela nunca cobrir a pergunta */
+const novaMsg = document.getElementById('novaMsg');
+novaMsg.onclick = () => { novaMsg.classList.remove('on'); scrollEnd(true); };
+window.addEventListener('scroll', () => { if (pertoDoFim()) novaMsg.classList.remove('on'); }, {passive: true});
+const dockEl = document.getElementById('dock');
+let dockAltura = 0;
+new ResizeObserver(() => {
+  const h = dockEl.offsetHeight;
+  if (h === dockAltura) return;
+  dockAltura = h;
+  chat.style.paddingBottom = (h + 24) + 'px';
+  scrollEnd(h > 0);
+}).observe(dockEl);
+
+/* iPhone: quando o teclado abre, a área de respostas sobe junto e o campo não fica escondido */
+if (window.visualViewport){
+  const vv = window.visualViewport;
+  const acompanhaTeclado = () => {
+    const teclado = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    dockEl.style.transform = teclado > 60 ? `translateY(-${teclado}px)` : '';
+  };
+  vv.addEventListener('resize', acompanhaTeclado);
+  vv.addEventListener('scroll', acompanhaTeclado);
+}
 
 function setProgress(n, total){
   document.getElementById('prog').textContent = `${n} de ${total}`;
@@ -225,7 +267,7 @@ const ING = {
   personalidade:{emoji: '🌶️', nome: 'Personalidade e lado',   sub: 'opiniões, valores e pensamentos intrusivos que venceram'},
 };
 
-/* Cada opção vale de 3 (com molho) a 0 (anêmico) */
+/* Cada opção vale de 3 (com molho) a 0 (água e sal) */
 const PERGUNTAS = [
   {ing: 'vercrer', q: 'Se uma desconhecida entra no seu perfil agora, ela <b>bate o olho e entende o que você faz</b>?', ops: [
     {t: 'Sim, em 3 segundos', p: 3}, {t: 'Entende minha área, não o que eu entrego', p: 2}, {t: 'Acho que meu perfil é meio um mistério', p: 1}, {t: 'Nem eu sei explicar direito 🙈', p: 0}]},
@@ -289,7 +331,7 @@ function nivel(t){
   if (t >= 8.5) return {k: 'hot',  label: 'Com Molho 🌶️',      frase: 'Seu perfil tem sabor! Quem passa por ali lembra de você.'};
   if (t >= 6.5) return {k: 'hot',  label: 'Quase no ponto 🔥',  frase: 'Tem tempero, mas ainda falta um ingrediente pra você ser lembrada.'};
   if (t >= 4)   return {k: 'warm', label: 'Morno 🥣',          frase: 'Tá no fogão, mas sem graça: bonito, e ninguém lembra depois.'};
-  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro. E a gente resolve!'};
+  return          {k: 'cold', label: 'Água e sal 🧂',      frase: 'Seu perfil ainda tá sem tempero nenhum. E a gente resolve!'};
 }
 
 function diagnostico(k, n){
@@ -359,11 +401,11 @@ function resultadoCard(r){
   };
   return {gargalo, nivel: nv, html: `<div class="res">
     <div class="res-top ${nv.k}">
-      <div class="res-k">Temperatura do perfil</div>
+      <div class="res-k">O ponto do seu molho</div>
       <div class="res-v">${nv.label}</div>
       <div class="res-s">${nv.frase}</div>
       <div class="thermo"><div class="thermo-track"><div class="thermo-dot" data-left="${r.total * 10}"></div></div>
-        <div class="thermo-lbl"><span>🥶 Anêmico</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
+        <div class="thermo-lbl"><span>🧂 Água e sal</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
     </div>
     <div class="res-body">
       <span class="score">Nota do molho: ${r.total.toFixed(1).replace('.', ',')}/10</span>
@@ -380,7 +422,7 @@ function animateResult(root){
 
 function textoCompartilhar(r, nv){
   const linhas = Object.keys(ING).map(k => `${ING[k].emoji} ${ING[k].nome}: ${r.notas[k]}/10`);
-  return `Fiz o Diagnóstico do Perfil da Manu e deu: ${nv.label} (${r.total.toFixed(1).replace('.', ',')}/10)\n${linhas.join('\n')}`;
+  return `Fiz o Diagnóstico de Posicionamento da Manu e deu: ${nv.label} (${r.total.toFixed(1).replace('.', ',')}/10)\n${linhas.join('\n')}`;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -388,11 +430,11 @@ function textoCompartilhar(r, nv){
    ═══════════════════════════════════════════════════════════ */
 async function run(){
   const TOTAL = PERGUNTAS.length;
-  chat.innerHTML = ''; S.respostas = {}; S.devagar = false;
+  chat.innerHTML = ''; S.respostas = {}; S.devagar = false; novaMsg.classList.remove('on');
   setProgress(0, TOTAL);
 
-  await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
-  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
+  await bot('Oi, diva! Bora descobrir se o seu perfil tá <b>morno ou com molho</b>? 🌶️');
+  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem tempero, água e sal, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
   await bot('São 11 perguntas rapidinhas. Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
   S.nome = await askText({placeholder: 'Seu nome'});
@@ -422,7 +464,7 @@ async function run(){
 
   const r = calcular();
   const card = resultadoCard(r);
-  await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
+  await bot(`<b>${first(S.nome)}</b>, aqui tá o ponto do seu molho hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
   setTimeout(() => resRow.scrollIntoView({behavior: 'smooth', block: 'start'}), 80);
