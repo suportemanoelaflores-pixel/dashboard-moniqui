@@ -24,6 +24,8 @@
 html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 body{min-height:100dvh}
 b,strong{font-weight:700}
+button,a,.chip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.chip,.btn{min-height:44px}
 
 /* ── HEADER ── */
 header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
@@ -114,7 +116,7 @@ form.inp button svg{width:18px;height:18px}
 .btn.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
 
 @media (max-width:420px){
-  .chip{font-size:13.5px;padding:8px 12px}
+  .chip{font-size:14px;padding:10px 13px;min-height:44px}
   .chips{gap:6px}
   #dock{padding-top:14px}
   .hd-title{display:none}
@@ -166,6 +168,17 @@ new ResizeObserver(() => {
   chat.style.paddingBottom = (h + 24) + 'px';
   scrollEnd();
 }).observe(dockEl);
+
+/* iPhone: quando o teclado abre, a área de respostas sobe junto e o campo não fica escondido */
+if (window.visualViewport){
+  const vv = window.visualViewport;
+  const acompanhaTeclado = () => {
+    const teclado = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    dockEl.style.transform = teclado > 60 ? `translateY(-${teclado}px)` : '';
+  };
+  vv.addEventListener('resize', acompanhaTeclado);
+  vv.addEventListener('scroll', acompanhaTeclado);
+}
 
 function setProgress(n, total){
   document.getElementById('prog').textContent = `${n} de ${total}`;
