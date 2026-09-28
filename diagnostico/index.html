@@ -7,53 +7,54 @@
 <meta name="description" content="Descobre em 2 minutos se o teu perfil tá morno ou com molho — e o que tá travando tuas vendas.">
 <meta property="og:title" content="Teu perfil tá morno ou com molho? 🌶️">
 <meta property="og:description" content="Diagnóstico de Perfil gratuito da Manoela Flores. Leva 2 minutos.">
-<meta name="theme-color" content="#2A0707">
+<meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F6EEE4;
-  --bubble:#EBDDCB;
-  --bubble-b:#E0CFB9;
-  --ink:#2A1A14;
-  --ink2:#6B5448;
-  --ink3:#A08C80;
-  --wine:#2A0707;
-  --wine2:#4A0E0E;
-  --molho:#D93A1A;
-  --molho2:#B82C10;
-  --molho-soft:#FBE3DA;
-  --gold:#E8B04A;
+  --bg:#FDF4F6;
+  --bubble:#F8DFE5;
+  --bubble-b:#F0CAD4;
+  --ink:#1C1F4A;
+  --ink2:#4F5278;
+  --ink3:#9093B4;
+  --deep:#1B2380;
+  --blue:#2F3DBC;
+  --blue2:#4655DA;
+  --blue-d:#2531A0;
+  --blue-soft:#E6E8FA;
+  --pink:#E18B9F;
+  --pink-soft:#FBE3E9;
   --ok:#1FA855;
   --card:#FFFFFF;
-  --line:#E6D6C3;
+  --line:#EFD5DC;
 }
 html,body{background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
 body{min-height:100vh;min-height:100dvh}
 button,input{font:inherit}
 
 /* ── HEADER ── */
-header{position:sticky;top:0;z-index:20;background:rgba(246,238,228,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
+header{position:sticky;top:0;z-index:20;background:rgba(253,244,246,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--pink)}
 .hd{max-width:560px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
-.brand{background:var(--wine);color:#fff;font-weight:700;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap}
-.brand span{color:var(--gold)}
+.brand{background:var(--deep);color:#fff;font-weight:700;font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap}
+.brand span{color:var(--pink)}
 .hd-t{font-size:12px;font-weight:600;color:var(--ink2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prog{font-size:11px;font-weight:700;color:var(--molho);background:var(--molho-soft);padding:4px 9px;border-radius:20px;white-space:nowrap}
+.prog{font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-soft);padding:4px 9px;border-radius:20px;white-space:nowrap}
 .bar{height:3px;background:var(--line)}
-.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--molho),var(--gold));transition:width .5s ease}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--pink));transition:width .5s ease}
 
 /* ── CHAT ── */
 #chat{max-width:560px;margin:0 auto;padding:18px 16px 40px;display:flex;flex-direction:column;gap:10px}
 .row{display:flex;align-items:flex-end;gap:8px;animation:pop .35s ease both}
 .row.me{justify-content:flex-end}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--wine) center/cover no-repeat;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.av{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--deep) center/cover no-repeat;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .av.ghost{visibility:hidden}
 .msg{background:var(--bubble);border:1px solid var(--bubble-b);padding:10px 13px;border-radius:16px 16px 16px 4px;max-width:82%;line-height:1.45;font-size:14.5px}
 .msg b,.msg strong{font-weight:700}
-.me .msg{background:var(--molho);border-color:var(--molho);color:#fff;border-radius:16px 16px 4px 16px;font-weight:600}
+.me .msg{background:var(--blue);border-color:var(--blue);color:#fff;border-radius:16px 16px 4px 16px;font-weight:600}
 .typing{display:inline-flex;gap:4px;padding:13px 15px}
 .typing i{width:6px;height:6px;border-radius:50%;background:var(--ink3);animation:blink 1.2s infinite}
 .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
@@ -62,28 +63,28 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,238,228,.92);backdro
 /* ── INPUT ZONE ── */
 #zone{max-width:560px;margin:0 auto;padding:0 16px 28px}
 .opts{display:flex;flex-direction:column;align-items:flex-end;gap:8px;animation:pop .35s ease both}
-.opt{background:#fff;border:1.5px solid var(--molho);color:var(--molho2);padding:10px 16px;border-radius:22px;cursor:pointer;font-weight:600;font-size:14px;text-align:right;max-width:88%;transition:all .15s}
-.opt:hover{background:var(--molho-soft)}
-.opt.sel{background:var(--molho);color:#fff}
+.opt{background:#fff;border:1.5px solid var(--blue);color:var(--blue-d);padding:10px 16px;border-radius:22px;cursor:pointer;font-weight:600;font-size:14px;text-align:right;max-width:88%;transition:all .15s}
+.opt:hover{background:var(--blue-soft)}
+.opt.sel{background:var(--blue);color:#fff}
 .opt:active{transform:scale(.98)}
-.go{background:var(--wine);color:#fff;border:none;padding:11px 20px;border-radius:22px;font-weight:700;cursor:pointer;margin-top:4px}
+.go{background:var(--deep);color:#fff;border:none;padding:11px 20px;border-radius:22px;font-weight:700;cursor:pointer;margin-top:4px}
 .go:disabled{opacity:.35;cursor:default}
 .hint{font-size:12px;color:var(--ink3);text-align:right}
 .inrow{display:flex;gap:8px;animation:pop .35s ease both}
 .inrow input{flex:1;min-width:0;background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:12px 16px;font-size:16px;color:var(--ink);outline:none}
-.inrow input:focus{border-color:var(--molho)}
-.send{width:46px;height:46px;border-radius:50%;border:none;background:var(--molho);color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.inrow input:focus{border-color:var(--blue)}
+.send{width:46px;height:46px;border-radius:50%;border:none;background:var(--blue);color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .send svg{width:20px;height:20px}
-.err{font-size:12px;color:var(--molho2);margin:6px 0 0 16px}
+.err{font-size:12px;color:var(--blue-d);margin:6px 0 0 16px}
 
 /* ── CARDS ── */
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;max-width:82%;box-shadow:0 2px 10px rgba(42,7,7,.06)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;max-width:82%;box-shadow:0 2px 10px rgba(27,35,128,.06)}
 .ig{display:flex;align-items:center;gap:10px}
 .ig .pic{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF) ;padding:2px;flex-shrink:0}
-.ig .pic div{width:100%;height:100%;border-radius:50%;border:2px solid #fff;background:var(--wine) center/cover no-repeat;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.ig .pic div{width:100%;height:100%;border-radius:50%;border:2px solid #fff;background:var(--deep) center/cover no-repeat;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
 .ig .u{font-weight:700;font-size:14px}.ig .s{font-size:12px;color:var(--ink3)}
 
-.method{background:linear-gradient(160deg,#FBE9DF,#F2DCCB);border:1px solid var(--bubble-b);border-radius:16px;padding:14px;max-width:86%;font-size:13.5px;line-height:1.45}
+.method{background:linear-gradient(160deg,#FCE9EE,#F6DAE2);border:1px solid var(--bubble-b);border-radius:16px;padding:14px;max-width:86%;font-size:13.5px;line-height:1.45}
 .method .p{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
 .method .p .e{font-size:18px;line-height:1}
 .method .p b{display:block;font-size:13.5px}
@@ -91,41 +92,57 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,238,228,.92);backdro
 
 .result{background:var(--bubble);border:1px solid var(--bubble-b);border-radius:16px 16px 16px 4px;padding:14px;max-width:88%;font-size:14px;line-height:1.5}
 .verdict{border-radius:12px;padding:14px;margin:10px 0 12px;color:#fff;text-align:center}
-.verdict.morno{background:linear-gradient(135deg,#4B6C8C,#8BA4B8)}
-.verdict.quase{background:linear-gradient(135deg,#C2701A,#E8B04A)}
-.verdict.molho{background:linear-gradient(135deg,var(--wine2),var(--molho))}
+.verdict.morno{background:linear-gradient(135deg,#7C82B8,#AEB3DC)}
+.verdict.quase{background:linear-gradient(135deg,#C9667F,#E18B9F)}
+.verdict.molho{background:linear-gradient(135deg,var(--blue),var(--pink))}
 .verdict .k{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.85}
 .verdict .v{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:900;line-height:1.1;margin:4px 0}
 .verdict .n{font-size:13px;font-weight:600;opacity:.95}
-.therm{height:10px;border-radius:6px;background:linear-gradient(90deg,#8BA4B8,#E8B04A,var(--molho));position:relative;margin:12px 4px 4px}
-.therm i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--wine);transform:translate(-50%,-50%);transition:left 1.2s cubic-bezier(.2,.8,.2,1)}
+.therm{height:10px;border-radius:6px;background:linear-gradient(90deg,#AEB3DC,var(--pink),var(--blue));position:relative;margin:12px 4px 4px}
+.therm i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--deep);transform:translate(-50%,-50%);transition:left 1.2s cubic-bezier(.2,.8,.2,1)}
 .tl{display:flex;justify-content:space-between;font-size:10px;color:var(--ink3);font-weight:600;padding:0 2px}
 .pill{margin-top:12px}
 .pill .h{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13.5px}
-.pill .sc{font-size:11px;font-weight:700;color:var(--molho2);background:var(--molho-soft);padding:2px 8px;border-radius:10px}
+.pill .sc{font-size:11px;font-weight:700;color:var(--blue-d);background:var(--blue-soft);padding:2px 8px;border-radius:10px}
 .pill .t{height:5px;background:rgba(0,0,0,.08);border-radius:3px;margin:6px 0}
-.pill .t i{display:block;height:100%;border-radius:3px;background:var(--molho);width:0;transition:width 1s ease}
+.pill .t i{display:block;height:100%;border-radius:3px;background:var(--blue);width:0;transition:width 1s ease}
 .pill p{font-size:13px;color:var(--ink2)}
 .lock{position:relative;margin-top:12px;border:1px dashed var(--ink3);border-radius:12px;padding:10px 12px;overflow:hidden}
 .lock .blur{filter:blur(4.5px);user-select:none;pointer-events:none}
-.lock .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(246,238,228,.35)}
-.lock .ov span{background:var(--wine);color:#fff;font-size:12px;font-weight:700;padding:7px 12px;border-radius:18px}
+.lock .ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(253,244,246,.35)}
+.lock .ov span{background:var(--deep);color:#fff;font-size:12px;font-weight:700;padding:7px 12px;border-radius:18px}
 
-.offer{background:radial-gradient(120% 90% at 0% 0%,#6B1414 0%,var(--wine) 55%,#160303 100%);color:#fff;border-radius:18px;padding:18px;max-width:88%;box-shadow:0 10px 30px rgba(42,7,7,.25)}
-.tag{display:inline-block;background:var(--gold);color:var(--wine);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:20px}
-.offer .k{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#E9B9A8;margin-top:12px}
+.offer{background:radial-gradient(120% 90% at 0% 0%,var(--blue2) 0%,var(--blue) 55%,var(--deep) 100%);color:#fff;border-radius:18px;padding:18px;max-width:88%;box-shadow:0 10px 30px rgba(27,35,128,.25)}
+.tag{display:inline-block;background:var(--pink);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:20px}
+.offer .k{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#F6C3CF;margin-top:12px}
 .offer h3{font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:900;line-height:1;margin:4px 0 8px}
-.offer h3 em{color:var(--gold)}
-.offer p{font-size:13px;color:#F2D9CF;line-height:1.45}
+.offer h3 em{color:var(--pink)}
+.offer p{font-size:13px;color:#E4E7FB;line-height:1.45}
 .offer ul{list-style:none;margin:12px 0;display:flex;flex-direction:column;gap:7px}
 .offer li{background:#fff;color:var(--ink);border-radius:10px;padding:9px 11px;font-size:12.5px;font-weight:600;display:flex;gap:9px;align-items:flex-start;line-height:1.35}
-.offer li b{background:var(--molho);color:#fff;border-radius:5px;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px}
+.offer li b{background:var(--blue);color:#fff;border-radius:5px;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px}
 
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--ok);color:#fff;text-decoration:none;font-weight:800;font-size:15px;padding:15px 16px;border-radius:14px;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(31,168,85,.35);animation:pulse 2s infinite}
 .wa-btn svg{width:22px;height:22px;flex-shrink:0}
 @keyframes pulse{0%,100%{box-shadow:0 6px 18px rgba(31,168,85,.35)}50%{box-shadow:0 6px 28px rgba(31,168,85,.6)}}
 .cta-wrap{max-width:560px;margin:4px auto 0;padding:0 16px 32px;animation:pop .35s ease both}
 .cta-note{font-size:12px;color:var(--ink3);text-align:center;margin-top:8px}
+
+/* ── FICHA (análise completa) ── */
+.ficha{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+.ficha .result{max-width:100%;border-radius:16px;background:#fff;border-color:var(--line)}
+.ficha h2{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:900;color:var(--deep);line-height:1.15}
+.ficha .sub{font-size:13px;color:var(--ink2);margin-top:2px}
+.ficha h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin:18px 0 6px}
+.todo{margin:8px 0 0 0;padding-left:18px;font-size:13px;color:var(--ink)}
+.todo li{margin-top:4px}
+.ans{width:100%;border-collapse:collapse;font-size:13px}
+.ans td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.ans td:first-child{color:var(--ink3);width:42%;padding-right:10px}
+.btns{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.btn2{display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:var(--blue);border:1.5px solid var(--blue);text-decoration:none;font-weight:700;font-size:14px;padding:12px;border-radius:12px;cursor:pointer}
+.btn2 svg{width:18px;height:18px}
+.ficha .wa-btn{animation:none}
 
 @media (max-width:420px){
   .msg,.card,.result,.offer,.method{max-width:90%}
@@ -144,6 +161,15 @@ header{position:sticky;top:0;z-index:20;background:rgba(246,238,228,.92);backdro
   </div>
   <div class="bar"><i id="bar"></i></div>
 </header>
+
+<!-- Netlify Forms: registra cada lead (Netlify → Forms → "diagnostico") -->
+<form name="diagnostico" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="nome"><input name="whatsapp"><input name="instagram"><input name="nicho">
+  <input name="seguidores"><input name="frequencia"><input name="stories"><input name="conteudos"><input name="clareza">
+  <input name="caminho"><input name="vende_perfil"><input name="faturamento"><input name="dificuldade"><input name="interesse">
+  <input name="resultado"><input name="nota"><input name="gargalo"><input name="nota_personalidade"><input name="nota_qualificacao">
+  <input name="nota_comercial"><input name="link_analise"><textarea name="roteiro_vendedora"></textarea>
+</form>
 
 <main id="chat" aria-live="polite"></main>
 <div id="zone"></div>
@@ -179,6 +205,7 @@ const CONFIG = {
 //  ESTADO
 // ═══════════════════════════════════════════════════════════════
 const A = {};           // respostas
+let T = {};             // tipos de conteúdo marcados
 const chat = document.getElementById('chat');
 const zone = document.getElementById('zone');
 const TOTAL = 13;
@@ -283,6 +310,66 @@ const maskPhone = v => {
 // ═══════════════════════════════════════════════════════════════
 //  FLUXO
 // ═══════════════════════════════════════════════════════════════
+// Opções de cada pergunta (a ordem importa: o link da análise guarda o índice)
+const Q = {
+  ni: [
+    { label: 'Social media / Marketing' },
+    { label: 'Saúde, nutrição ou estética' },
+    { label: 'Psicologia / Terapia' },
+    { label: 'Consultoria / Mentoria' },
+    { label: 'Moda, beleza ou imagem' },
+    { label: 'Produto físico / Loja' },
+    { label: 'Outro serviço' },
+  ],
+  se: [
+    { label: 'Menos de 1 mil' }, { label: '1 mil a 5 mil' }, { label: '5 mil a 20 mil' },
+    { label: '20 mil a 100 mil' }, { label: 'Mais de 100 mil' },
+  ],
+  fr: [
+    { label: 'Todo dia', v: 3 }, { label: '3 a 5x por semana', v: 2 },
+    { label: '1 a 2x por semana', v: 1 }, { label: 'Quando dá… 🫠', v: 0 },
+  ],
+  st: [
+    { label: 'Todo dia, falando pra câmera', v: 3 },
+    { label: 'Alguns dias, mais foto e repost', v: 1.5 },
+    { label: 'Quase nunca apareço 🙈', v: 0 },
+  ],
+  tp: [
+    { label: 'Dicas e conteúdo de valor', k: 'valor' },
+    { label: 'Bastidores e rotina', k: 'bast' },
+    { label: 'Minha opinião / vida real', k: 'opin' },
+    { label: 'Resultados de clientes e depoimentos', k: 'cases' },
+    { label: 'Chamada pra comprar / falar comigo', k: 'cta' },
+    { label: 'Trends e memes', k: 'trend' },
+  ],
+  cl: [
+    { label: 'Sim, fica bem claro', v: 3 },
+    { label: 'Mais ou menos…', v: 1.5 },
+    { label: 'Acho que não 😬', v: 0 },
+  ],
+  ca: [
+    { label: 'Tem link/WhatsApp na bio e eu chamo nos stories', v: 3 },
+    { label: 'Tem link, mas quase nunca falo da oferta', v: 1.5 },
+    { label: 'Ela precisa me chamar no direct e perguntar', v: 0.5 },
+    { label: 'Nem sei te dizer', v: 0 },
+  ],
+  ve: [
+    { label: 'Sim, o perfil é minha principal fonte', v: 3 },
+    { label: 'Às vezes sai uma venda', v: 2 },
+    { label: 'Vendo mais por indicação', v: 1 },
+    { label: 'Ainda não vendo nada por lá', v: 0 },
+  ],
+  fa: [
+    { label: 'Ainda não faturo' }, { label: 'Até R$3 mil' }, { label: 'R$3 mil a R$10 mil' },
+    { label: 'R$10 mil a R$30 mil' }, { label: 'Mais de R$30 mil' },
+  ],
+  de: [
+    { label: 'Não sei o que postar' }, { label: 'Falta de constância' },
+    { label: 'Tenho alcance, mas ninguém compra' }, { label: 'Vergonha de aparecer e vender' },
+    { label: 'Não tenho tempo pra criar' },
+  ],
+};
+
 async function run(){
   progress(1);
   await say('Oi, Diva! 💋 Deixa eu te contar uma coisa: tem perfil que posta todo dia e continua <b>morno</b> — ninguém compra. E tem perfil que posta menos e tá <b>com molho</b>: gera desejo, conversa e venda.');
@@ -311,100 +398,54 @@ async function run(){
 
   progress(4);
   await say(`Em qual nicho o <b>${esc(A.instagram)}</b> atua?`);
-  A.nicho = (await askOptions([
-    { label: 'Social media / Marketing' },
-    { label: 'Saúde, nutrição ou estética' },
-    { label: 'Psicologia / Terapia' },
-    { label: 'Consultoria / Mentoria' },
-    { label: 'Moda, beleza ou imagem' },
-    { label: 'Produto físico / Loja' },
-    { label: 'Outro serviço' },
-  ])).label;
+  A.nicho = (await askOptions(Q.ni)).label;
   me(A.nicho);
 
   progress(5);
   await say('Quantos seguidores tu tem hoje, mais ou menos?');
-  A.seguidores = (await askOptions([
-    { label: 'Menos de 1 mil' }, { label: '1 mil a 5 mil' }, { label: '5 mil a 20 mil' },
-    { label: '20 mil a 100 mil' }, { label: 'Mais de 100 mil' },
-  ])).label;
+  A.seguidores = (await askOptions(Q.se)).label;
   me(A.seguidores);
 
   progress(6);
   await say('Sendo bem sincera comigo (fica entre nós 🤫): com que frequência tu posta no feed?');
-  const freq = await askOptions([
-    { label: 'Todo dia', v: 3 }, { label: '3 a 5x por semana', v: 2 },
-    { label: '1 a 2x por semana', v: 1 }, { label: 'Quando dá… 🫠', v: 0 },
-  ]);
+  const freq = await askOptions(Q.fr);
   A.frequencia = freq.label; me(freq.label);
 
   progress(7);
   await say('E nos <b>stories</b>, como tu aparece?');
-  const stories = await askOptions([
-    { label: 'Todo dia, falando pra câmera', v: 3 },
-    { label: 'Alguns dias, mais foto e repost', v: 1.5 },
-    { label: 'Quase nunca apareço 🙈', v: 0 },
-  ]);
+  const stories = await askOptions(Q.st);
   A.stories = stories.label; me(stories.label);
 
   progress(8);
   await say('Que tipo de conteúdo tu mais posta hoje?');
-  const tipos = await askMulti([
-    { label: 'Dicas e conteúdo de valor', k: 'valor' },
-    { label: 'Bastidores e rotina', k: 'bast' },
-    { label: 'Minha opinião / vida real', k: 'opin' },
-    { label: 'Resultados de clientes e depoimentos', k: 'cases' },
-    { label: 'Chamada pra comprar / falar comigo', k: 'cta' },
-    { label: 'Trends e memes', k: 'trend' },
-  ]);
+  const tipos = await askMulti(Q.tp);
   A.conteudos = tipos.map(t => t.label).join(', ');
-  const T = Object.fromEntries(tipos.map(t => [t.k, 1]));
+  T = Object.fromEntries(tipos.map(t => [t.k, 1]));
   me(A.conteudos);
 
   progress(9);
   await say('Imagina: uma pessoa nova cai no teu perfil. Em <b>3 segundos</b> ela entende o que tu vende e pra quem?');
-  const clareza = await askOptions([
-    { label: 'Sim, fica bem claro', v: 3 },
-    { label: 'Mais ou menos…', v: 1.5 },
-    { label: 'Acho que não 😬', v: 0 },
-  ]);
+  const clareza = await askOptions(Q.cl);
   A.clareza = clareza.label; me(clareza.label);
 
   progress(10);
   await say('E hoje, <b>como a cliente compra</b> de ti?');
-  const caminho = await askOptions([
-    { label: 'Tem link/WhatsApp na bio e eu chamo nos stories', v: 3 },
-    { label: 'Tem link, mas quase nunca falo da oferta', v: 1.5 },
-    { label: 'Ela precisa me chamar no direct e perguntar', v: 0.5 },
-    { label: 'Nem sei te dizer', v: 0 },
-  ]);
+  const caminho = await askOptions(Q.ca);
   A.caminho = caminho.label; me(caminho.label);
 
   progress(11);
   await say('Tu já <b>vende pelo teu perfil</b>, ou tuas clientes chegam de outro jeito?');
-  const vende = await askOptions([
-    { label: 'Sim, o perfil é minha principal fonte', v: 3 },
-    { label: 'Às vezes sai uma venda', v: 2 },
-    { label: 'Vendo mais por indicação', v: 1 },
-    { label: 'Ainda não vendo nada por lá', v: 0 },
-  ]);
+  const vende = await askOptions(Q.ve);
   A.vendePerfil = vende.label; me(vende.label);
 
   progress(12);
   await say('Quase lá! Qual a média de <b>faturamento mensal</b> do teu negócio?');
-  A.faturamento = (await askOptions([
-    { label: 'Ainda não faturo' }, { label: 'Até R$3 mil' }, { label: 'R$3 mil a R$10 mil' },
-    { label: 'R$10 mil a R$30 mil' }, { label: 'Mais de R$30 mil' },
-  ])).label;
+  A.faturamento = (await askOptions(Q.fa)).label;
   me(A.faturamento);
 
   progress(13);
   await say('Última: qual o <b>maior desafio</b> do teu perfil hoje?');
-  A.desafio = (await askOptions([
-    { label: 'Não sei o que postar' }, { label: 'Falta de constância' },
-    { label: 'Tenho alcance, mas ninguém compra' }, { label: 'Vergonha de aparecer e vender' },
-    { label: 'Não tenho tempo pra criar' },
-  ])).label;
+  A.desafio = (await askOptions(Q.de)).label;
   me(A.desafio);
 
   // ── SCORE ──
@@ -428,6 +469,8 @@ async function run(){
 
   A.resultado = verdict(total).title;
   A.gargalo = lowest(S).name;
+  A.link = fichaUrl();
+  A.roteiro = roteiro(lowest(S).key);
   sendLead('diagnostico_concluido');
 
   await showResult(S, total, T);
@@ -537,6 +580,8 @@ function waLink(){
 *Maior desafio:* ${A.desafio}
 *Faturamento:* ${A.faturamento}
 
+🔗 *Minha análise:* ${A.link}
+
 Quero receber minha análise completa e saber mais sobre a ${CONFIG.oferta.nome}! 💋`;
   return `https://wa.me/${CONFIG.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
 }
@@ -569,6 +614,124 @@ async function showOffer(){
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  ANÁLISE COMPLETA (link que vai no WhatsApp pra vendedora)
+// ═══════════════════════════════════════════════════════════════
+const ACOES = {
+  personalidade: [
+    'Aparecer nos stories todo dia falando pra câmera — 3 stories já bastam',
+    '1 post por semana com a tua opinião sobre algo do teu nicho (não só dica)',
+    'Mostrar bastidor e vida real com intenção: o que tu faz, como tu pensa',
+  ],
+  qualificacao: [
+    'Bio com promessa clara: pra quem tu é + o que tu entrega + link pro WhatsApp',
+    '3 posts fixados: quem eu sou · como funciona meu serviço · resultado de cliente',
+    'Toda semana, 1 resultado de cliente no feed ou nos stories',
+  ],
+  comercial: [
+    'Link do WhatsApp na bio e chamada pra ele em pelo menos 1 story por dia',
+    'Falar da tua oferta toda semana, sem vergonha: o que é, pra quem, como entra',
+    'Terminar posts de resultado com um convite direto pra conversar',
+  ],
+};
+
+const ROTEIRO = {
+  comercial: 'O gargalo é COMERCIAL: ela tem conteúdo, mas não tem caminho até a venda. Pergunte: "quantas pessoas te chamaram essa semana perguntando preço?". Mostre que o problema não é falta de post, é falta de chamada pra venda — e apresente a LucraDiva como o lugar onde ela monta esse caminho com método e com outras mulheres fazendo junto.',
+  qualificacao: 'O gargalo é QUALIFICAÇÃO: quem chega no perfil não entende o que ela vende. Pergunte: "se eu entrasse no teu perfil hoje sem te conhecer, eu saberia o que tu vende e pra quem?". Mostre que ela atrai gente, mas não a cliente certa — e apresente a LucraDiva como o lugar pra ajustar posicionamento, bio e fixados com direcionamento.',
+  personalidade: 'O gargalo é PERSONALIDADE: o conteúdo informa, mas não conecta. Pergunte: "o que te impede hoje de aparecer mais nos stories?". Acolha a trava (vergonha, tempo) e apresente a LucraDiva como o lugar onde ela ganha ritmo e coragem pra aparecer, sem fazer isso sozinha.',
+};
+
+function roteiro(key){
+  return `${ROTEIRO[key]} Desafio que ela marcou: "${A.desafio}". Faturamento: ${A.faturamento}. Comece mandando a análise completa (botão "Copiar análise" no link) e só depois fale da LucraDiva.`;
+}
+
+const b64e = o => btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const b64d = s => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))));
+// chave curta no link → campo em A (perguntas de opção viram índice pra encurtar o link)
+const KEYS = { ni: 'nicho', se: 'seguidores', fr: 'frequencia', st: 'stories', cl: 'clareza',
+  ca: 'caminho', ve: 'vendePerfil', fa: 'faturamento', de: 'desafio' };
+
+function fichaUrl(){
+  const idx = (k, label) => Q[k].findIndex(o => o.label === label);
+  const d = { n: A.nome, i: A.instagram.slice(1),
+    o: Object.entries(KEYS).map(([k, v]) => idx(k, A[v])),
+    t: Q.tp.map((o, i) => T[o.k] ? i : -1).filter(i => i >= 0),
+    s: [A.scores.personalidade, A.scores.qualificacao, A.scores.comercial] };
+  return location.origin + location.pathname.replace(/index\.html$/, '') + '?d=' + b64e(d);
+}
+
+const plain = html => { const el = document.createElement('div'); el.innerHTML = html; return el.textContent; };
+
+function renderFicha(code){
+  let d;
+  try { d = b64d(code); } catch (e) { chat.innerHTML = '<p style="padding:20px">Link inválido 😕</p>'; return; }
+  A.nome = d.n; A.instagram = '@' + d.i;
+  Object.entries(KEYS).forEach(([k, v], j) => A[v] = Q[k][d.o[j]]?.label ?? '—');
+  const tipos = d.t.map(i => Q.tp[i]).filter(Boolean);
+  T = Object.fromEntries(tipos.map(o => [o.k, 1]));
+  A.conteudos = tipos.map(o => o.label).join(', ');
+  const S = { personalidade: d.s[0], qualificacao: d.s[1], comercial: d.s[2] };
+  const total = Math.round((S.personalidade + S.qualificacao + S.comercial) / 3 * 10) / 10;
+  const v = verdict(total), low = lowest(S), n = esc(cap(first(A.nome)));
+  const f = x => String(x).replace('.', ',');
+  const order = Object.keys(S).sort((a, b) => S[a] - S[b]);
+  document.title = `Análise de ${A.instagram} · Diagnóstico de Perfil`;
+  document.querySelector('.prog').textContent = 'Análise completa';
+  document.getElementById('bar').style.width = '100%';
+
+  const answers = [
+    ['Nome', A.nome], ['Instagram', A.instagram], ['Nicho', A.nicho],
+    ['Seguidores', A.seguidores], ['Frequência no feed', A.frequencia], ['Stories', A.stories],
+    ['Conteúdos que posta', A.conteudos], ['Perfil deixa claro o que vende?', A.clareza],
+    ['Como a cliente compra', A.caminho], ['Vende pelo perfil?', A.vendePerfil],
+    ['Faturamento', A.faturamento], ['Maior desafio', A.desafio],
+  ];
+
+  const main = document.createElement('main');
+  main.className = 'ficha';
+  main.innerHTML = `<div class="result">
+    <h2>Análise completa de ${esc(A.instagram)}</h2>
+    <div class="sub">${esc(A.nome)} · ${esc(A.nicho)}</div>
+    <div class="verdict ${v.cls}">
+      <div class="k">Resultado do diagnóstico</div>
+      <div class="v">${v.title}</div>
+      <div class="n">Nota ${f(total)}/10 · ${v.sub}</div>
+    </div>
+    <div class="therm"><i style="left:${((total - 2) / 7.5 * 100).toFixed(1)}%"></i></div>
+    <div class="tl"><span>🥶 Morno</span><span>🌡️ Quase</span><span>🌶️ Com molho</span></div>
+    <p style="margin-top:14px">${n}, ${bottleneckLine[low.key]}</p>
+    ${order.map(k => `<div class="pill">
+      <div class="h"><span>${PILLARS[k].e} ${PILLARS[k].name}${k === low.key ? ' · gargalo' : ''}</span><span class="sc">${f(S[k])}/10</span></div>
+      <div class="t"><i style="width:${S[k] * 10}%"></i></div>
+      <p>${pillarText(k, S[k], T)}</p>
+      <ul class="todo">${ACOES[k].map(a => `<li>${esc(a)}</li>`).join('')}</ul>
+    </div>`).join('')}
+    <h4>Respostas</h4>
+    <table class="ans">${answers.map(([q, a]) => `<tr><td>${q}</td><td>${esc(a)}</td></tr>`).join('')}</table>
+    <div class="btns">
+      <button class="btn2" id="copy">📋 Copiar análise pra mandar no WhatsApp</button>
+    </div>
+  </div>`;
+  chat.replaceWith(main);
+  zone.remove();
+
+  const txt = `*Diagnóstico de Perfil — ${A.instagram}* 🌶️
+
+*Resultado:* ${v.title} (${f(total)}/10)
+${plain(bottleneckLine[low.key]).replace(/^./, c => c.toUpperCase())}
+` + order.map(k => `
+${PILLARS[k].e} *${PILLARS[k].name} — ${f(S[k])}/10*
+${plain(pillarText(k, S[k], T))}
+*O que fazer:*
+${ACOES[k].map(a => '• ' + a).join('\n')}`).join('\n');
+
+  document.getElementById('copy').onclick = async e => {
+    try { await navigator.clipboard.writeText(txt); }
+    catch (err) { const t = document.createElement('textarea'); t.value = txt; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    e.target.textContent = '✅ Copiado! É só colar no WhatsApp';
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  EXTRAS
 // ═══════════════════════════════════════════════════════════════
 async function igCard(handle){
@@ -585,7 +748,6 @@ async function igCard(handle){
 
 function sendLead(evento){
   if (window.fbq && evento === 'diagnostico_concluido') fbq('track', 'Lead');
-  if (!CONFIG.webhookUrl) return;
   const s = A.scores || {};
   const payload = {
     evento, data: new Date().toISOString(),
@@ -595,16 +757,27 @@ function sendLead(evento){
     faturamento: A.faturamento, dificuldade: A.desafio, interesse: CONFIG.oferta.nome,
     resultado: A.resultado, nota: A.score, gargalo: A.gargalo,
     nota_personalidade: s.personalidade, nota_qualificacao: s.qualificacao, nota_comercial: s.comercial,
-    origem: location.href,
+    link_analise: A.link, roteiro_vendedora: A.roteiro,
   };
+  const form = () => new URLSearchParams(Object.entries(payload).map(([k, v]) => [k, v ?? '']));
+
+  // Netlify Forms: uma entrada por lead, quando ela termina o diagnóstico
+  if (evento === 'diagnostico_concluido' && location.protocol.startsWith('http')) {
+    const body = form(); body.delete('evento'); body.set('form-name', 'diagnostico');
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body }).catch(() => {});
+  }
+
+  // Webhook opcional (planilha Google, Make, Zapier...)
+  if (!CONFIG.webhookUrl) return;
   try {
-    const body = new URLSearchParams(Object.entries(payload).map(([k, v]) => [k, v ?? '']));
+    const body = form();
     if (!(navigator.sendBeacon && navigator.sendBeacon(CONFIG.webhookUrl, body)))
       fetch(CONFIG.webhookUrl, { method: 'POST', mode: 'no-cors', body, keepalive: true });
   } catch (e) {}
 }
 
-run();
+const D = new URLSearchParams(location.search).get('d');
+if (D) renderFicha(D); else run();
 </script>
 </body>
 </html>
