@@ -102,6 +102,39 @@ form.inp button svg{width:18px;height:18px}
 .fix{margin-top:9px;background:var(--cream);border-left:3px solid var(--molho);border-radius:0 10px 10px 0;padding:9px 11px;font-size:13px;color:var(--ink)}
 .fix b{color:var(--molho)}
 
+/* ── INSTAGRAM ── */
+.scan{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
+.scan h5{font-size:15px;margin-bottom:8px}
+.st{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:14px;color:var(--ink-3)}
+.st i{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-style:normal;font-size:11px}
+.st.on{color:var(--ink);font-weight:700}
+.st.on i{border:2.5px solid var(--cream-3);border-top-color:var(--molho);animation:spin .8s linear infinite}
+.st.ok{color:var(--ink-2)}
+.st.ok i{background:#DDF3E4;color:#1F9A4A}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-bar{height:5px;background:var(--cream-2);border-radius:99px;margin-top:10px;overflow:hidden}
+.scan-bar b{display:block;height:100%;width:4%;background:linear-gradient(90deg,var(--molho-2),var(--molho));border-radius:99px;transition:width .8s ease}
+.ig{background:#fff;border-radius:16px;padding:14px;display:flex;gap:14px;align-items:center;box-shadow:0 3px 14px rgba(29,38,128,.1);border:1px solid var(--line)}
+.ig-av{width:66px;height:66px;border-radius:50%;flex-shrink:0;border:3px solid var(--molho-2);background:var(--cream-2) center/cover;display:grid;place-items:center;font-weight:800;color:var(--molho);font-size:22px}
+.ig-n{font-weight:700;font-size:15px;line-height:1.25}
+.ig-u{color:var(--molho);font-weight:700;font-size:13.5px}
+.ig-s{font-size:13px;color:var(--ink-3);margin-top:4px}
+.ig-s b{color:var(--ink);font-size:14.5px;margin-right:2px}
+.ig-s span{margin-right:12px}
+.facts{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
+.facts h5{font-size:15px;margin-bottom:4px}
+.fx{display:flex;gap:10px;padding:9px 0;border-top:1px dashed var(--line);font-size:13.5px}
+.fx:first-of-type{border-top:none}
+.fx .e{font-size:18px;line-height:1.2}
+.fx b{display:block;font-size:14px}
+.fx small{color:var(--ink-2);font-size:13px}
+.bioq{font-style:italic;color:var(--ink-2);background:var(--cream);border-radius:8px;padding:6px 9px;margin-top:5px;font-size:12.5px;white-space:pre-line}
+.chip.on{background:var(--molho);color:#fff}
+.chip.go{background:var(--wine);border-color:var(--wine);color:#fff;font-weight:700}
+.chip.go:disabled{opacity:.35;cursor:not-allowed}
+.hint{font-size:12px;color:var(--ink-3);text-align:right;margin-bottom:8px}
+.lgpd{font-size:11.5px;color:var(--ink-3);text-align:center;margin-top:8px}
+
 /* ── CLOSING ── */
 .end{background:radial-gradient(130% 80% at 0% 0%,#4452D6,var(--molho) 55%,var(--wine));color:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:0 10px 30px rgba(29,38,128,.35);position:relative;overflow:hidden}
 .end::after{content:"🌶️";position:absolute;right:-8px;top:-10px;font-size:84px;opacity:.12;transform:rotate(18deg)}
@@ -134,7 +167,7 @@ form.inp button svg{width:18px;height:18px}
     <div class="brand">Manu <span>Flores</span></div>
     <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
     <div class="hd-sp"></div>
-    <div class="prog" id="prog">0 de 11</div>
+    <div class="prog" id="prog">0 de 14</div>
   </div>
   <div class="bar"><i id="bar"></i></div>
 </header>
@@ -188,13 +221,13 @@ async function bot(html, {wide = false, delay} = {}){
 const me = text => addRow('me', esc(text));
 const clearDock = () => { dock.innerHTML = ''; };
 
-function askText({placeholder, validate}){
+function askText({placeholder, validate, nota}){
   return new Promise(resolve => {
     dock.innerHTML = `
       <form class="inp" novalidate>
         <input type="text" placeholder="${placeholder}" autocomplete="given-name" aria-label="${placeholder}">
         <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      </form><div class="err"></div>`;
+      </form><div class="err"></div>${nota ? `<div class="lgpd">${nota}</div>` : ''}`;
     const f = dock.querySelector('form'), i = f.querySelector('input'), e = dock.querySelector('.err');
     setTimeout(() => i.focus({preventScroll: true}), 50);
     f.addEventListener('submit', ev => {
@@ -207,19 +240,118 @@ function askText({placeholder, validate}){
   });
 }
 
-function askChoice(options){
+function askChoice(options, {multi = false, hint} = {}){
   return new Promise(resolve => {
-    dock.innerHTML = `<div class="chips"></div>`;
+    const picked = new Set();
+    dock.innerHTML = (hint ? `<div class="hint">${hint}</div>` : '') + `<div class="chips"></div>`;
     const wrap = dock.querySelector('.chips');
+    let go;
     options.forEach((opt, idx) => {
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'chip'; b.textContent = typeof opt === 'string' ? opt : opt.t;
-      b.onclick = () => { clearDock(); resolve(idx); };
+      b.onclick = () => {
+        if (!multi){ clearDock(); resolve(idx); return; }
+        picked.has(idx) ? picked.delete(idx) : picked.add(idx);
+        b.classList.toggle('on'); go.disabled = picked.size === 0;
+      };
       wrap.appendChild(b);
     });
+    if (multi){
+      go = document.createElement('button');
+      go.type = 'button'; go.className = 'chip go'; go.textContent = 'Pronto ✓'; go.disabled = true;
+      go.onclick = () => { clearDock(); resolve([...picked].sort((a, b) => a - b)); };
+      wrap.appendChild(go);
+    }
     scrollEnd();
   });
 }
+
+/* ═══════════════════════════════════════════════════════════
+   INSTAGRAM (dados públicos via Apify, pela função do Netlify)
+   ═══════════════════════════════════════════════════════════ */
+const FN = '/.netlify/functions/instagram';
+
+async function buscarPerfil(user){
+  try {
+    const r = await fetch(`${FN}?user=${encodeURIComponent(user)}`);
+    const d = await r.json();
+    if (!d.run) return null;
+    const fim = Date.now() + 100000;
+    while (Date.now() < fim){
+      await sleep(3000);
+      const c = await (await fetch(`${FN}?run=${d.run}`)).json();
+      if (c.status === 'DONE') return c.profile;
+      if (c.status !== 'RUNNING') return null;
+    }
+  } catch {}
+  return null;
+}
+
+async function scanAoVivo(user){
+  const passos = ['Abrindo o perfil no Instagram', 'Lendo bio, seguidores e números', 'Olhando os últimos posts', 'Organizando tudo pra você'];
+  const row = addRow('bot', `<div class="scan"><h5>🔎 Analisando o @${esc(user)} ao vivo</h5>
+    ${passos.map(t => `<div class="st"><i></i>${t}</div>`).join('')}<div class="scan-bar"><b></b></div></div>`, true);
+  const sts = row.querySelectorAll('.st'), bar = row.querySelector('.scan-bar b');
+  const marca = i => { sts.forEach((el, j) => { el.className = 'st' + (j < i ? ' ok' : j === i ? ' on' : ''); el.querySelector('i').textContent = j < i ? '✓' : ''; }); bar.style.width = Math.max(4, i / passos.length * 100) + '%'; };
+  marca(0);
+  let pronto = false, passo = 0;
+  const busca = buscarPerfil(user).finally(() => { pronto = true; });
+  while (!pronto){
+    await sleep(3500);
+    if (passo < passos.length - 1){ passo++; marca(passo); }
+  }
+  const perfil = await busca;
+  if (perfil){ for (let i = passo + 1; i <= passos.length; i++){ marca(i); await sleep(350); } }
+  row.remove();
+  return perfil;
+}
+
+const fmt = n => n == null ? '?' : n >= 1e6 ? (Math.round(n / 1e5) / 10).toString().replace('.', ',') + ' mi'
+  : n >= 1e3 ? (Math.round(n / 100) / 10).toString().replace('.', ',') + ' mil' : String(n);
+
+function igCard(p){
+  const ini = esc((p.nome || p.username).charAt(0).toUpperCase());
+  return `<div class="ig">
+    <div class="ig-av" ${p.foto ? `style="background-image:url('${p.foto}')"` : ''}>${p.foto ? '' : ini}</div>
+    <div><div class="ig-n">${esc(p.nome || p.username)}</div>
+      <div class="ig-u">@${esc(p.username)}</div>
+      <div class="ig-s"><span><b>${fmt(p.seguidores)}</b> seguidores</span><span><b>${fmt(p.totalPosts)}</b> posts</span></div></div></div>`;
+}
+
+/* Números reais do perfil + leitura no método */
+function fatosDoPerfil(p){
+  const posts = p.posts || [];
+  const agora = Date.now(), dia = 864e5;
+  const em30 = posts.filter(x => x.data && agora - new Date(x.data) <= 30 * dia).length;
+  const videos = posts.length ? Math.round(posts.filter(x => x.tipo === 'Video').length / posts.length * 100) : null;
+  const comCurtida = posts.filter(x => x.curtidas != null && x.curtidas >= 0);
+  const eng = p.seguidores > 0 && comCurtida.length
+    ? comCurtida.reduce((a, x) => a + x.curtidas + (x.comentarios || 0), 0) / comCurtida.length / p.seguidores * 100 : null;
+  const out = [];
+  out.push({e: '📝', t: p.bio ? 'Sua bio hoje' : 'Sua bio tá vazia',
+    s: p.bio ? `Ela diz o que você entrega <b>na prática</b>? Se a pessoa não entende em 3 segundos, ela rola o feed.<div class="bioq">"${esc(p.bio)}"</div>` : 'Quem entra no seu perfil não descobre o que você faz. Esse é o primeiro ajuste.'});
+  out.push({e: '🔗', t: p.link ? 'Tem link na bio' : 'Sem link na bio',
+    s: p.link ? 'Ótimo, existe um caminho. Garante que ele leva direto pro WhatsApp ou pra sua oferta.' : 'Quem se interessa não tem pra onde ir. Falta o caminho do post até o WhatsApp.'});
+  if (posts.length){
+    out.push({e: '📅', t: `${em30} post${em30 === 1 ? '' : 's'} nos últimos 30 dias`,
+      s: em30 >= 12 ? 'Ritmo bom! O fogo tá aceso.' : em30 >= 4 ? 'Dá pra aumentar o ritmo. Constância faz você ser lembrada.' : 'O fogo tá baixo. Sumir derruba o alcance e a confiança.'});
+    out.push({e: '🎬', t: `${videos}% dos últimos posts são vídeo`,
+      s: videos >= 50 ? 'Bom espaço pra testar gancho e série (parte 1, parte 2…).' : 'Pouco vídeo. É no vídeo que o gancho e a personalidade mais aparecem.'});
+  }
+  if (eng != null){
+    const e = eng.toFixed(1).replace('.', ',');
+    out.push({e: '💬', t: `Engajamento médio de ${e}%`,
+      s: eng >= 3 ? 'Sua audiência tá conversando com você. Isso é comunidade!' : eng >= 1 ? 'Tem gente ali, mas dá pra puxar mais conversa com opinião e problema + solução.' : 'Tá baixo: o conteúdo passa, mas não prende. Molho resolve isso.'});
+  }
+  return `<div class="facts"><h5>📊 O que eu vi no @${esc(p.username)}</h5>
+    ${out.map(f => `<div class="fx"><span class="e">${f.e}</span><div><b>${f.t}</b><small>${f.s}</small></div></div>`).join('')}</div>`;
+}
+
+const QUALI = {
+  desafio: ['Alcance baixo (views travadas)', 'Falta de constância', 'Não sei o que postar', 'Seguidores não engajam', 'Não converto em vendas', 'Estou começando do zero'],
+  fat: ['Ainda não faturo', 'Até R$3.000', 'R$3.000 a R$5.000', 'R$5.000 a R$10.000', 'R$10.000 a R$15.000', 'R$15.000 a R$25.000', 'Acima de R$25.000'],
+  vendePerfil: ['Sim, minha renda vem do perfil', 'Às vezes, mas o forte é indicação', 'Não, meus clientes vêm de outro jeito', 'Ainda não vendo'],
+};
 
 /* ═══════════════════════════════════════════════════════════
    OS 4 INGREDIENTES DO MOLHO (aula "Diagnóstico do perfil morno")
@@ -237,8 +369,6 @@ const PERGUNTAS = [
     {t: 'Sim, em 3 segundos', p: 3}, {t: 'Entende minha área, não o que eu entrego', p: 2}, {t: 'Acho que meu perfil é meio um mistério', p: 1}, {t: 'Nem eu sei explicar direito 🙈', p: 0}]},
   {ing: 'vercrer', q: 'Sua bio diz o que você faz <b>na prática</b>? Tipo: <i>"na prática, eu ressuscito perfis"</i>', ops: [
     {t: 'Sim, fala o resultado que eu entrego', p: 3}, {t: 'Fala minha profissão/formação', p: 2}, {t: 'Tem uma frase bonita/inspiracional', p: 1}, {t: 'Tá vazia ou desatualizada', p: 0}]},
-  {ing: 'vercrer', q: 'No seu feed dá pra <b>ver como você trabalha</b>? (bastidor, processo, antes e depois, resultado de cliente)', ops: [
-    {t: 'Sim, mostro sempre', p: 3}, {t: 'De vez em quando', p: 2}, {t: 'Quase nunca', p: 1}, {t: 'Não, só posto dica/frase', p: 0}]},
 
   {ing: 'resolve', q: 'Seus conteúdos costumam trazer <b>um problema e uma solução</b>?', ops: [
     {t: 'Quase sempre', p: 3}, {t: 'Às vezes', p: 2}, {t: 'Falo mais de mim, novidades ou frases', p: 1}, {t: 'Nunca pensei nisso', p: 0}]},
@@ -256,8 +386,6 @@ const PERGUNTAS = [
     {t: 'Aparecem direto 😈', p: 3}, {t: 'De vez em quando', p: 2}, {t: 'Guardo pra mim', p: 0.5}, {t: 'Nem sei quais são os meus', p: 0}]},
   {ing: 'personalidade', q: 'Quando rola um assunto polêmico no seu mercado, você…', ops: [
     {t: 'Escolho um lado e falo', p: 3}, {t: 'Falo, mas suavizo bastante', p: 1.5}, {t: 'Fico em cima do muro pra não incomodar', p: 0.5}, {t: 'Evito o assunto', p: 0}]},
-  {ing: 'personalidade', q: 'Olhando seu perfil, dá pra saber <b>do que você gosta, seus valores e seu jeito</b>? Ou só aparece o serviço?', ops: [
-    {t: 'Dá pra me conhecer de verdade', p: 3}, {t: 'Um pouquinho', p: 1.5}, {t: 'Só aparece meu trabalho', p: 0.5}, {t: 'Eu nem apareço', p: 0}]},
 ];
 
 const NICHOS = ['Social media / Marketing', 'Fotografia', 'Nutrição', 'Saúde e estética', 'Psicologia / Terapia', 'Consultoria / Negócios', 'Moda, beleza ou imagem', 'Infoproduto / Mentoria', 'Outro'];
@@ -388,26 +516,60 @@ function animateResult(root){
    FLUXO
    ═══════════════════════════════════════════════════════════ */
 async function run(){
-  const TOTAL = PERGUNTAS.length;
-  chat.innerHTML = ''; S.respostas = {};
+  const TOTAL = PERGUNTAS.length + 5;
+  chat.innerHTML = ''; S.respostas = {}; S.perfil = null;
+  let n = 0;
+  const avanca = () => setProgress(++n, TOTAL);
   setProgress(0, TOTAL);
 
   await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
   await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
-  await bot('São 11 perguntas rapidinhas. Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
+  await bot('Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
   S.nome = await askText({placeholder: 'Seu nome'});
   me(S.nome);
 
-  await bot(`Prazer, <b>${first(S.nome)}</b>! Em qual nicho você atua?`);
-  const ni = await askChoice(NICHOS);
-  S.nicho = NICHOS[ni]; me(S.nicho);
+  await bot(`Prazer, <b>${first(S.nome)}</b>! Agora a parte boa: qual o <b>@</b> do seu Instagram? Vou dar uma olhada nele em tempo real 👀`);
+  while (true){
+    const raw = await askText({placeholder: '@seuperfil',
+      nota: 'Uso só os dados públicos do seu perfil pra fazer o diagnóstico.',
+      validate: v => /^@?[A-Za-z0-9._]{1,30}$/.test(v.replace(/^.*instagram\.com\//, '').replace(/[/?].*$/, '')) ? '' : 'Só o @, sem espaço 😉'});
+    const user = raw.replace(/^.*instagram\.com\//, '').replace(/[/?].*$/, '').replace(/^@/, '').toLowerCase();
+    me('@' + user);
+    const p = await scanAoVivo(user);
+    if (!p){
+      await bot(`Não consegui abrir o <b>@${esc(user)}</b> agora 😕 Pode ser que o perfil seja privado ou o @ tenha um errinho.`);
+      const c = await askChoice(['Digitar de novo', 'Seguir sem o perfil']);
+      me(['Digitar de novo', 'Seguir sem o perfil'][c]);
+      if (c === 0){ await bot('Manda o @ certinho:'); continue; }
+      S.instagram = user; break;
+    }
+    await bot(igCard(p), {wide: true, delay: 500});
+    await bot('Achei! Esse é você?', {delay: 500});
+    const c = await askChoice(['Sou eu ✅', 'Não é esse perfil']);
+    me(['Sou eu ✅', 'Não é esse perfil'][c]);
+    if (c === 0){ S.perfil = p; S.instagram = p.username; break; }
+    await bot('Sem stress! Manda o @ certinho de novo:');
+  }
+  avanca();
+
+  await bot(`Em qual nicho o <b>@${esc(S.instagram)}</b> atua?`);
+  S.nicho = NICHOS[await askChoice(NICHOS)]; me(S.nicho); avanca();
+
+  await bot('Me conta uma coisa: qual é o <b>maior desafio</b> do seu perfil hoje?');
+  S.desafio = QUALI.desafio[await askChoice(QUALI.desafio)]; me(S.desafio); avanca();
+
+  await bot('Qual é a média de <b>faturamento mensal</b> do seu negócio?');
+  S.faturamento = QUALI.fat[await askChoice(QUALI.fat)]; me(S.faturamento); avanca();
+
+  await bot('Você já <b>vende pelo seu perfil</b> hoje, ou seus clientes chegam de outro jeito?');
+  S.vendePerfil = QUALI.vendePerfil[await askChoice(QUALI.vendePerfil)]; me(S.vendePerfil); avanca();
 
   await bot(metodoCard(), {wide: true, delay: 1000});
-  await bot('Vou te perguntar sobre cada um. Bora? 👇', {delay: 700});
+  await bot('Agora vou te perguntar sobre cada ingrediente. Bora? 👇', {delay: 700});
 
   let ingAtual = null;
-  for (let i = 0; i < TOTAL; i++){
+  for (let i = 0; i < PERGUNTAS.length; i++){
     const q = PERGUNTAS[i];
     const label = q.ing !== ingAtual ? `<small class="q">${ING[q.ing].emoji} ${ING[q.ing].nome}</small>` : '';
     ingAtual = q.ing;
@@ -415,7 +577,7 @@ async function run(){
     const idx = await askChoice(q.ops);
     S.respostas[i] = idx;
     me(q.ops[idx].t);
-    setProgress(i + 1, TOTAL);
+    avanca();
   }
 
   await bot('Pronto! Tô provando o seu molho… 🥄', {delay: 800});
@@ -426,6 +588,11 @@ async function run(){
   await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
+  if (S.perfil){
+    await sleep(700);
+    await bot(`E olha o que os números do seu perfil mostram:`, {delay: 800});
+    await bot(fatosDoPerfil(S.perfil), {wide: true, delay: 1000});
+  }
 
   await sleep(900);
   const g = ING[card.gargalo];
@@ -439,7 +606,7 @@ async function run(){
   await bot(r.total >= 8.5
     ? `E agora que o molho tá pronto, é hora de transformar isso em venda todo mês. É o que a gente faz na <b>Comunidade LucraDiva</b> 💸`
     : `E olha, ${first(S.nome)}: foi exatamente pra isso que eu criei a <b>Comunidade LucraDiva</b> 💸`, {delay: 900});
-  const msg = `Oi Manu! Sou a ${S.nome}, trabalho com ${S.nicho}. Fiz o Diagnóstico do Perfil e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}. Quero saber mais sobre a Comunidade LucraDiva! 🌶️`;
+  const msg = `Oi Manu! Sou a ${S.nome} (@${S.instagram}), trabalho com ${S.nicho}. Fiz o Diagnóstico do Perfil e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}.\n\nMeu maior desafio: ${S.desafio}\nFaturamento: ${S.faturamento}\nVendo pelo perfil: ${S.vendePerfil}\n\nQuero saber mais sobre a Comunidade LucraDiva! 🌶️`;
   const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   const endRow = await bot(`<div class="end">
       <span class="k">COMUNIDADE LUCRADIVA</span>
