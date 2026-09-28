@@ -58,7 +58,7 @@ export default async (req) => {
   try {
     if (user){
       if (!/^[a-z0-9._]{1,30}$/.test(user)) return json({error: 'usuário inválido'}, 400);
-      const r = await fetch(`${API}/acts/${ACTOR}/runs?token=${token}&memory=512&timeout=120`, {
+      const r = await fetch(`${API}/acts/${ACTOR}/runs?token=${token}&timeout=120`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({usernames: [user]}),
