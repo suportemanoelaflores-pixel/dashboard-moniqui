@@ -105,6 +105,10 @@ form.inp button svg{width:18px;height:18px}
 .fix{margin-top:9px;background:var(--cream);border-left:3px solid var(--molho);border-radius:0 10px 10px 0;padding:9px 11px;font-size:13px;color:var(--ink)}
 .fix b{color:var(--molho)}
 
+/* ── NOVA MENSAGEM ── */
+#novaMsg{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:40;border:none;background:var(--molho);color:#fff;font:inherit;font-weight:700;font-size:14px;padding:11px 18px;min-height:44px;border-radius:99px;box-shadow:0 6px 18px rgba(29,38,128,.35);transition:all .25s ease;cursor:pointer}
+#novaMsg.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+
 /* ── CLOSING ── */
 .end{background:radial-gradient(130% 80% at 0% 0%,#4452D6,var(--molho) 55%,var(--wine));color:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:0 10px 30px rgba(29,38,128,.35);position:relative;overflow:hidden}
 .end::after{content:"🌶️";position:absolute;right:-8px;top:-10px;font-size:84px;opacity:.12;transform:rotate(18deg)}
@@ -140,6 +144,8 @@ form.inp button svg{width:18px;height:18px}
 
 <main id="chat" aria-live="polite"></main>
 
+<button type="button" id="novaMsg" aria-label="Ver nova mensagem">↓ nova mensagem</button>
+
 <div id="dock"><div class="dock-in" id="dockIn"></div></div>
 
 <script>
@@ -156,9 +162,18 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const first = n => esc((n || '').trim().split(/\s+/)[0] || '');
 const avatarHTML = () => AVATAR_URL ? `<img src="${esc(AVATAR_URL)}" alt="Manu">` : 'M';
-const scrollEnd = () => requestAnimationFrame(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}));
+const pertoDoFim = () => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 220;
+/* Antes do resultado o chat acompanha sempre. Depois do resultado, só acompanha se a pessoa já estiver lá embaixo:
+   se ela estiver lendo o resultado, a tela não é puxada e aparece o botão "nova mensagem". */
+function scrollEnd(force){
+  if (!force && S.devagar && !pertoDoFim()){ novaMsg.classList.add('on'); return; }
+  requestAnimationFrame(() => window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'}));
+}
 
 /* O chat sempre reserva embaixo o espaço exato da área de respostas, pra ela nunca cobrir a pergunta */
+const novaMsg = document.getElementById('novaMsg');
+novaMsg.onclick = () => { novaMsg.classList.remove('on'); scrollEnd(true); };
+window.addEventListener('scroll', () => { if (pertoDoFim()) novaMsg.classList.remove('on'); }, {passive: true});
 const dockEl = document.getElementById('dock');
 let dockAltura = 0;
 new ResizeObserver(() => {
@@ -166,7 +181,7 @@ new ResizeObserver(() => {
   if (h === dockAltura) return;
   dockAltura = h;
   chat.style.paddingBottom = (h + 24) + 'px';
-  scrollEnd();
+  scrollEnd(h > 0);
 }).observe(dockEl);
 
 /* iPhone: quando o teclado abre, a área de respostas sobe junto e o campo não fica escondido */
@@ -415,7 +430,7 @@ function textoCompartilhar(r, nv){
    ═══════════════════════════════════════════════════════════ */
 async function run(){
   const TOTAL = PERGUNTAS.length;
-  chat.innerHTML = ''; S.respostas = {}; S.devagar = false;
+  chat.innerHTML = ''; S.respostas = {}; S.devagar = false; novaMsg.classList.remove('on');
   setProgress(0, TOTAL);
 
   await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
