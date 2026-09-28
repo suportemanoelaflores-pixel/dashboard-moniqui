@@ -61,7 +61,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdro
 .dock-in{max-width:640px;margin:0 auto}
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .chip{font:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink);border:1.5px solid var(--molho);padding:9px 14px;border-radius:99px;cursor:pointer;transition:all .15s;text-align:left}
-.chip:hover{background:var(--molho-soft)}
+@media (hover:hover){.chip:hover{background:var(--molho-soft)}}
 form.inp{display:flex;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 5px 5px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
 form.inp:focus-within{border-color:var(--molho)}
 form.inp input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:16px;background:none;color:var(--ink)}
@@ -114,6 +114,9 @@ form.inp button svg{width:18px;height:18px}
 .btn.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
 
 @media (max-width:420px){
+  .chip{font-size:13.5px;padding:8px 12px}
+  .chips{gap:6px}
+  #dock{padding-top:14px}
   .hd-title{display:none}
   .msg{max-width:86%}
   .res-v{font-size:30px}
@@ -152,6 +155,17 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const first = n => esc((n || '').trim().split(/\s+/)[0] || '');
 const avatarHTML = () => AVATAR_URL ? `<img src="${esc(AVATAR_URL)}" alt="Manu">` : 'M';
 const scrollEnd = () => requestAnimationFrame(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}));
+
+/* O chat sempre reserva embaixo o espaço exato da área de respostas, pra ela nunca cobrir a pergunta */
+const dockEl = document.getElementById('dock');
+let dockAltura = 0;
+new ResizeObserver(() => {
+  const h = dockEl.offsetHeight;
+  if (h === dockAltura) return;
+  dockAltura = h;
+  chat.style.paddingBottom = (h + 24) + 'px';
+  scrollEnd();
+}).observe(dockEl);
 
 function setProgress(n, total){
   document.getElementById('prog').textContent = `${n} de ${total}`;
