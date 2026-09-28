@@ -40,6 +40,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdro
 #chat{max-width:640px;margin:0 auto;padding:22px 16px 160px;display:flex;flex-direction:column;gap:10px}
 .row{display:flex;gap:9px;align-items:flex-end;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}
 .row.me{justify-content:flex-end}
+.row{scroll-margin-top:72px}
 .row.bot .av{visibility:hidden}
 .row.bot.last .av{visibility:visible}
 @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
@@ -126,7 +127,11 @@ form.inp button svg{width:18px;height:18px}
 .fx{display:flex;gap:10px;padding:9px 0;border-top:1px dashed var(--line);font-size:13.5px}
 .fx:first-of-type{border-top:none}
 .fx .e{font-size:18px;line-height:1.2}
-.fx b{display:block;font-size:14px}
+.fx .ft{display:block;font-size:14px;font-weight:700}
+.fx small b{color:var(--ink)}
+.bl{list-style:none;margin:6px 0 0;display:grid;gap:5px}
+.bl li{font-size:13px;color:var(--ink-2);line-height:1.4}
+.bl q{font-style:italic;color:var(--ink)}
 .fx small{color:var(--ink-2);font-size:13px}
 .bioq{font-style:italic;color:var(--ink-2);background:var(--cream);border-radius:8px;padding:6px 9px;margin-top:5px;font-size:12.5px;white-space:pre-line}
 .chip.on{background:var(--molho);color:#fff}
@@ -211,10 +216,12 @@ function addRow(who, inner, wide){
 }
 
 async function bot(html, {wide = false, delay} = {}){
+  if (S.devagar) await sleep(1300);   /* depois do resultado: pausa entre mensagens, como quem lê e pensa */
   const t = addRow('bot', '<span class="typing"><i></i><i></i><i></i></span>');
   t.querySelector('.msg').style.padding = '0';
   const plain = html.replace(/<[^>]+>/g, '');
-  await sleep(delay ?? Math.min(450 + plain.length * 13, 1600));
+  const tempo = S.devagar ? Math.min(1400 + plain.length * 28, 4200) : Math.min(450 + plain.length * 13, 1600);
+  await sleep(S.devagar ? Math.max(delay ?? 0, tempo) : (delay ?? tempo));
   t.remove();
   return addRow('bot', html, wide);
 }
@@ -318,6 +325,32 @@ function igCard(p){
       <div class="ig-s"><span><b>${fmt(p.seguidores)}</b> seguidores</span><span><b>${fmt(p.totalPosts)}</b> posts</span></div></div></div>`;
 }
 
+/* Lê a bio de verdade: procura cada sinal do método e cita o trecho onde achou */
+function lerBio(bio, username){
+  const linhas = bio.split(/\n+/).map(l => l.trim()).filter(Boolean);
+  const acha = re => linhas.find(l => re.test(l));
+  const cita = l => `<q>${esc(l.length > 70 ? l.slice(0, 67) + '…' : l)}</q>`;
+  const itens = [];
+  const promessa = acha(/\b(ajudo|ensino|transformo|levo|te ajudo|pra voc[eê]|para voc[eê]|pra quem|para quem|mulheres|empreendedoras|m[aã]es|profissionais|resultado|na pr[aá]tica|faturar|vender|vendas|clientes|emagrec|m[eé]todo|do zero|sem precisar)\b/i);
+  itens.push(promessa
+    ? `✅ <b>Diz pra quem é ou o que entrega:</b> ${cita(promessa)}`
+    : `⚠️ <b>Não fica claro pra quem é nem o resultado que você entrega na prática.</b> Testa uma linha assim: <i>"Na prática, eu ___ pra ___"</i>.`);
+  const opiniao = acha(/\b(contra|anti|odeio|amo|n[aã]o sou|nada de|chega de|sem mimimi|brutalmente|verdade|real|polêmica|desinfluencer|sem filtro|sincer)/i) || linhas.find(l => /[A-ZÀ-Ú]{4,}.*[A-ZÀ-Ú]{3,}/.test(l));
+  itens.push(opiniao
+    ? `✅ <b>Tem personalidade:</b> ${cita(opiniao)}`
+    : `⚠️ <b>Falta personalidade.</b> Uma opinião ou um jeito seu de falar faz a pessoa lembrar de você.`);
+  const oferta = linhas.find(l => /@[a-z0-9._]+/i.test(l.replace('@' + username, '')) || /\b(mentoria|curso|comunidade|consultoria|servi[cç]o|agenda|ebook|e-book|imers[aã]o|aceleradora|atendimento|ensaio|consulta)\b/i.test(l));
+  itens.push(oferta
+    ? `✅ <b>Mostra uma oferta:</b> ${cita(oferta)}`
+    : `⚠️ <b>Não mostra o que você vende.</b> Quem gostou do perfil não sabe como comprar de você.`);
+  const cta = acha(/(↓|👇|⬇|⤵|link|clique|comece|agende|garanta|entre|chama|whats|fale|vagas|inscri)/i);
+  itens.push(cta
+    ? `✅ <b>Chama pra uma ação:</b> ${cita(cta)}`
+    : `⚠️ <b>Não chama pra nenhuma ação.</b> Termina a bio com um convite: "comece aqui 👇".`);
+  const ok = itens.filter(i => i.startsWith('✅')).length;
+  return {ok, html: `<ul class="bl">${itens.map(i => `<li>${i}</li>`).join('')}</ul>`};
+}
+
 /* Números reais do perfil + leitura no método */
 function fatosDoPerfil(p){
   const posts = p.posts || [];
@@ -328,8 +361,13 @@ function fatosDoPerfil(p){
   const eng = p.seguidores > 0 && comCurtida.length
     ? comCurtida.reduce((a, x) => a + x.curtidas + (x.comentarios || 0), 0) / comCurtida.length / p.seguidores * 100 : null;
   const out = [];
-  out.push({e: '📝', t: p.bio ? 'Sua bio hoje' : 'Sua bio tá vazia',
-    s: p.bio ? `Ela diz o que você entrega <b>na prática</b>? Se a pessoa não entende em 3 segundos, ela rola o feed.<div class="bioq">"${esc(p.bio)}"</div>` : 'Quem entra no seu perfil não descobre o que você faz. Esse é o primeiro ajuste.'});
+  if (p.bio){
+    const b = lerBio(p.bio, p.username);
+    const titulo = b.ok === 4 ? 'Sua bio tá com molho' : b.ok >= 2 ? `Sua bio tem ${b.ok} de 4 ingredientes` : 'Sua bio tá morna';
+    out.push({e: '📝', t: titulo, s: `<div class="bioq">"${esc(p.bio)}"</div>${b.html}`});
+  } else {
+    out.push({e: '📝', t: 'Sua bio tá vazia', s: 'Quem entra no seu perfil não descobre o que você faz. Esse é o primeiro ajuste: <i>"Na prática, eu ___ pra ___"</i>.'});
+  }
   out.push({e: '🔗', t: p.link ? 'Tem link na bio' : 'Sem link na bio',
     s: p.link ? 'Ótimo, existe um caminho. Garante que ele leva direto pro WhatsApp ou pra sua oferta.' : 'Quem se interessa não tem pra onde ir. Falta o caminho do post até o WhatsApp.'});
   if (posts.length){
@@ -344,7 +382,7 @@ function fatosDoPerfil(p){
       s: eng >= 3 ? 'Sua audiência tá conversando com você. Isso é comunidade!' : eng >= 1 ? 'Tem gente ali, mas dá pra puxar mais conversa com opinião e problema + solução.' : 'Tá baixo: o conteúdo passa, mas não prende. Molho resolve isso.'});
   }
   return `<div class="facts"><h5>📊 O que eu vi no @${esc(p.username)}</h5>
-    ${out.map(f => `<div class="fx"><span class="e">${f.e}</span><div><b>${f.t}</b><small>${f.s}</small></div></div>`).join('')}</div>`;
+    ${out.map(f => `<div class="fx"><span class="e">${f.e}</span><div><span class="ft">${f.t}</span><small>${f.s}</small></div></div>`).join('')}</div>`;
 }
 
 const QUALI = {
@@ -517,7 +555,7 @@ function animateResult(root){
    ═══════════════════════════════════════════════════════════ */
 async function run(){
   const TOTAL = PERGUNTAS.length + 5;
-  chat.innerHTML = ''; S.respostas = {}; S.perfil = null;
+  chat.innerHTML = ''; S.respostas = {}; S.devagar = false; S.perfil = null;
   let n = 0;
   const avanca = () => setProgress(++n, TOTAL);
   setProgress(0, TOTAL);
@@ -588,6 +626,9 @@ async function run(){
   await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
+  setTimeout(() => resRow.scrollIntoView({behavior: 'smooth', block: 'start'}), 80);
+  S.devagar = true;
+  await sleep(3500);   /* tempo pra ler o resultado */
   if (S.perfil){
     await sleep(700);
     await bot(`E olha o que os números do seu perfil mostram:`, {delay: 800});

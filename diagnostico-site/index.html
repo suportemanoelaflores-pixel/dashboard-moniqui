@@ -40,6 +40,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdro
 #chat{max-width:640px;margin:0 auto;padding:22px 16px 160px;display:flex;flex-direction:column;gap:10px}
 .row{display:flex;gap:9px;align-items:flex-end;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}
 .row.me{justify-content:flex-end}
+.row{scroll-margin-top:72px}
 .row.bot .av{visibility:hidden}
 .row.bot.last .av{visibility:visible}
 @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
@@ -169,10 +170,12 @@ function addRow(who, inner, wide){
 }
 
 async function bot(html, {wide = false, delay} = {}){
+  if (S.devagar) await sleep(1300);   /* depois do resultado: pausa entre mensagens, como quem lê e pensa */
   const t = addRow('bot', '<span class="typing"><i></i><i></i><i></i></span>');
   t.querySelector('.msg').style.padding = '0';
   const plain = html.replace(/<[^>]+>/g, '');
-  await sleep(delay ?? Math.min(450 + plain.length * 13, 1600));
+  const tempo = S.devagar ? Math.min(1400 + plain.length * 28, 4200) : Math.min(450 + plain.length * 13, 1600);
+  await sleep(S.devagar ? Math.max(delay ?? 0, tempo) : (delay ?? tempo));
   t.remove();
   return addRow('bot', html, wide);
 }
@@ -385,7 +388,7 @@ function textoCompartilhar(r, nv){
    ═══════════════════════════════════════════════════════════ */
 async function run(){
   const TOTAL = PERGUNTAS.length;
-  chat.innerHTML = ''; S.respostas = {};
+  chat.innerHTML = ''; S.respostas = {}; S.devagar = false;
   setProgress(0, TOTAL);
 
   await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
@@ -422,6 +425,9 @@ async function run(){
   await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
+  setTimeout(() => resRow.scrollIntoView({behavior: 'smooth', block: 'start'}), 80);
+  S.devagar = true;
+  await sleep(3500);   /* tempo pra ler o resultado */
 
   await sleep(900);
   const g = ING[card.gargalo];
