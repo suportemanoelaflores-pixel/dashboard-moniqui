@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Diagnóstico do Perfil · Morno ou Com Molho?</title>
+<title>Diagnóstico de Posicionamento · Morno ou Com Molho?</title>
 <meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
 <meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,7 +131,7 @@ form.inp button svg{width:18px;height:18px}
 <header>
   <div class="hd">
     <div class="brand">Manu <span>Flores</span></div>
-    <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
+    <div class="hd-title">Diagnóstico de Posicionamento · Morno ou Com Molho? 🌶️</div>
     <div class="hd-sp"></div>
     <div class="prog" id="prog">0 de 11</div>
   </div>
@@ -407,7 +407,7 @@ function animateResult(root){
 
 function textoCompartilhar(r, nv){
   const linhas = Object.keys(ING).map(k => `${ING[k].emoji} ${ING[k].nome}: ${r.notas[k]}/10`);
-  return `Fiz o Diagnóstico do Perfil da Manu e deu: ${nv.label} (${r.total.toFixed(1).replace('.', ',')}/10)\n${linhas.join('\n')}`;
+  return `Fiz o Diagnóstico de Posicionamento da Manu e deu: ${nv.label} (${r.total.toFixed(1).replace('.', ',')}/10)\n${linhas.join('\n')}`;
 }
 
 /* ═══════════════════════════════════════════════════════════

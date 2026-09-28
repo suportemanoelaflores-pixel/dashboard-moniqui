@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Diagnóstico do Perfil · Morno ou Com Molho?</title>
+<title>Diagnóstico de Posicionamento · Morno ou Com Molho?</title>
 <meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
 <meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -176,7 +176,7 @@ form.inp button svg{width:18px;height:18px}
 <header>
   <div class="hd">
     <div class="brand">Manu <span>Flores</span></div>
-    <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
+    <div class="hd-title">Diagnóstico de Posicionamento · Morno ou Com Molho? 🌶️</div>
     <div class="hd-sp"></div>
     <div class="prog" id="prog">0 de 14</div>
   </div>
@@ -717,7 +717,7 @@ async function run(){
   await bot(r.total >= 8.5
     ? `E agora que o molho tá pronto, é hora de transformar isso em venda todo mês. É o que a gente faz na <b>Comunidade LucraDiva</b> 💸`
     : `E olha, ${first(S.nome)}: foi exatamente pra isso que eu criei a <b>Comunidade LucraDiva</b> 💸`, {delay: 900});
-  const msg = `Oi Manu! Sou a ${S.nome} (@${S.instagram}), trabalho com ${S.nicho}. Fiz o Diagnóstico do Perfil e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}.\n\nMeu maior desafio: ${S.desafio}\nFaturamento: ${S.faturamento}\nVendo pelo perfil: ${S.vendePerfil}\n\nQuero saber mais sobre a Comunidade LucraDiva! 🌶️`;
+  const msg = `Oi Manu! Sou a ${S.nome} (@${S.instagram}), trabalho com ${S.nicho}. Fiz o Diagnóstico de Posicionamento e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}.\n\nMeu maior desafio: ${S.desafio}\nFaturamento: ${S.faturamento}\nVendo pelo perfil: ${S.vendePerfil}\n\nQuero saber mais sobre a Comunidade LucraDiva! 🌶️`;
   const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   const endRow = await bot(`<div class="end">
       <span class="k">COMUNIDADE LUCRADIVA</span>
