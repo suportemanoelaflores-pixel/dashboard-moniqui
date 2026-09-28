@@ -192,6 +192,8 @@ form.inp button svg{width:18px;height:18px}
 const AVATAR_URL = '../manu.jpg';
 /* WhatsApp que recebe as interessadas na LucraDiva (só números, com 55) */
 const WHATSAPP = '5551992691061';
+/* Cada lead vai pra planilha do Google pela função lead do Netlify (SHEET_WEBHOOK_URL) */
+const FN_LEAD = '/.netlify/functions/lead';
 
 /* ═══════════════════════════════════════════════════════════
    HELPERS DE CHAT
@@ -256,14 +258,15 @@ async function bot(html, {wide = false, delay} = {}){
 const me = text => addRow('me', esc(text));
 const clearDock = () => { dock.innerHTML = ''; };
 
-function askText({placeholder, validate, nota}){
+function askText({placeholder, validate, nota, type = 'text', inputmode = 'text', autocomplete = 'off', mask}){
   return new Promise(resolve => {
     dock.innerHTML = `
       <form class="inp" novalidate>
-        <input type="text" placeholder="${placeholder}" autocomplete="given-name" aria-label="${placeholder}">
+        <input type="${type}" inputmode="${inputmode}" placeholder="${placeholder}" autocomplete="${autocomplete}" autocapitalize="${type === 'text' && autocomplete === 'given-name' ? 'words' : 'off'}" aria-label="${placeholder}">
         <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </form><div class="err"></div>${nota ? `<div class="lgpd">${nota}</div>` : ''}`;
     const f = dock.querySelector('form'), i = f.querySelector('input'), e = dock.querySelector('.err');
+    if (mask) i.addEventListener('input', () => { i.value = mask(i.value); });
     setTimeout(() => i.focus({preventScroll: true}), 50);
     f.addEventListener('submit', ev => {
       ev.preventDefault();
@@ -341,6 +344,14 @@ async function scanAoVivo(user){
   return perfil;
 }
 
+/* Salva/atualiza a linha da lead na planilha (mesmo ID = mesma linha). Nunca trava o chat. */
+function salvarLead(campos){
+  try {
+    fetch(FN_LEAD, {method: 'POST', keepalive: true, headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: S.leadId, campos})}).catch(() => {});
+  } catch {}
+}
+
 const fmt = n => n == null ? '?' : n >= 1e6 ? (Math.round(n / 1e5) / 10).toString().replace('.', ',') + ' mi'
   : n >= 1e3 ? (Math.round(n / 100) / 10).toString().replace('.', ',') + ' mil' : String(n);
 
@@ -380,7 +391,7 @@ function lerBio(bio, username){
 }
 
 /* Números reais do perfil + leitura no método */
-function fatosDoPerfil(p){
+function metricas(p){
   const posts = p.posts || [];
   const agora = Date.now(), dia = 864e5;
   const em30 = posts.filter(x => x.data && agora - new Date(x.data) <= 30 * dia).length;
@@ -388,6 +399,11 @@ function fatosDoPerfil(p){
   const comCurtida = posts.filter(x => x.curtidas != null && x.curtidas >= 0);
   const eng = p.seguidores > 0 && comCurtida.length
     ? comCurtida.reduce((a, x) => a + x.curtidas + (x.comentarios || 0), 0) / comCurtida.length / p.seguidores * 100 : null;
+  return {posts, em30, videos, eng};
+}
+
+function fatosDoPerfil(p){
+  const {posts, em30, videos, eng} = metricas(p);
   const out = [];
   if (p.bio){
     const b = lerBio(p.bio, p.username);
@@ -582,8 +598,9 @@ function animateResult(root){
    FLUXO
    ═══════════════════════════════════════════════════════════ */
 async function run(){
-  const TOTAL = PERGUNTAS.length + 5;
+  const TOTAL = PERGUNTAS.length + 6;
   chat.innerHTML = ''; S.respostas = {}; S.devagar = false; S.perfil = null;
+  S.leadId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
   let n = 0;
   const avanca = () => setProgress(++n, TOTAL);
   setProgress(0, TOTAL);
@@ -592,10 +609,23 @@ async function run(){
   await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
   await bot('Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
-  S.nome = await askText({placeholder: 'Seu nome'});
+  S.nome = await askText({placeholder: 'Seu nome', autocomplete: 'given-name'});
   me(S.nome);
 
-  await bot(`Prazer, <b>${first(S.nome)}</b>! Agora a parte boa: qual o <b>@</b> do seu Instagram? Vou dar uma olhada nele em tempo real 👀`);
+  await bot(`Prazer, <b>${first(S.nome)}</b>! 🫶 Pra eu te mandar o resultado completo, qual o seu <b>WhatsApp</b>?`);
+  S.whatsapp = await askText({
+    placeholder: '(00) 00000-0000', type: 'tel', inputmode: 'tel', autocomplete: 'tel-national',
+    nota: 'Seus dados ficam só com a gente e são usados pra falar com você sobre o diagnóstico (LGPD).',
+    mask: v => { const d = v.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '').slice(0, 11);
+      return d.length <= 2 ? (d ? `(${d}` : '') : d.length <= 6 ? `(${d.slice(0, 2)}) ${d.slice(2)}`
+        : d.length <= 10 ? `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` : `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`; },
+    validate: v => /^\d{10,11}$/.test(v.replace(/\D/g, '')) ? '' : 'Confere o número com DDD, diva 📱',
+  });
+  me('📱 ' + S.whatsapp);
+  avanca();
+  salvarLead({'Nome': S.nome, 'WhatsApp': S.whatsapp, 'Chamar no WhatsApp': 'https://wa.me/55' + S.whatsapp.replace(/\D/g, ''), 'Etapa': '1. Deixou o WhatsApp'});
+
+  await bot('Agora a parte boa: qual o <b>@</b> do seu Instagram? Vou dar uma olhada nele em tempo real 👀');
   while (true){
     const raw = await askText({placeholder: '@seuperfil',
       nota: 'Uso só os dados públicos do seu perfil pra fazer o diagnóstico.',
@@ -618,6 +648,14 @@ async function run(){
     await bot('Sem stress! Manda o @ certinho de novo:');
   }
   avanca();
+  {
+    const m = S.perfil ? metricas(S.perfil) : null;
+    salvarLead({'Instagram': '@' + S.instagram,
+      'Seguidores': S.perfil ? S.perfil.seguidores : 'não encontrado',
+      'Posts nos últimos 30 dias': m ? m.em30 : '',
+      'Engajamento (%)': m && m.eng != null ? Math.round(m.eng * 10) / 10 : '',
+      'Etapa': '2. Mandou o @'});
+  }
 
   await bot(`Em qual nicho o <b>@${esc(S.instagram)}</b> atua?`);
   S.nicho = NICHOS[await askChoice(NICHOS)]; me(S.nicho); avanca();
@@ -630,6 +668,7 @@ async function run(){
 
   await bot('Você já <b>vende pelo seu perfil</b> hoje, ou seus clientes chegam de outro jeito?');
   S.vendePerfil = QUALI.vendePerfil[await askChoice(QUALI.vendePerfil)]; me(S.vendePerfil); avanca();
+  salvarLead({'Nicho': S.nicho, 'Maior desafio': S.desafio, 'Faturamento': S.faturamento, 'Vende pelo perfil': S.vendePerfil, 'Etapa': '3. Respondeu a qualificação'});
 
   await bot(metodoCard(), {wide: true, delay: 1000});
   await bot('Agora vou te perguntar sobre cada ingrediente. Bora? 👇', {delay: 700});
@@ -651,6 +690,9 @@ async function run(){
 
   const r = calcular();
   const card = resultadoCard(r);
+  salvarLead({'Temperatura': card.nivel.label.replace(/\s*\S+$/u, ''), 'Nota': r.total,
+    'Ver pra crer': r.notas.vercrer, 'Problema + solução': r.notas.resolve, 'Gancho': r.notas.gancho, 'Personalidade': r.notas.personalidade,
+    'Ingrediente mais fraco': ING[card.gargalo].nome, 'Etapa': '4. Viu o resultado'});
   await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
@@ -691,6 +733,7 @@ async function run(){
         <a class="btn wa" href="${wa}" target="_blank" rel="noopener">💬 Quero entrar na LucraDiva</a>
         <button class="btn link" id="refazer" type="button">↻ Refazer o diagnóstico</button>
       </div></div>`, {wide: true});
+  endRow.querySelector('.btn.wa').addEventListener('click', () => salvarLead({'Clicou no WhatsApp': 'SIM', 'Etapa': '5. Clicou no WhatsApp'}));
   endRow.querySelector('#refazer').onclick = () => { window.scrollTo({top: 0}); run(); };
 }
 
