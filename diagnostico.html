@@ -138,7 +138,7 @@ form.inp button svg{width:18px;height:18px}
 
 <script>
 /* Opcional: URL da sua foto pro avatar do chat. Vazio = "M" */
-const AVATAR_URL = '';
+const AVATAR_URL = 'manu.jpg';
 
 /* ═══════════════════════════════════════════════════════════
    HELPERS DE CHAT
@@ -234,8 +234,8 @@ const PERGUNTAS = [
   {ing: 'resolve', q: 'Seus conteúdos costumam trazer <b>um problema e uma solução</b>?', ops: [
     {t: 'Quase sempre', p: 3}, {t: 'Às vezes', p: 2}, {t: 'Falo mais de mim, novidades ou frases', p: 1}, {t: 'Nunca pensei nisso', p: 0}]},
   {ing: 'resolve', q: 'Sendo bem sincera: <b>pra quem</b> seus conteúdos estão sendo feitos?', ops: [
-    {t: 'Pro meu cliente final — ele entende e usa', p: 3}, {t: 'Uma mistura', p: 2}, {t: 'Quem mais curte é gente da minha área', p: 0.5}, {t: 'Não sei dizer', p: 0}]},
-  {ing: 'resolve', q: 'Você tem alguma <b>série</b> de conteúdo? (tipo "ideias de café da manhã diferentões — parte 1, parte 2, parte 3")', ops: [
+    {t: 'Pro meu cliente final, ele entende e usa', p: 3}, {t: 'Uma mistura', p: 2}, {t: 'Quem mais curte é gente da minha área', p: 0.5}, {t: 'Não sei dizer', p: 0}]},
+  {ing: 'resolve', q: 'Você tem alguma <b>série</b> de conteúdo? (tipo "ideias de café da manhã diferentões: parte 1, parte 2, parte 3")', ops: [
     {t: 'Tenho e funciona', p: 3}, {t: 'Já tentei, mas parei', p: 1.5}, {t: 'Nunca fiz', p: 0.5}]},
 
   {ing: 'gancho', q: 'Seus vídeos começam com um <b>gancho que dá vontade de assistir</b>?', ops: [
@@ -255,15 +255,15 @@ const NICHOS = ['Social media / Marketing', 'Fotografia', 'Nutrição', 'Saúde 
 
 /* Exemplo de série "problema + solução" por nicho (lógica da aula) */
 const SERIE = {
-  'Social media / Marketing': '"Ganchos que eu usaria no seu nicho — parte 1, parte 2, parte 3"',
-  'Fotografia': '"Poses divertidas pra ensaio de fotos — parte 1, parte 2" ou "Pose diferentona pra ensaio de marca pessoal — parte 1…"',
-  'Nutrição': '"Ideias de café da manhã diferentões — parte 1, parte 2, parte 3"',
-  'Saúde e estética': '"O que eu faria se fosse minha pele — parte 1, parte 2, parte 3"',
-  'Psicologia / Terapia': '"Frases que parecem cuidado mas são controle — parte 1, parte 2"',
-  'Consultoria / Negócios': '"Erros que tão sugando o lucro da sua empresa — parte 1, parte 2"',
-  'Moda, beleza ou imagem': '"Como deixar esse look mais caro — parte 1, parte 2, parte 3"',
-  'Infoproduto / Mentoria': '"Travas que eu vejo toda semana nas minhas alunas — parte 1, parte 2"',
-  'Outro': '"Um problema que meu cliente tem toda semana e como resolver — parte 1, parte 2, parte 3"',
+  'Social media / Marketing': '"Ganchos que eu usaria no seu nicho: parte 1, parte 2, parte 3"',
+  'Fotografia': '"Poses divertidas pra ensaio de fotos: parte 1, parte 2" ou "Pose diferentona pra ensaio de marca pessoal: parte 1…"',
+  'Nutrição': '"Ideias de café da manhã diferentões: parte 1, parte 2, parte 3"',
+  'Saúde e estética': '"O que eu faria se fosse minha pele: parte 1, parte 2, parte 3"',
+  'Psicologia / Terapia': '"Frases que parecem cuidado mas são controle: parte 1, parte 2"',
+  'Consultoria / Negócios': '"Erros que tão sugando o lucro da sua empresa: parte 1, parte 2"',
+  'Moda, beleza ou imagem': '"Como deixar esse look mais caro: parte 1, parte 2, parte 3"',
+  'Infoproduto / Mentoria': '"Travas que eu vejo toda semana nas minhas alunas: parte 1, parte 2"',
+  'Outro': '"Um problema que meu cliente tem toda semana e como resolver: parte 1, parte 2, parte 3"',
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -286,7 +286,7 @@ function nivel(t){
   if (t >= 8.5) return {k: 'hot',  label: 'Com Molho 🌶️',      frase: 'Seu perfil tem sabor! Quem passa por ali lembra de você.'};
   if (t >= 6.5) return {k: 'hot',  label: 'Quase no ponto 🔥',  frase: 'Tem tempero, mas ainda falta um ingrediente pra você ser lembrada.'};
   if (t >= 4)   return {k: 'warm', label: 'Morno 🥣',          frase: 'Tá no fogão, mas sem graça: bonito, e ninguém lembra depois.'};
-  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro — e a gente resolve.'};
+  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro. E a gente resolve!'};
 }
 
 function diagnostico(k, n){
@@ -297,20 +297,20 @@ function diagnostico(k, n){
       alto:  [`${nome}, quem entra no seu perfil entende o que você entrega. Num digital cheio de desconfiança, isso é ouro: a pessoa vê pra crer.`,
               `Mantém: revisa a bio a cada nova entrega e continua mostrando resultado de cliente com frequência.`],
       medio: [`${nome}, dá pra ter uma ideia do que você faz, mas ainda não fica <b>tangível</b>. O funil de "viu e comprou" morreu: a pessoa precisa entender na prática o que recebe antes de confiar.`,
-              `Reescreve a bio completando: <b>"Na prática, eu ___"</b> — com o resultado, não com o cargo. E posta 1 bastidor por semana mostrando como você trabalha.`],
+              `Reescreve a bio completando: <b>"Na prática, eu ___"</b>, com o resultado e não com o cargo. E posta 1 bastidor por semana mostrando como você trabalha.`],
       baixo: [`${nome}, hoje seu perfil é um mistério. E mistério não vende: depois de tanta gente decepcionada com o digital, ninguém compra o que não consegue enxergar.`,
               `Começa pelo básico: bio com <b>"Na prática, eu ___"</b>, 3 posts fixados (quem você é, como funciona, resultado de cliente) e um bastidor por semana.`],
     },
     resolve: {
       alto:  [`Seu conteúdo resolve problema de verdade, ${nome}. É por isso que alguém volta pro seu perfil: você é útil pra vida real do seu cliente.`,
-              `Transforma o que mais funciona em série — parte 1, parte 2, parte 3. Série vira hábito de consumo.`],
+              `Transforma o que mais funciona em série: parte 1, parte 2, parte 3. Série vira hábito de consumo.`],
       medio: [`${nome}, às vezes você resolve, às vezes fala pra dentro. Cuidado com o conteúdo que é incrível pra quem é da sua área, mas morno pro seu cliente final.`,
               `Regra do post: <b>1 problema pequeno que seu cliente tem + 1 solução</b>. Exemplo pro seu nicho: ${SERIE[S.nicho]}.`],
-      baixo: [`${nome}, seu conteúdo ainda não tá resolvendo o problema de quem compra de você. Ele pode ser lindo — mas se não resolve nada, não tem molho.`,
+      baixo: [`${nome}, seu conteúdo ainda não tá resolvendo o problema de quem compra de você. Ele pode ser lindo, mas se não resolve nada, não tem molho.`,
               `Lista 10 dúvidas que seus clientes te fazem e transforma cada uma em "problema + solução". Depois agrupa numa série: ${SERIE[S.nicho]}.`],
     },
     gancho: {
-      alto:  [`Seu gancho segura e você não enrola, ${nome}. Isso respeita o tempo de quem tá assistindo — e o algoritmo agradece.`,
+      alto:  [`Seu gancho segura e você não enrola, ${nome}. Isso respeita o tempo de quem tá assistindo, e o algoritmo agradece.`,
               `Testa variações do mesmo gancho em vídeos diferentes e guarda os que mais seguram.`],
       medio: [`${nome}, o gancho às vezes funciona, mas você ainda se perde no começo. Contexto demais deixa o vídeo anêmico.`,
               `Assiste seus últimos 3 vídeos com olhar analítico: <b>a melhor dica aparece nos primeiros segundos?</b> Se não, corta tudo o que vem antes dela.`],
@@ -318,9 +318,9 @@ function diagnostico(k, n){
               `Nada de "oi, eu sou a fulana". Abre o vídeo <b>já com a melhor dica ou com o problema</b>, e só depois explica.`],
     },
     personalidade: {
-      alto:  [`${nome}, você escolheu um lado — e é por isso que te lembram. Gente contrata quem tem valores parecidos, não só quem é boa.`,
+      alto:  [`${nome}, você escolheu um lado, e é por isso que te lembram. Gente contrata quem tem valores parecidos, não só quem é boa.`,
               `Continua trazendo suas opiniões de mercado. Guarda os "pensamentos intrusivos" num bloco de notas pra nunca faltar pauta.`],
-      medio: [`${nome}, sua personalidade aparece, mas em conta-gotas. Quem fica em cima do muro não é lembrada — e ser boa é só o mínimo.`,
+      medio: [`${nome}, sua personalidade aparece, mas em conta-gotas. Quem fica em cima do muro não é lembrada. E ser boa é só o mínimo.`,
               `Anota durante a semana os pensamentos que passam na sua cabeça atendendo e estudando. Escolhe 1 e posta sem suavizar. Nem Jesus agradou a todos 😉`],
       baixo: [`${nome}, você tá escondida atrás do serviço. E profissional que só mostra a entrega, por melhor que seja, não se destaca: ninguém sabe se você combina com ela.`,
               `Começa com 1 opinião verdadeira sobre o seu mercado por semana + 1 conteúdo mostrando algo que você ama. Quem compra de você é quem tem os mesmos valores.`],
@@ -335,7 +335,7 @@ function diagnostico(k, n){
 function metodoCard(){
   return `<div class="card">
     <h4>Perfil com molho tem <span style="color:var(--molho)">4 ingredientes</span> 🌶️</h4>
-    <div style="color:var(--ink-2);margin-bottom:6px">Não é sobre ter "nascido comunicativa". É sobre ser <b>lembrada</b> — e isso se constrói.</div>
+    <div style="color:var(--ink-2);margin-bottom:6px">Não é sobre ter "nascido comunicativa". É sobre ser <b>lembrada</b>, e isso se constrói.</div>
     ${Object.values(ING).map(p => `<div class="pil"><span class="e">${p.emoji}</span><div><b>${p.nome}</b><small>${p.sub}</small></div></div>`).join('')}
   </div>`;
 }
@@ -389,7 +389,7 @@ async function run(){
   setProgress(0, TOTAL);
 
   await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
-  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica — e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
+  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
   await bot('São 11 perguntas rapidinhas. Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
   S.nome = await askText({placeholder: 'Seu nome'});
@@ -426,9 +426,9 @@ async function run(){
   await sleep(900);
   const g = ING[card.gargalo];
   if (r.total >= 8.5){
-    await bot(`Diva, que orgulho! Seu perfil tá com molho 🌶️ Agora é manter a constância — e usar o <b>${g.emoji} ${g.nome}</b> pra deixar ainda mais apimentado.`);
+    await bot(`Diva, que orgulho! Seu perfil tá com molho 🌶️ Agora é manter a constância e usar o <b>${g.emoji} ${g.nome}</b> pra deixar ainda mais apimentado.`);
   } else {
-    await bot(`Não precisa mexer em tudo de uma vez: começa pelo <b>${g.emoji} ${g.nome}</b>. É ali que o seu perfil tá perdendo mais sabor — e é o ajuste que mais rápido faz você ser lembrada.`);
+    await bot(`Não precisa mexer em tudo de uma vez: começa pelo <b>${g.emoji} ${g.nome}</b>. É ali que o seu perfil tá perdendo mais sabor, e é o ajuste que mais rápido faz você ser lembrada.`);
   }
 
   const share = textoCompartilhar(r, card.nivel);
