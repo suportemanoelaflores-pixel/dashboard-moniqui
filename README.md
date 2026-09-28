@@ -12,13 +12,19 @@ Tudo o que tu precisa editar fica no bloco `CONFIG`, no topo do `<script>` em `d
 | `whatsapp` | **Obrigatório.** Número que recebe as leads, só com números: `55` + DDD + número (ex.: `5551999999999`) |
 | `avatar` | URL da tua foto (quadrada) para aparecer no chat. Se ficar vazio, aparecem as iniciais "MF" |
 | `webhookUrl` | Opcional. Salva cada lead numa planilha (veja abaixo) |
+| `senhaEquipe` | **Troque antes de publicar.** Senha que a vendedora digita para abrir a análise completa |
 | `oferta` | Nome, frase e benefícios da LucraDiva mostrados no card final |
 
 ## Como a vendedora recebe a análise
 
-1. **Na mensagem do WhatsApp.** A lead chega com o resumo (nota, gargalo, desafio, faturamento) e um link `🔗 Minha análise`.
-2. **No link.** Abre a análise completa: os 3 ingredientes com texto e "o que fazer", mais todas as respostas. O botão **Copiar análise pra mandar no WhatsApp** copia tudo já formatado para a vendedora colar e entregar a "análise completa" prometida.
-3. **No Netlify Forms (com roteiro de venda).** Cada lead que termina o quiz vira uma entrada em *Netlify → teu site → Forms → diagnostico*, com as respostas, o link da análise e um **roteiro para a vendedora** de acordo com o gargalo. O roteiro não aparece para a lead.
+A lead **não recebe** a análise completa sozinha: ela só vê o resumo no quiz e depende da vendedora para receber o resto.
+
+1. **A lead chama no WhatsApp** com o resumo já escrito (nome, @, nota, gargalo, desafio, faturamento). A mensagem **não** leva o link da análise.
+2. **A vendedora abre a análise** pelo link que chega **só para a equipe**: no e-mail do Netlify Forms (ou na planilha), no campo `link_analise`. Ela encontra a lead pelo nome, @ ou WhatsApp.
+3. **A página pede a senha da equipe** (`CONFIG.senhaEquipe`), pedida só na primeira vez em cada celular. Mostra o roteiro de condução de acordo com o gargalo, os 3 ingredientes com "o que fazer" e todas as respostas.
+4. **Botão "Copiar análise pra mandar no WhatsApp"**: copia a análise já formatada (sem o roteiro) para a vendedora entregar na conversa.
+
+> A senha é uma trava simples, suficiente para a lead não abrir a análise sozinha. Não guarde nada sigiloso nessa página.
 
 ### Ligar o Netlify Forms (uma vez só)
 
