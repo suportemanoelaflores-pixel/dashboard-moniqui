@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Diagnóstico do Perfil · Morno ou Com Molho?</title>
+<meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
+<meta name="theme-color" content="#2F3DBC">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FFF6F8;--cream-2:#FBE4EA;--cream-3:#F4CCD6;
+  --molho:#2F3DBC;--molho-2:#E18B9F;--molho-soft:#E6E8FA;
+  --wine:#1D2680;
+  --gold:#E18B9F;
+  --ink:#1B1D4A;--ink-2:#5A5C85;--ink-3:#9A9BBE;
+  --ice:#8FB4E0;
+  --line:#F1D3DB;
+  --radius:18px;
+}
+html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{min-height:100dvh}
+b,strong{font-weight:700}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
+.hd{max-width:640px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{background:var(--wine);color:#fff;font-weight:700;font-size:13px;padding:5px 11px;border-radius:8px;white-space:nowrap}
+.brand span{color:var(--molho-2)}
+.hd-title{font-size:13px;color:var(--ink-2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-sp{flex:1}
+.prog{font-size:12px;font-weight:700;color:var(--molho);background:var(--molho-soft);padding:4px 10px;border-radius:99px;white-space:nowrap}
+.bar{height:3px;background:var(--cream-3)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--molho-2),var(--molho));transition:width .5s ease}
+
+/* ── CHAT ── */
+#chat{max-width:640px;margin:0 auto;padding:22px 16px 160px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:9px;align-items:flex-end;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}
+.row.me{justify-content:flex-end}
+.row.bot .av{visibility:hidden}
+.row.bot.last .av{visibility:visible}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(140deg,var(--molho-2),var(--wine));color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;overflow:hidden;border:2px solid #fff;box-shadow:0 1px 4px rgba(29,38,128,.2)}
+.av img{width:100%;height:100%;object-fit:cover}
+.msg{max-width:min(460px,82%);padding:10px 14px;border-radius:var(--radius);font-size:14.5px}
+.bot .msg{background:var(--cream-2);border-bottom-left-radius:6px}
+.me .msg{background:var(--molho);color:#fff;border-bottom-right-radius:6px;font-weight:500;box-shadow:0 2px 8px rgba(47,61,188,.22)}
+.msg.wide{max-width:min(520px,88%);padding:0;background:none}
+.msg small.q{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--molho);font-weight:700;margin-bottom:3px}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--ink-3);animation:bl 1.1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+
+/* ── COMPOSER ── */
+#dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(to top,var(--cream) 72%,rgba(255,246,248,0));padding:18px 16px calc(14px + env(safe-area-inset-bottom))}
+.dock-in{max-width:640px;margin:0 auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.chip{font:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink);border:1.5px solid var(--molho);padding:9px 14px;border-radius:99px;cursor:pointer;transition:all .15s;text-align:left}
+.chip:hover{background:var(--molho-soft)}
+form.inp{display:flex;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 5px 5px 16px;box-shadow:0 4px 18px rgba(29,38,128,.08)}
+form.inp:focus-within{border-color:var(--molho)}
+form.inp input{flex:1;min-width:0;border:none;outline:none;font:inherit;font-size:16px;background:none;color:var(--ink)}
+form.inp button{border:none;background:var(--molho);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;flex-shrink:0}
+form.inp button svg{width:18px;height:18px}
+.err{color:var(--molho);font-size:12.5px;margin:6px 0 0 16px;min-height:1em}
+
+/* ── METHOD CARD ── */
+.card{background:linear-gradient(160deg,#FFFFFF,var(--cream-2));border:1px solid var(--line);border-radius:var(--radius);padding:16px;font-size:14px}
+.card h4{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;line-height:1.2;margin-bottom:6px}
+.pil{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line)}
+.pil:first-of-type{border-top:none}
+.pil .e{font-size:20px;line-height:1}
+.pil b{display:block;font-size:14px}
+.pil small{color:var(--ink-2);font-size:12.5px}
+
+/* ── RESULT ── */
+.res{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 6px 24px rgba(29,38,128,.12);border:1px solid var(--line)}
+.res-top{padding:18px 16px 16px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,var(--molho-2),var(--molho) 55%,var(--wine))}
+.res-top.cold{background:radial-gradient(120% 90% at 100% 0%,#8FB4E0,var(--molho) 60%,var(--wine))}
+.res-top.warm{background:radial-gradient(120% 90% at 100% 0%,#F2B8C6,var(--molho) 60%,var(--wine))}
+.res-k{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;opacity:.8;font-weight:700}
+.res-v{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;line-height:1.05;margin:4px 0 2px}
+.res-s{font-size:13.5px;opacity:.92}
+.thermo{margin-top:14px}
+.thermo-track{position:relative;height:12px;border-radius:99px;background:linear-gradient(90deg,#BFD3F2 0%,#F4C3CF 45%,#E18B9F 72%,#D9506F 100%)}
+.thermo-dot{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--wine);transform:translate(-50%,-50%);left:0;transition:left 1.4s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.thermo-lbl{display:flex;justify-content:space-between;font-size:10.5px;margin-top:7px;opacity:.85;font-weight:500}
+.res-body{padding:16px}
+.score{display:inline-block;font-size:12px;font-weight:700;color:var(--molho);background:var(--molho-soft);padding:4px 10px;border-radius:99px;margin-bottom:10px}
+.pr{padding:14px 0;border-top:1px solid var(--cream-2)}
+.pr:first-of-type{border-top:none;padding-top:4px}
+.pr-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;flex-wrap:wrap}
+.pr-h .n{margin-left:auto;font-size:12px;background:var(--cream-2);padding:2px 8px;border-radius:99px}
+.pr-h .tag{font-size:10px;letter-spacing:.8px;text-transform:uppercase;background:var(--molho);color:#fff;padding:2px 7px;border-radius:5px}
+.meter{height:6px;background:var(--cream-2);border-radius:99px;margin:8px 0;overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:99px;transition:width 1.2s .3s ease}
+.pr p{font-size:13.5px;color:var(--ink-2)}
+.fix{margin-top:9px;background:var(--cream);border-left:3px solid var(--molho);border-radius:0 10px 10px 0;padding:9px 11px;font-size:13px;color:var(--ink)}
+.fix b{color:var(--molho)}
+
+/* ── CLOSING ── */
+.end{background:radial-gradient(130% 80% at 0% 0%,#4452D6,var(--molho) 55%,var(--wine));color:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:0 10px 30px rgba(29,38,128,.35);position:relative;overflow:hidden}
+.end::after{content:"🌶️";position:absolute;right:-8px;top:-10px;font-size:84px;opacity:.12;transform:rotate(18deg)}
+.end h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;line-height:1.1;margin-bottom:6px}
+.end p{font-size:13.5px;opacity:.9}
+.btns{display:grid;gap:8px;margin-top:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;font:inherit;font-weight:700;font-size:14.5px;padding:12px;border-radius:12px;cursor:pointer}
+.btn.pri{background:var(--molho-2);color:var(--wine)}
+.btn.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.end .k{display:inline-block;background:var(--molho-2);color:var(--wine);font-size:11px;font-weight:800;letter-spacing:.8px;padding:4px 10px;border-radius:99px;margin-bottom:10px}
+.end ul{list-style:none;margin:12px 0 4px;display:grid;gap:7px}
+.end li{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:8px 11px;font-size:13.5px}
+.end .meta{margin-top:10px;background:#fff;color:var(--ink);border-radius:12px;padding:10px 12px;font-size:13.5px}
+.end .meta b{color:var(--molho)}
+.btn.wa{background:#1FAF55;color:#fff;text-align:center;font-size:15.5px;padding:14px;text-decoration:none;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.btn.link{background:none;color:#fff;opacity:.75;font-weight:500;font-size:13px;padding:6px}
+
+@media (max-width:420px){
+  .hd-title{display:none}
+  .msg{max-width:86%}
+  .res-v{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="brand">Manu <span>Flores</span></div>
+    <div class="hd-title">Diagnóstico do Perfil · Morno ou Com Molho? 🌶️</div>
+    <div class="hd-sp"></div>
+    <div class="prog" id="prog">0 de 11</div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+</header>
+
+<main id="chat" aria-live="polite"></main>
+
+<div id="dock"><div class="dock-in" id="dockIn"></div></div>
+
+<script>
+/* Opcional: URL da sua foto pro avatar do chat. Vazio = "M" */
+const AVATAR_URL = '../manu.jpg';
+/* WhatsApp que recebe as interessadas na LucraDiva (só números, com 55) */
+const WHATSAPP = '5551992691061';
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS DE CHAT
+   ═══════════════════════════════════════════════════════════ */
+const chat = document.getElementById('chat');
+const dock = document.getElementById('dockIn');
+const S = {respostas: {}};
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const first = n => esc((n || '').trim().split(/\s+/)[0] || '');
+const avatarHTML = () => AVATAR_URL ? `<img src="${esc(AVATAR_URL)}" alt="Manu">` : 'M';
+const scrollEnd = () => requestAnimationFrame(() => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}));
+
+function setProgress(n, total){
+  document.getElementById('prog').textContent = `${n} de ${total}`;
+  document.getElementById('bar').style.width = (n / total * 100) + '%';
+}
+
+function addRow(who, inner, wide){
+  if (who === 'bot') chat.querySelectorAll('.row.bot.last').forEach(r => r.classList.remove('last'));
+  const row = document.createElement('div');
+  row.className = `row ${who}` + (who === 'bot' ? ' last' : '');
+  row.innerHTML = (who === 'bot' ? `<div class="av">${avatarHTML()}</div>` : '') +
+                  `<div class="msg${wide ? ' wide' : ''}">${inner}</div>`;
+  chat.appendChild(row);
+  scrollEnd();
+  return row;
+}
+
+async function bot(html, {wide = false, delay} = {}){
+  const t = addRow('bot', '<span class="typing"><i></i><i></i><i></i></span>');
+  t.querySelector('.msg').style.padding = '0';
+  const plain = html.replace(/<[^>]+>/g, '');
+  await sleep(delay ?? Math.min(450 + plain.length * 13, 1600));
+  t.remove();
+  return addRow('bot', html, wide);
+}
+const me = text => addRow('me', esc(text));
+const clearDock = () => { dock.innerHTML = ''; };
+
+function askText({placeholder, validate}){
+  return new Promise(resolve => {
+    dock.innerHTML = `
+      <form class="inp" novalidate>
+        <input type="text" placeholder="${placeholder}" autocomplete="given-name" aria-label="${placeholder}">
+        <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form><div class="err"></div>`;
+    const f = dock.querySelector('form'), i = f.querySelector('input'), e = dock.querySelector('.err');
+    setTimeout(() => i.focus({preventScroll: true}), 50);
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const v = i.value.trim();
+      const msg = validate ? validate(v) : (v ? '' : 'Escreve aqui pra gente seguir 💬');
+      if (msg){ e.textContent = msg; i.focus(); return; }
+      clearDock(); resolve(v);
+    });
+  });
+}
+
+function askChoice(options){
+  return new Promise(resolve => {
+    dock.innerHTML = `<div class="chips"></div>`;
+    const wrap = dock.querySelector('.chips');
+    options.forEach((opt, idx) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = typeof opt === 'string' ? opt : opt.t;
+      b.onclick = () => { clearDock(); resolve(idx); };
+      wrap.appendChild(b);
+    });
+    scrollEnd();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OS 4 INGREDIENTES DO MOLHO (aula "Diagnóstico do perfil morno")
+   ═══════════════════════════════════════════════════════════ */
+const ING = {
+  vercrer:     {emoji: '👀', nome: 'Ver pra crer',            sub: 'bater o olho e entender o que você entrega na prática'},
+  resolve:     {emoji: '🧩', nome: 'Problema + solução',      sub: 'conteúdo que resolve algo pro seu cliente final'},
+  gancho:      {emoji: '⚡', nome: 'Gancho sem enrolação',    sub: 'dá vontade de assistir e entrega logo o melhor'},
+  personalidade:{emoji: '🌶️', nome: 'Personalidade e lado',   sub: 'opiniões, valores e pensamentos intrusivos que venceram'},
+};
+
+/* Cada opção vale de 3 (com molho) a 0 (anêmico) */
+const PERGUNTAS = [
+  {ing: 'vercrer', q: 'Se uma desconhecida entra no seu perfil agora, ela <b>bate o olho e entende o que você faz</b>?', ops: [
+    {t: 'Sim, em 3 segundos', p: 3}, {t: 'Entende minha área, não o que eu entrego', p: 2}, {t: 'Acho que meu perfil é meio um mistério', p: 1}, {t: 'Nem eu sei explicar direito 🙈', p: 0}]},
+  {ing: 'vercrer', q: 'Sua bio diz o que você faz <b>na prática</b>? Tipo: <i>"na prática, eu ressuscito perfis"</i>', ops: [
+    {t: 'Sim, fala o resultado que eu entrego', p: 3}, {t: 'Fala minha profissão/formação', p: 2}, {t: 'Tem uma frase bonita/inspiracional', p: 1}, {t: 'Tá vazia ou desatualizada', p: 0}]},
+  {ing: 'vercrer', q: 'No seu feed dá pra <b>ver como você trabalha</b>? (bastidor, processo, antes e depois, resultado de cliente)', ops: [
+    {t: 'Sim, mostro sempre', p: 3}, {t: 'De vez em quando', p: 2}, {t: 'Quase nunca', p: 1}, {t: 'Não, só posto dica/frase', p: 0}]},
+
+  {ing: 'resolve', q: 'Seus conteúdos costumam trazer <b>um problema e uma solução</b>?', ops: [
+    {t: 'Quase sempre', p: 3}, {t: 'Às vezes', p: 2}, {t: 'Falo mais de mim, novidades ou frases', p: 1}, {t: 'Nunca pensei nisso', p: 0}]},
+  {ing: 'resolve', q: 'Sendo bem sincera: <b>pra quem</b> seus conteúdos estão sendo feitos?', ops: [
+    {t: 'Pro meu cliente final, ele entende e usa', p: 3}, {t: 'Uma mistura', p: 2}, {t: 'Quem mais curte é gente da minha área', p: 0.5}, {t: 'Não sei dizer', p: 0}]},
+  {ing: 'resolve', q: 'Você tem alguma <b>série</b> de conteúdo? (tipo "ideias de café da manhã diferentões: parte 1, parte 2, parte 3")', ops: [
+    {t: 'Tenho e funciona', p: 3}, {t: 'Já tentei, mas parei', p: 1.5}, {t: 'Nunca fiz', p: 0.5}]},
+
+  {ing: 'gancho', q: 'Seus vídeos começam com um <b>gancho que dá vontade de assistir</b>?', ops: [
+    {t: 'Sim, penso no gancho antes de gravar', p: 3}, {t: 'Às vezes acerto', p: 2}, {t: 'Começo com "oi, eu sou a fulana…"', p: 0.5}, {t: 'Quase não faço vídeo', p: 0}]},
+  {ing: 'gancho', q: 'Em quanto tempo você <b>entrega a melhor dica</b> do vídeo?', ops: [
+    {t: 'Logo nos primeiros segundos', p: 3}, {t: 'Uns 10 segundos', p: 2}, {t: 'Dou muito contexto antes (30s+)', p: 0.5}, {t: 'Nunca reparei', p: 0.5}]},
+
+  {ing: 'personalidade', q: 'Seus <b>pensamentos intrusivos que venceram</b> aparecem no perfil? Aquelas opiniões que você pensa atendendo, entregando, estudando…', ops: [
+    {t: 'Aparecem direto 😈', p: 3}, {t: 'De vez em quando', p: 2}, {t: 'Guardo pra mim', p: 0.5}, {t: 'Nem sei quais são os meus', p: 0}]},
+  {ing: 'personalidade', q: 'Quando rola um assunto polêmico no seu mercado, você…', ops: [
+    {t: 'Escolho um lado e falo', p: 3}, {t: 'Falo, mas suavizo bastante', p: 1.5}, {t: 'Fico em cima do muro pra não incomodar', p: 0.5}, {t: 'Evito o assunto', p: 0}]},
+  {ing: 'personalidade', q: 'Olhando seu perfil, dá pra saber <b>do que você gosta, seus valores e seu jeito</b>? Ou só aparece o serviço?', ops: [
+    {t: 'Dá pra me conhecer de verdade', p: 3}, {t: 'Um pouquinho', p: 1.5}, {t: 'Só aparece meu trabalho', p: 0.5}, {t: 'Eu nem apareço', p: 0}]},
+];
+
+const NICHOS = ['Social media / Marketing', 'Fotografia', 'Nutrição', 'Saúde e estética', 'Psicologia / Terapia', 'Consultoria / Negócios', 'Moda, beleza ou imagem', 'Infoproduto / Mentoria', 'Outro'];
+
+/* Exemplo de série "problema + solução" por nicho (lógica da aula) */
+const SERIE = {
+  'Social media / Marketing': '"Ganchos que eu usaria no seu nicho: parte 1, parte 2, parte 3"',
+  'Fotografia': '"Poses divertidas pra ensaio de fotos: parte 1, parte 2" ou "Pose diferentona pra ensaio de marca pessoal: parte 1…"',
+  'Nutrição': '"Ideias de café da manhã diferentões: parte 1, parte 2, parte 3"',
+  'Saúde e estética': '"O que eu faria se fosse minha pele: parte 1, parte 2, parte 3"',
+  'Psicologia / Terapia': '"Frases que parecem cuidado mas são controle: parte 1, parte 2"',
+  'Consultoria / Negócios': '"Erros que tão sugando o lucro da sua empresa: parte 1, parte 2"',
+  'Moda, beleza ou imagem': '"Como deixar esse look mais caro: parte 1, parte 2, parte 3"',
+  'Infoproduto / Mentoria': '"Travas que eu vejo toda semana nas minhas alunas: parte 1, parte 2"',
+  'Outro': '"Um problema que meu cliente tem toda semana e como resolver: parte 1, parte 2, parte 3"',
+};
+
+/* ═══════════════════════════════════════════════════════════
+   PONTUAÇÃO
+   ═══════════════════════════════════════════════════════════ */
+function calcular(){
+  const soma = {}, max = {};
+  PERGUNTAS.forEach((q, i) => {
+    const best = Math.max(...q.ops.map(o => o.p));
+    soma[q.ing] = (soma[q.ing] || 0) + q.ops[S.respostas[i]].p;
+    max[q.ing] = (max[q.ing] || 0) + best;
+  });
+  const notas = {};
+  Object.keys(ING).forEach(k => notas[k] = Math.round(soma[k] / max[k] * 10));
+  const total = Math.round(Object.values(notas).reduce((a, b) => a + b, 0) / 4 * 10) / 10;
+  return {notas, total};
+}
+
+function nivel(t){
+  if (t >= 8.5) return {k: 'hot',  label: 'Com Molho 🌶️',      frase: 'Seu perfil tem sabor! Quem passa por ali lembra de você.'};
+  if (t >= 6.5) return {k: 'hot',  label: 'Quase no ponto 🔥',  frase: 'Tem tempero, mas ainda falta um ingrediente pra você ser lembrada.'};
+  if (t >= 4)   return {k: 'warm', label: 'Morno 🥣',          frase: 'Tá no fogão, mas sem graça: bonito, e ninguém lembra depois.'};
+  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro. E a gente resolve!'};
+}
+
+function diagnostico(k, n){
+  const nome = first(S.nome);
+  const band = n >= 8 ? 'alto' : n >= 5 ? 'medio' : 'baixo';
+  const T = {
+    vercrer: {
+      alto:  [`${nome}, quem entra no seu perfil entende o que você entrega. Num digital cheio de desconfiança, isso é ouro: a pessoa vê pra crer.`,
+              `Mantém: revisa a bio a cada nova entrega e continua mostrando resultado de cliente com frequência.`],
+      medio: [`${nome}, dá pra ter uma ideia do que você faz, mas ainda não fica <b>tangível</b>. O funil de "viu e comprou" morreu: a pessoa precisa entender na prática o que recebe antes de confiar.`,
+              `Reescreve a bio completando: <b>"Na prática, eu ___"</b>, com o resultado e não com o cargo. E posta 1 bastidor por semana mostrando como você trabalha.`],
+      baixo: [`${nome}, hoje seu perfil é um mistério. E mistério não vende: depois de tanta gente decepcionada com o digital, ninguém compra o que não consegue enxergar.`,
+              `Começa pelo básico: bio com <b>"Na prática, eu ___"</b>, 3 posts fixados (quem você é, como funciona, resultado de cliente) e um bastidor por semana.`],
+    },
+    resolve: {
+      alto:  [`Seu conteúdo resolve problema de verdade, ${nome}. É por isso que alguém volta pro seu perfil: você é útil pra vida real do seu cliente.`,
+              `Transforma o que mais funciona em série: parte 1, parte 2, parte 3. Série vira hábito de consumo.`],
+      medio: [`${nome}, às vezes você resolve, às vezes fala pra dentro. Cuidado com o conteúdo que é incrível pra quem é da sua área, mas morno pro seu cliente final.`,
+              `Regra do post: <b>1 problema pequeno que seu cliente tem + 1 solução</b>. Exemplo pro seu nicho: ${SERIE[S.nicho]}.`],
+      baixo: [`${nome}, seu conteúdo ainda não tá resolvendo o problema de quem compra de você. Ele pode ser lindo, mas se não resolve nada, não tem molho.`,
+              `Lista 10 dúvidas que seus clientes te fazem e transforma cada uma em "problema + solução". Depois agrupa numa série: ${SERIE[S.nicho]}.`],
+    },
+    gancho: {
+      alto:  [`Seu gancho segura e você não enrola, ${nome}. Isso respeita o tempo de quem tá assistindo, e o algoritmo agradece.`,
+              `Testa variações do mesmo gancho em vídeos diferentes e guarda os que mais seguram.`],
+      medio: [`${nome}, o gancho às vezes funciona, mas você ainda se perde no começo. Contexto demais deixa o vídeo anêmico.`,
+              `Assiste seus últimos 3 vídeos com olhar analítico: <b>a melhor dica aparece nos primeiros segundos?</b> Se não, corta tudo o que vem antes dela.`],
+      baixo: [`${nome}, aqui tá escapando muita gente: começar se apresentando ou dando 30 segundos de contexto faz a pessoa rolar o feed antes do conteúdo bom chegar.`,
+              `Nada de "oi, eu sou a fulana". Abre o vídeo <b>já com a melhor dica ou com o problema</b>, e só depois explica.`],
+    },
+    personalidade: {
+      alto:  [`${nome}, você escolheu um lado, e é por isso que te lembram. Gente contrata quem tem valores parecidos, não só quem é boa.`,
+              `Continua trazendo suas opiniões de mercado. Guarda os "pensamentos intrusivos" num bloco de notas pra nunca faltar pauta.`],
+      medio: [`${nome}, sua personalidade aparece, mas em conta-gotas. Quem fica em cima do muro não é lembrada. E ser boa é só o mínimo.`,
+              `Anota durante a semana os pensamentos que passam na sua cabeça atendendo e estudando. Escolhe 1 e posta sem suavizar. Nem Jesus agradou a todos 😉`],
+      baixo: [`${nome}, você tá escondida atrás do serviço. E profissional que só mostra a entrega, por melhor que seja, não se destaca: ninguém sabe se você combina com ela.`,
+              `Começa com 1 opinião verdadeira sobre o seu mercado por semana + 1 conteúdo mostrando algo que você ama. Quem compra de você é quem tem os mesmos valores.`],
+    },
+  };
+  return T[k][band];
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOCOS VISUAIS
+   ═══════════════════════════════════════════════════════════ */
+function metodoCard(){
+  return `<div class="card">
+    <h4>Perfil com molho tem <span style="color:var(--molho)">4 ingredientes</span> 🌶️</h4>
+    <div style="color:var(--ink-2);margin-bottom:6px">Não é sobre ter "nascido comunicativa". É sobre ser <b>lembrada</b>, e isso se constrói.</div>
+    ${Object.values(ING).map(p => `<div class="pil"><span class="e">${p.emoji}</span><div><b>${p.nome}</b><small>${p.sub}</small></div></div>`).join('')}
+  </div>`;
+}
+
+function resultadoCard(r){
+  const nv = nivel(r.total);
+  const keys = Object.keys(ING);
+  const ordem = [...keys].sort((a, b) => r.notas[a] - r.notas[b]);
+  const gargalo = ordem[0];
+  const cor = n => n >= 8 ? 'var(--molho)' : n >= 5 ? '#E18B9F' : 'var(--ice)';
+  const bloco = k => {
+    const [txt, fix] = diagnostico(k, r.notas[k]);
+    return `<div class="pr">
+      <div class="pr-h">${ING[k].emoji} ${ING[k].nome}${k === gargalo && r.notas[k] < 8 ? ' <span class="tag">comece por aqui</span>' : ''}<span class="n">${r.notas[k]}/10</span></div>
+      <div class="meter"><i data-w="${r.notas[k] * 10}" style="background:${cor(r.notas[k])}"></i></div>
+      <p>${txt}</p>
+      <div class="fix"><b>Tempera assim:</b> ${fix}</div></div>`;
+  };
+  return {gargalo, nivel: nv, html: `<div class="res">
+    <div class="res-top ${nv.k}">
+      <div class="res-k">Temperatura do perfil</div>
+      <div class="res-v">${nv.label}</div>
+      <div class="res-s">${nv.frase}</div>
+      <div class="thermo"><div class="thermo-track"><div class="thermo-dot" data-left="${r.total * 10}"></div></div>
+        <div class="thermo-lbl"><span>🥶 Anêmico</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
+    </div>
+    <div class="res-body">
+      <span class="score">Nota do molho: ${r.total.toFixed(1).replace('.', ',')}/10</span>
+      ${ordem.map(bloco).join('')}
+    </div></div>`};
+}
+
+function animateResult(root){
+  setTimeout(() => {
+    root.querySelectorAll('.meter i').forEach(i => i.style.width = i.dataset.w + '%');
+    const d = root.querySelector('.thermo-dot'); if (d) d.style.left = d.dataset.left + '%';
+  }, 120);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FLUXO
+   ═══════════════════════════════════════════════════════════ */
+async function run(){
+  const TOTAL = PERGUNTAS.length;
+  chat.innerHTML = ''; S.respostas = {};
+  setProgress(0, TOTAL);
+
+  await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
+  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
+  await bot('São 11 perguntas rapidinhas. Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
+
+  S.nome = await askText({placeholder: 'Seu nome'});
+  me(S.nome);
+
+  await bot(`Prazer, <b>${first(S.nome)}</b>! Em qual nicho você atua?`);
+  const ni = await askChoice(NICHOS);
+  S.nicho = NICHOS[ni]; me(S.nicho);
+
+  await bot(metodoCard(), {wide: true, delay: 1000});
+  await bot('Vou te perguntar sobre cada um. Bora? 👇', {delay: 700});
+
+  let ingAtual = null;
+  for (let i = 0; i < TOTAL; i++){
+    const q = PERGUNTAS[i];
+    const label = q.ing !== ingAtual ? `<small class="q">${ING[q.ing].emoji} ${ING[q.ing].nome}</small>` : '';
+    ingAtual = q.ing;
+    await bot(label + q.q);
+    const idx = await askChoice(q.ops);
+    S.respostas[i] = idx;
+    me(q.ops[idx].t);
+    setProgress(i + 1, TOTAL);
+  }
+
+  await bot('Pronto! Tô provando o seu molho… 🥄', {delay: 800});
+  await sleep(1400);
+
+  const r = calcular();
+  const card = resultadoCard(r);
+  await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
+  const resRow = await bot(card.html, {wide: true, delay: 1400});
+  animateResult(resRow);
+
+  await sleep(900);
+  const g = ING[card.gargalo];
+  if (r.total >= 8.5){
+    await bot(`Diva, que orgulho! Seu perfil tá com molho 🌶️ Agora é manter a constância e usar o <b>${g.emoji} ${g.nome}</b> pra deixar ainda mais apimentado.`);
+  } else {
+    await bot(`Não precisa mexer em tudo de uma vez: começa pelo <b>${g.emoji} ${g.nome}</b>. É ali que o seu perfil tá perdendo mais sabor, e é o ajuste que mais rápido faz você ser lembrada.`);
+  }
+
+  const nota = r.total.toFixed(1).replace('.', ',');
+  await bot(r.total >= 8.5
+    ? `E agora que o molho tá pronto, é hora de transformar isso em venda todo mês. É o que a gente faz na <b>Comunidade LucraDiva</b> 💸`
+    : `E olha, ${first(S.nome)}: foi exatamente pra isso que eu criei a <b>Comunidade LucraDiva</b> 💸`, {delay: 900});
+  const msg = `Oi Manu! Sou a ${S.nome}, trabalho com ${S.nicho}. Fiz o Diagnóstico do Perfil e deu *${card.nivel.label}* (${nota}/10). Meu ingrediente mais fraco foi ${g.nome}. Quero saber mais sobre a Comunidade LucraDiva! 🌶️`;
+  const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  const endRow = await bot(`<div class="end">
+      <span class="k">COMUNIDADE LUCRADIVA</span>
+      <h4>Transforme seu Instagram numa máquina de atrair, gerar confiança e VENDER</h4>
+      <p>Sem precisar virar uma personagem pra parecer autoridade.</p>
+      <ul>
+        <li>🎯 Um posicionamento que tem a sua cara</li>
+        <li>🌶️ Conteúdo com MUUUUITO molho</li>
+        <li>💬 Parar de depender de indicação</li>
+      </ul>
+      <div class="meta">A meta? <b>Construir um negócio capaz de chegar aos R$ 10 mil por mês com consistência</b>, mesmo que hoje suas vendas sejam irregulares ou você ainda esteja começando no digital.</div>
+      <div class="btns">
+        <a class="btn wa" href="${wa}" target="_blank" rel="noopener">💬 Quero entrar na LucraDiva</a>
+        <button class="btn link" id="refazer" type="button">↻ Refazer o diagnóstico</button>
+      </div></div>`, {wide: true});
+  endRow.querySelector('#refazer').onclick = () => { window.scrollTo({top: 0}); run(); };
+}
+
+run();
+</script>
+</body>
+</html>
