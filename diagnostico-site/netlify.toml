@@ -1,0 +1,4 @@
+# Configure no Netlify: Base directory = diagnostico-site
+[build]
+  publish = "."
+  functions = "netlify/functions"
