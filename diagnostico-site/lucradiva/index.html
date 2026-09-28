@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Diagnóstico de Posicionamento · Morno ou Com Molho?</title>
-<meta name="description" content="Descubra a temperatura do seu perfil: tá morno ou tá com molho? Diagnóstico do método da Manu Flores.">
+<meta name="description" content="Descubra o ponto do seu molho: seu perfil tá morno ou tá com molho? Diagnóstico de Posicionamento do método da Manu Flores.">
 <meta name="theme-color" content="#2F3DBC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -460,7 +460,7 @@ const ING = {
   personalidade:{emoji: '🌶️', nome: 'Personalidade e lado',   sub: 'opiniões, valores e pensamentos intrusivos que venceram'},
 };
 
-/* Cada opção vale de 3 (com molho) a 0 (anêmico) */
+/* Cada opção vale de 3 (com molho) a 0 (água e sal) */
 const PERGUNTAS = [
   {ing: 'vercrer', q: 'Se uma desconhecida entra no seu perfil agora, ela <b>bate o olho e entende o que você faz</b>?', ops: [
     {t: 'Sim, em 3 segundos', p: 3}, {t: 'Entende minha área, não o que eu entrego', p: 2}, {t: 'Acho que meu perfil é meio um mistério', p: 1}, {t: 'Nem eu sei explicar direito 🙈', p: 0}]},
@@ -520,7 +520,7 @@ function nivel(t){
   if (t >= 8.5) return {k: 'hot',  label: 'Com Molho 🌶️',      frase: 'Seu perfil tem sabor! Quem passa por ali lembra de você.'};
   if (t >= 6.5) return {k: 'hot',  label: 'Quase no ponto 🔥',  frase: 'Tem tempero, mas ainda falta um ingrediente pra você ser lembrada.'};
   if (t >= 4)   return {k: 'warm', label: 'Morno 🥣',          frase: 'Tá no fogão, mas sem graça: bonito, e ninguém lembra depois.'};
-  return          {k: 'cold', label: 'Anêmico 🥶',         frase: 'Sua comunicação tá precisando de um ferro. E a gente resolve!'};
+  return          {k: 'cold', label: 'Água e sal 🧂',      frase: 'Seu perfil ainda tá sem tempero nenhum. E a gente resolve!'};
 }
 
 function diagnostico(k, n){
@@ -590,11 +590,11 @@ function resultadoCard(r){
   };
   return {gargalo, nivel: nv, html: `<div class="res">
     <div class="res-top ${nv.k}">
-      <div class="res-k">Temperatura do perfil</div>
+      <div class="res-k">O ponto do seu molho</div>
       <div class="res-v">${nv.label}</div>
       <div class="res-s">${nv.frase}</div>
       <div class="thermo"><div class="thermo-track"><div class="thermo-dot" data-left="${r.total * 10}"></div></div>
-        <div class="thermo-lbl"><span>🥶 Anêmico</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
+        <div class="thermo-lbl"><span>🧂 Água e sal</span><span>Morno</span><span>Com molho 🌶️</span></div></div>
     </div>
     <div class="res-body">
       <span class="score">Nota do molho: ${r.total.toFixed(1).replace('.', ',')}/10</span>
@@ -620,8 +620,8 @@ async function run(){
   const avanca = () => setProgress(++n, TOTAL);
   setProgress(0, TOTAL);
 
-  await bot('Oi, diva! Bora descobrir a <b>temperatura do seu perfil</b>? 🌡️');
-  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem graça, anêmica, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
+  await bot('Oi, diva! Bora descobrir se o seu perfil tá <b>morno ou com molho</b>? 🌶️');
+  await bot('Perfil morno não é perfil ruim, nem falta de "personalidade nata". É a comunicação que tá sem tempero, água e sal, e aí ninguém lembra de você. E o jogo é esse: <b>ser lembrada</b> pra construir um nome que vira ativo.');
   await bot('Responde com sinceridade, que ninguém tá vendo 🤫 Primeiro: como você se chama?');
 
   S.nome = await askText({placeholder: 'Seu nome', autocomplete: 'given-name'});
@@ -708,7 +708,7 @@ async function run(){
   salvarLead({'Temperatura': card.nivel.label.replace(/\s*\S+$/u, ''), 'Nota': r.total,
     'Ver pra crer': r.notas.vercrer, 'Problema + solução': r.notas.resolve, 'Gancho': r.notas.gancho, 'Personalidade': r.notas.personalidade,
     'Ingrediente mais fraco': ING[card.gargalo].nome, 'Etapa': '4. Viu o resultado'});
-  await bot(`<b>${first(S.nome)}</b>, aqui tá a temperatura do seu perfil hoje:`, {delay: 1200});
+  await bot(`<b>${first(S.nome)}</b>, aqui tá o ponto do seu molho hoje:`, {delay: 1200});
   const resRow = await bot(card.html, {wide: true, delay: 1400});
   animateResult(resRow);
   setTimeout(() => resRow.scrollIntoView({behavior: 'smooth', block: 'start'}), 80);
