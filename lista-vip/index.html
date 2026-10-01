@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lista VIP · Black das Divas · Manoela Flores</title>
+<meta name="description" content="Entre na Lista VIP da Black das Divas e ganhe R$100 de desconto. No dia 15/10 a Manu te chama no WhatsApp, individualmente, com o seu cupom.">
+<meta property="og:title" content="Lista VIP · Black das Divas">
+<meta property="og:description" content="Eu coloquei tudo que eu ensino dentro de uma única Black. Entre na Lista VIP e ganhe R$100 de desconto.">
+<meta property="og:image" content="assets/black-das-divas.jpg">
+<meta name="theme-color" content="#14112E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/Advercase-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Advercase';src:url('fonts/Advercase-Regular.woff2') format('woff2');font-weight:400 500;font-display:swap}
+@font-face{font-family:'Advercase';src:url('fonts/Advercase-Bold.woff2') format('woff2');font-weight:600 800;font-display:swap}
+:root{--cobalto:#2F38BF;--cobalto-h:#252DA3;--rosa:#DE8496;--ink:#15123A;--deep:#14112E;--panel:#1E1948;--work:#F8F2E3;--surface:#FFFCF3;--cream:#FBF6E5;--neg:#b4485f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--deep);font-family:'Hanken Grotesk',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:var(--cobalto)}a:hover{color:var(--rosa)}
+.display{font-family:'Advercase',serif;font-weight:500}
+.hl{color:var(--rosa);font-style:normal}
+
+/* Hero */
+.hero{background:var(--deep);color:var(--cream);overflow:hidden}
+.hero-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));align-items:stretch}
+.hero-text{padding:clamp(40px,6vw,80px) clamp(24px,5vw,64px);display:flex;flex-direction:column;gap:22px;justify-content:center}
+.selos{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{padding:7px 14px;border-radius:999px;background:var(--rosa);color:var(--ink);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.selo-txt{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;white-space:nowrap}
+h1{margin:0;font-size:clamp(36px,4.6vw,60px);line-height:1.08;letter-spacing:0;text-wrap:balance}
+.lead{margin:0;font-size:17px;line-height:1.55;color:rgba(251,246,229,.7);max-width:480px;text-wrap:pretty}
+.lead strong{color:var(--cream);font-weight:700}
+.hero-foto{position:relative;min-height:520px}
+.hero-foto picture,.hero-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block}
+
+/* Form */
+form{display:flex;flex-direction:column;gap:10px;max-width:480px}
+input{height:54px;padding:0 18px;border-radius:12px;border:1px solid rgba(21,18,58,.07);background:var(--surface);font:inherit;font-size:16px;color:var(--ink);outline:none;width:100%}
+input::placeholder{color:rgba(21,18,58,.45)}
+input:focus{border-color:var(--cobalto);box-shadow:0 0 0 3px rgba(47,56,191,.35)}
+input[aria-invalid="true"]{border-color:var(--neg);box-shadow:0 0 0 3px rgba(180,72,95,.35)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.btn{min-height:58px;padding:12px 18px;margin-top:6px;border:none;border-radius:12px;background:var(--cobalto);color:var(--cream);font:inherit;font-size:14px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;text-wrap:balance;transition:background .15s}
+.btn:hover{background:var(--cobalto-h)}
+.btn[disabled]{opacity:.7;cursor:wait}
+.erro{display:none;font-size:14px;color:#F2B3C0;font-weight:500}
+.erro.on{display:block}
+.micro{font-size:13px;color:rgba(251,246,229,.55)}
+.semgrupo{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--cream);font-weight:500}
+.semgrupo b{padding:3px 9px;border-radius:999px;border:1px solid var(--rosa);color:var(--rosa);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;white-space:nowrap}
+.sucesso{max-width:480px;padding:28px;border-radius:16px;background:var(--panel);display:flex;flex-direction:column;gap:10px}
+.sucesso[hidden]{display:none}
+.sucesso .lbl{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--rosa);font-weight:600}
+.sucesso .tit{font-size:28px;line-height:1.15}
+.sucesso .txt{font-size:16px;color:rgba(251,246,229,.7);line-height:1.5}
+
+/* Marquee */
+.marquee{background:var(--panel);color:var(--cream);overflow:hidden;padding:18px 0;border-top:1px solid rgba(251,246,229,.08)}
+.mq-track{display:flex;width:max-content;animation:mq 40s linear infinite}
+.mq-track span{display:flex;align-items:center;gap:28px;padding-right:28px;font-size:15px;font-weight:500;white-space:nowrap;text-transform:uppercase;letter-spacing:.1em}
+.mq-track span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--rosa)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.mq-track{animation:none}}
+
+/* Bônus */
+.bonus{background:var(--work);padding:clamp(64px,9vw,120px) clamp(24px,5vw,72px)}
+.bonus-in{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:32px;align-items:center;text-align:center}
+h2{margin:0;font-size:clamp(28px,3.4vw,42px);line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.card{width:100%;background:var(--ink);color:var(--cream);border-radius:24px;padding:clamp(40px,6vw,72px) clamp(28px,5vw,56px);display:flex;flex-direction:column;align-items:center;gap:20px}
+.card .big{font-size:clamp(40px,7vw,84px);line-height:1.05;color:var(--rosa);width:100%}
+.card .sub{font-size:19px;color:rgba(251,246,229,.7);width:100%}
+.btn-pill{margin-top:12px;min-height:60px;padding:14px 36px;border-radius:999px;background:var(--cobalto);color:var(--cream);display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:15px;text-align:center}
+.btn-pill:hover{background:var(--cobalto-h);color:var(--cream)}
+.emojis{font-size:24px;letter-spacing:.2em}
+
+/* Footer */
+footer{background:var(--deep);color:rgba(251,246,229,.55);padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+footer nav{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+footer a{color:rgba(251,246,229,.7);text-decoration:none}
+</style>
+</head>
+<body>
+
+<section class="hero" id="topo">
+  <div class="hero-grid">
+    <div class="hero-text">
+      <div class="selos">
+        <span class="pill">Lista VIP</span>
+        <span class="selo-txt">BLACK DAS DIVAS 💅✨💙</span>
+      </div>
+      <h1 class="display">Eu coloquei tudo que eu ensino dentro de <em class="hl">uma única Black.</em> 💅</h1>
+      <p class="lead">No dia <strong>15/10</strong>, eu vou abrir primeiro para a Lista VIP a maior oferta que já montei para mulheres que querem criar conteúdo, construir posicionamento e fazer seus negócios crescerem sem virar uma personagem na internet.</p>
+
+      <form id="form-vip" novalidate>
+        <input required name="nome" placeholder="Seu nome" autocomplete="given-name" aria-label="Seu nome">
+        <input required type="email" name="email" placeholder="Seu melhor e-mail" autocomplete="email" inputmode="email" aria-label="Seu melhor e-mail">
+        <input required type="tel" name="whatsapp" placeholder="Seu WhatsApp com DDD" autocomplete="tel-national" inputmode="numeric" maxlength="15" aria-label="Seu WhatsApp com DDD">
+        <input class="hp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit">QUERO ENTRAR NA LISTA E GANHAR R$100 OFF</button>
+        <span class="erro" role="alert"></span>
+        <span class="micro">O cupom será enviado para a Lista VIP no dia 15/10.</span>
+        <span class="semgrupo"><b>Sem grupo</b><span>Eu mesma vou te chamar no WhatsApp, individualmente.</span></span>
+      </form>
+
+      <div class="sucesso" id="sucesso" hidden aria-live="polite">
+        <span class="lbl">Você está na Lista VIP</span>
+        <span class="tit display">Pronto, <span id="primeiro-nome"></span>. Seu cupom de R$100 está garantido.</span>
+        <span class="txt">Não tem grupo. No dia 15/10 eu mesma vou te chamar no WhatsApp, individualmente, com o link e o seu cupom. 💙</span>
+      </div>
+    </div>
+    <div class="hero-foto">
+      <picture>
+        <source srcset="assets/black-das-divas.webp" type="image/webp">
+        <img src="assets/black-das-divas.jpg" alt="Manu segurando placa Black das Divas" width="1122" height="1402">
+      </picture>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="mq-track" id="mq"></div></div>
+
+<section class="bonus">
+  <div class="bonus-in">
+    <h2 class="display">E as DIVAS da lista ainda recebem:</h2>
+    <div class="card">
+      <span style="font-size:40px;line-height:1">💅</span>
+      <span class="big display">R$100 DE DESCONTO</span>
+      <span class="sub">antes da abertura para o público.</span>
+      <a href="#topo" class="btn-pill js-topo">QUERO ENTRAR NA LISTA E GANHAR R$100 OFF</a>
+      <span class="micro" style="width:100%">O cupom será enviado para a Lista VIP no dia 15/10.</span>
+      <div style="display:flex;justify-content:center;width:100%"><span class="semgrupo"><b>Sem grupo</b><span>Eu mesma vou te chamar no WhatsApp, individualmente.</span></span></div>
+    </div>
+    <span class="emojis">💅✨💙</span>
+  </div>
+</section>
+
+<footer>
+  <nav>
+    <a href="#">Política de Privacidade</a>
+    <a href="#">Termos e Condições</a>
+  </nav>
+  <span>Manoela Flores · 2026 · Todos os direitos reservados</span>
+</footer>
+
+<script>
+/* Link do App da Web do Apps Script da planilha "Lista VIP · Black das Divas".
+   Cole aqui o link que termina em /exec (passo a passo em LEIA-ME.md). */
+const PLANILHA_URL = '';
+
+/* Faixa rolante */
+(() => {
+  const palavras = ['Black das Divas', 'Lista VIP', 'R$100 de desconto', '15/10', 'Uma única oferta'];
+  const mq = document.getElementById('mq');
+  [...palavras, ...palavras, ...palavras, ...palavras].forEach(p => {
+    const s = document.createElement('span'); s.textContent = p; mq.appendChild(s);
+  });
+})();
+
+/* Botões de baixo levam ao formulário */
+document.querySelectorAll('.js-topo').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  setTimeout(() => { const n = document.querySelector('#form-vip [name=nome]'); n && n.focus({preventScroll: true}); }, 500);
+}));
+
+/* Máscara do WhatsApp: (00) 00000-0000 */
+const tel = document.querySelector('[name=whatsapp]');
+tel.addEventListener('input', () => {
+  const d = tel.value.replace(/\D/g, '').slice(0, 11);
+  let v = d;
+  if (d.length > 2) v = `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length > 6) v = `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}`;
+  tel.value = v;
+});
+
+/* Envio pra planilha */
+const form = document.getElementById('form-vip');
+const erro = form.querySelector('.erro');
+const btn = form.querySelector('button');
+
+function mostrarErro(msg, campo){
+  erro.textContent = msg; erro.classList.add('on');
+  form.querySelectorAll('input').forEach(i => i.removeAttribute('aria-invalid'));
+  if (campo){ campo.setAttribute('aria-invalid', 'true'); campo.focus(); }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  erro.classList.remove('on');
+  const nome = form.nome.value.trim().replace(/\s+/g, ' ');
+  const email = form.email.value.trim().toLowerCase();
+  const digitos = form.whatsapp.value.replace(/\D/g, '');
+
+  if (nome.length < 2) return mostrarErro('Me conta o seu nome.', form.nome);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return mostrarErro('Esse e-mail parece incompleto. Confere pra mim?', form.email);
+  if (!/^[1-9][0-9]9?[0-9]{8}$/.test(digitos) || digitos.length < 10) return mostrarErro('Coloca o WhatsApp com DDD, assim: (11) 99999-9999.', form.whatsapp);
+  if (form.site.value) return; // robô
+
+  const q = new URLSearchParams(location.search);
+  const origem = [q.get('utm_source'), q.get('utm_medium'), q.get('utm_campaign')].filter(Boolean).join(' / ')
+    || (document.referrer ? new URL(document.referrer).hostname : 'direto');
+
+  btn.disabled = true;
+  const textoBtn = btn.textContent;
+  btn.textContent = 'ENVIANDO...';
+  try {
+    if (!PLANILHA_URL) throw new Error('PLANILHA_URL vazio');
+    await fetch(PLANILHA_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: new URLSearchParams({nome, email, whatsapp: form.whatsapp.value, origem}),
+    });
+    document.getElementById('primeiro-nome').textContent = nome.split(' ')[0];
+    form.hidden = true;
+    form.style.display = 'none';
+    document.getElementById('sucesso').hidden = false;
+    if (window.fbq) fbq('track', 'Lead');
+    if (window.gtag) gtag('event', 'generate_lead');
+  } catch (err) {
+    console.error(err);
+    mostrarErro('Não consegui salvar agora. Confere sua internet e tenta de novo, por favor.');
+    btn.disabled = false;
+    btn.textContent = textoBtn;
+  }
+});
+</script>
+</body>
+</html>
