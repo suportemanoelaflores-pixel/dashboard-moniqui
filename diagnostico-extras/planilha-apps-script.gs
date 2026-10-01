@@ -140,9 +140,13 @@ function doGet(e) {
   // WhatsApps das leads do diagnóstico (1ª aba), pra reconhecer quem comprou depois de fazer o diagnóstico.
   const leads = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getDataRange().getValues();
   const colWa = leads.length ? leads[0].indexOf('WhatsApp') : -1;
-  const whatsappsLeads = colWa < 0 ? [] : leads.slice(1).map(l => String(l[colWa] || '')).filter(String);
+  const colData = leads.length ? leads[0].indexOf('Data') : -1;
+  const listaLeads = leads.slice(1).map(l => ({
+    data: colData < 0 ? '' : l[colData],
+    whatsapp: colWa < 0 ? '' : String(l[colWa] || ''),
+  }));
 
-  return resposta({ok: true, vendas: vendas, whatsappsLeads: whatsappsLeads});
+  return resposta({ok: true, vendas: vendas, leads: listaLeads});
 }
 
 function resposta(obj) {

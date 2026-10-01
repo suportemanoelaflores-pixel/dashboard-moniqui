@@ -49,11 +49,14 @@ Use `?demo` pra ver com dados de exemplo.
   "atualizadoEm": "2026-09-30T12:00:00.000Z",
   "vendedoras": [{"id": "manu", "nome": "Manu"}, {"id": "giovana", "nome": "Giovana"}, {"id": "sem-vendedora", "nome": "Sem vendedora"}],
   "canais": [{"id": "stories", "nome": "Stories"}, "...", {"id": "sem-rastreio", "nome": "Sem rastreio"}],
+  "metaMensal": 30000,
+  "leadsDiagnostico": ["2026-09-20T13:00:00.000Z", "..."],
   "vendas": [{
     "transacao": "HP1234567890", "data": "2026-09-25T17:03:10.000Z",
-    "status": "APPROVED", "pago": true, "devolvido": false,
-    "produto": "Aceleradora Pronta Pra Vender", "valor": 5000, "moeda": "BRL", "pagamento": "PIX",
-    "comprador": "Ana Paula",
+    "status": "APPROVED", "pago": true, "devolvido": false, "pendente": false,
+    "produto": "Aceleradora Pronta Pra Vender", "valor": 5000, "moeda": "BRL",
+    "pagamento": "PIX", "parcelas": 1,
+    "comprador": "Ana Paula", "telefone": "5511988887777", "fezDiagnostico": true,
     "vendedora": {"id": "giovana", "nome": "Giovana"},
     "canal": {"id": "stories", "nome": "Stories"},
     "origem": "link",
@@ -62,9 +65,19 @@ Use `?demo` pra ver com dados de exemplo.
 }
 ```
 
-`origem`: `link` (veio pelo link rastreável), `ajuste` (corrigido na planilha),
-`whatsapp-do-diagnostico` (telefone bateu com lead do diagnóstico) ou `nenhuma`.
-Contam como venda só as com `pago: true`; `devolvido: true` = reembolso/chargeback.
+- `pago` = conta como venda · `devolvido` = reembolso/chargeback · `pendente` = boleto/Pix gerado e não pago (dá pra recuperar).
+- `origem`: `link` (link rastreável), `ajuste` (corrigido na planilha), `whatsapp-do-diagnostico` ou `nenhuma`.
+- `leadsDiagnostico`: data de cada pessoa que fez o diagnóstico (pra taxa de conversão).
+- A meta do mês pode ser trocada no próprio painel (fica salva no aparelho).
 
-Telas atuais: **Painel** (filtro de período e produto, 4 números, barras por vendedora e por canal,
-tabela vendedora × canal) · **Vendas** (lista com filtros) · **Criar links** · **Importar**.
+**O que o painel mostra hoje (tudo calculado no navegador a partir desses dados):**
+- **Meta do mês** (sempre o mês atual): faturamento, % atingido, marcador de "onde você deveria estar hoje",
+  projeção do mês (a partir do dia 5), quanto falta e quanto precisa por dia / quantas vendas no ticket médio, vendas de hoje.
+- **6 números do período** com comparação ao período anterior: faturamento, vendas, ticket médio,
+  taxa de reembolso, % rastreadas, dinheiro na mesa.
+- **Faturamento ao longo do tempo** (por dia, ou por mês em períodos longos), com tooltip.
+- **Duelo Manu × Giovana**: faturamento, % do total, variação, vendas, ticket, melhor canal, produto mais vendido.
+- **De onde vieram** (canais) e **O que mais vendeu** (produtos).
+- **Dinheiro na mesa**: quem gerou boleto/Pix e não pagou, com botão de WhatsApp com mensagem pronta.
+- **Diagnóstico → venda**: quantas fizeram o diagnóstico, quantas compraram, conversão e faturamento.
+- **Vendedora × canal**, **melhores dias da semana**, **formas de pagamento / parcelamento**, **últimas vendas**.

@@ -19,6 +19,9 @@ export const CANAIS = [
   {id: 'direct', nome: 'Direct'},
 ];
 
+/** Meta de faturamento do mês (R$). Dá pra trocar no próprio painel; este é o valor padrão. */
+export const META_MENSAL = 30000;
+
 export const SEM_VENDEDORA = {id: 'sem-vendedora', nome: 'Sem vendedora'};
 export const SEM_CANAL = {id: 'sem-rastreio', nome: 'Sem rastreio'};
 
@@ -47,6 +50,8 @@ export function atribuir({src, sck, ajusteVendedora, ajusteCanal, veioDoDiagnost
 /** Status da Hotmart que contam como venda feita. */
 export const STATUS_PAGOS = ['APPROVED', 'COMPLETE', 'COMPLETED'];
 export const STATUS_DEVOLVIDOS = ['REFUNDED', 'CHARGEBACK', 'PROTESTED', 'PARTIALLY_REFUNDED'];
+/** Compra iniciada e ainda não paga: dá pra recuperar chamando a pessoa. */
+export const STATUS_PENDENTES = ['WAITING_PAYMENT', 'BILLET_PRINTED', 'DELAYED', 'STARTED', 'PRINTED_BILLET'];
 
 /** O relatório da Hotmart (CSV) e ajustes na planilha vêm em português; o webhook, em inglês. */
 const STATUS_PT = {

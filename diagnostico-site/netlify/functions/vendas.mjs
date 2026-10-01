@@ -6,7 +6,7 @@
 
 import {createHash, timingSafeEqual} from 'node:crypto';
 import {json, lerVendas, salvarVendas} from '../lib/planilha.mjs';
-import {VENDEDORAS, CANAIS, SEM_VENDEDORA, SEM_CANAL, STATUS_PAGOS, STATUS_DEVOLVIDOS, atribuir, normalizarStatus} from '../lib/atribuicao.mjs';
+import {VENDEDORAS, CANAIS, SEM_VENDEDORA, SEM_CANAL, META_MENSAL, STATUS_PAGOS, STATUS_DEVOLVIDOS, STATUS_PENDENTES, atribuir, normalizarStatus} from '../lib/atribuicao.mjs';
 
 const COLUNAS_IMPORTAVEIS = ['Transação', 'Data', 'Aprovada em', 'Status', 'Produto', 'Oferta', 'Valor', 'Moeda',
   'Pagamento', 'Parcelas', 'Comprador', 'Email', 'Telefone', 'SRC', 'SCK'];
@@ -47,17 +47,21 @@ export default async (req) => {
 };
 
 async function montarDashboard(){
-  const {vendas = [], whatsappsLeads = []} = await lerVendas();
+  const d = await lerVendas();
+  const vendas = d.vendas || [];
+  // Planilha antiga mandava só os WhatsApps; a nova manda {data, whatsapp}.
+  const listaLeads = d.leads || (d.whatsappsLeads || []).map(whatsapp => ({whatsapp, data: ''}));
   // Final do número (8 dígitos) resolve 9º dígito e DDI diferentes.
-  const leads = new Set(whatsappsLeads.map(w => digitos(w).slice(-8)).filter(w => w.length === 8));
+  const leads = new Set(listaLeads.map(l => digitos(l.whatsapp).slice(-8)).filter(w => w.length === 8));
 
   const lista = vendas.filter(v => v['Transação']).map(v => {
     const status = normalizarStatus(v['Status']);
     const tel = digitos(v['Telefone']).slice(-8);
+    const fezDiagnostico = tel.length === 8 && leads.has(tel);
     const {vendedora, canal, origem} = atribuir({
       src: v['SRC'], sck: v['SCK'],
       ajusteVendedora: v['Vendedora (ajuste)'], ajusteCanal: v['Canal (ajuste)'],
-      veioDoDiagnostico: tel.length === 8 && leads.has(tel),
+      veioDoDiagnostico: fezDiagnostico,
     });
     return {
       transacao: String(v['Transação']),
@@ -65,11 +69,15 @@ async function montarDashboard(){
       status,
       pago: STATUS_PAGOS.includes(status),
       devolvido: STATUS_DEVOLVIDOS.includes(status),
+      pendente: STATUS_PENDENTES.includes(status),
       produto: String(v['Produto'] || ''),
       valor: numero(v['Valor']),
       moeda: String(v['Moeda'] || 'BRL'),
       pagamento: String(v['Pagamento'] || ''),
+      parcelas: Number(v['Parcelas']) || 1,
       comprador: String(v['Comprador'] || ''),
+      telefone: digitos(v['Telefone']),
+      fezDiagnostico,
       vendedora, canal, origem,
       src: String(v['SRC'] || ''), sck: String(v['SCK'] || ''),
     };
@@ -79,6 +87,8 @@ async function montarDashboard(){
     atualizadoEm: new Date().toISOString(),
     vendedoras: [...VENDEDORAS, SEM_VENDEDORA],
     canais: [...CANAIS, SEM_CANAL],
+    metaMensal: META_MENSAL,
+    leadsDiagnostico: listaLeads.map(l => dataIso(l.data)).filter(Boolean),
     vendas: lista,
   };
 }
