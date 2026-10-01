@@ -1,0 +1,7 @@
+{
+  "name": "painel-vendas",
+  "private": true,
+  "type": "module",
+  "description": "Painel comercial da Manu Flores: quem vendeu (Manu ou Giovana) e de onde veio. Vendas da Hotmart via webhook, guardadas na planilha do Google.",
+  "engines": {"node": ">=20"}
+}

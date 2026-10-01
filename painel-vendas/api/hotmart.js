@@ -2,10 +2,10 @@
 // e vira/atualiza uma linha na aba "Vendas" da planilha.
 //
 // Na Hotmart: Ferramentas → Webhook (API e notificações) → Cadastrar webhook
-//   URL: https://SEU-SITE.netlify.app/.netlify/functions/hotmart   · versão 2.0.0 · eventos de compra
-// O "hottok" que a Hotmart mostra vai no Netlify em HOTMART_HOTTOK.
+//   URL: https://SEU-PROJETO.vercel.app/api/hotmart   · versão 2.0.0 · eventos de compra
+// O "hottok" que a Hotmart mostra vai na Vercel (Environment Variables) em HOTMART_HOTTOK.
 
-import {json, salvarVendas} from '../lib/planilha.mjs';
+import {json, salvarVendas} from '../lib/planilha.js';
 
 const STATUS_POR_EVENTO = {
   PURCHASE_APPROVED: 'APPROVED', PURCHASE_COMPLETE: 'COMPLETE', PURCHASE_CANCELED: 'CANCELED',
@@ -16,7 +16,7 @@ const STATUS_POR_EVENTO = {
 
 const data = ms => ms ? new Date(Number(ms)).toISOString() : '';
 
-export default async (req) => {
+async function receber(req){
   if (req.method !== 'POST') return json({error: 'use POST'}, 405);
   const esperado = (process.env.HOTMART_HOTTOK || '').trim();
   if (!esperado) return json({error: 'HOTMART_HOTTOK não configurado'}, 500);
@@ -61,4 +61,7 @@ export default async (req) => {
     // 5xx faz a Hotmart tentar de novo mais tarde.
     return json({error: 'falha ao salvar na planilha', detalhe: String(e && e.message || e)}, 502);
   }
-};
+}
+
+// Vercel
+export {receber as POST};

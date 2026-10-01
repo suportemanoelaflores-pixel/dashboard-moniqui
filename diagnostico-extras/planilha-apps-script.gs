@@ -5,13 +5,13 @@
  * 1. Na planilha: Extensões → Apps Script. Apaga o que tiver e cola este código. Salva.
  * 2. Implantar → Nova implantação → tipo "App da Web".
  *    Executar como: "Eu". Quem pode acessar: "Qualquer pessoa". Implantar e autorizar.
- * 3. Copia o "URL do app da Web" e cola no Netlify em Environment variables → SHEET_WEBHOOK_URL.
+ * 3. Copia o "URL do app da Web" e cola no Netlify (diagnóstico) e na Vercel (painel de vendas) em SHEET_WEBHOOK_URL.
  *
  * Cada lead é uma linha. A linha vai sendo completada conforme a lead avança no diagnóstico.
  *
- * Vendas (dashboard em /vendas/):
+ * Vendas (painel em painel-vendas/, hospedado na Vercel):
  * 4. Troca o TOKEN abaixo por uma senha longa sua (ex.: 30 letras e números aleatórios).
- *    Cola a mesma senha no Netlify em Environment variables → SHEET_TOKEN.
+ *    Cola a mesma senha na Vercel (projeto do painel) em Environment Variables → SHEET_TOKEN.
  * 5. Implantar → Gerenciar implantações → lápis → Versão: "Nova versão" → Implantar.
  *    (O link continua o mesmo; sem nova versão o script antigo continua rodando.)
  * A aba "Vendas" é criada sozinha na primeira venda. As colunas "Vendedora (ajuste)" e

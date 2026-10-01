@@ -1,12 +1,12 @@
-// Dados do dashboard de vendas. Protegido pela senha DASHBOARD_SENHA (variável do Netlify).
+// Dados do dashboard de vendas. Protegido pela senha DASHBOARD_SENHA (variável de ambiente da Vercel).
 //
-// GET  /.netlify/functions/vendas            (header x-senha)  → {vendedoras, canais, vendas: [...]}
-// POST /.netlify/functions/vendas            (header x-senha)  {vendas: [{Transação, Data, ...}]}
+// GET  /api/vendas   (header x-senha)  → {vendedoras, canais, vendas: [...]}
+// POST /api/vendas   (header x-senha)  {vendas: [{Transação, Data, ...}]}
 //      importa o relatório de vendas da Hotmart (CSV) pra planilha, sem duplicar.
 
 import {createHash, timingSafeEqual} from 'node:crypto';
-import {json, lerVendas, salvarVendas} from '../lib/planilha.mjs';
-import {VENDEDORAS, CANAIS, SEM_VENDEDORA, SEM_CANAL, META_MENSAL, STATUS_PAGOS, STATUS_DEVOLVIDOS, STATUS_PENDENTES, atribuir, normalizarStatus} from '../lib/atribuicao.mjs';
+import {json, lerVendas, salvarVendas} from '../lib/planilha.js';
+import {VENDEDORAS, CANAIS, SEM_VENDEDORA, SEM_CANAL, META_MENSAL, STATUS_PAGOS, STATUS_DEVOLVIDOS, STATUS_PENDENTES, atribuir, normalizarStatus} from '../lib/atribuicao.js';
 
 const COLUNAS_IMPORTAVEIS = ['Transação', 'Data', 'Aprovada em', 'Status', 'Produto', 'Oferta', 'Valor', 'Moeda',
   'Pagamento', 'Parcelas', 'Comprador', 'Email', 'Telefone', 'SRC', 'SCK'];
@@ -33,7 +33,7 @@ const dataIso = v => {
   return isNaN(d) ? String(v) : d.toISOString();
 };
 
-export default async (req) => {
+async function receber(req){
   if (!process.env.DASHBOARD_SENHA) return json({error: 'DASHBOARD_SENHA não configurado'}, 500);
   if (!senhaOk(req)) return json({error: 'senha incorreta'}, 401);
 
@@ -44,7 +44,10 @@ export default async (req) => {
   } catch (e){
     return json({error: String(e && e.message || e)}, 502);
   }
-};
+}
+
+// Vercel: GET lê, POST importa.
+export {receber as GET, receber as POST};
 
 async function montarDashboard(){
   const d = await lerVendas();

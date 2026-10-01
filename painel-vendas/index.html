@@ -13,7 +13,7 @@
 <!--
   ESTRUTURA (pro redesign): toda a lógica está no <script> e só escreve dentro dos elementos com id.
   Dá pra trocar o CSS e o HTML à vontade desde que os ids continuem existindo.
-  Os dados vêm de GET /.netlify/functions/vendas (header x-senha) — formato em diagnostico-extras/VENDAS.md.
+  Os dados vêm de GET /api/vendas (header x-senha) — formato em diagnostico-extras/VENDAS.md.
   Abra com ?demo pra ver com dados de exemplo, sem senha.
 -->
 <style>
@@ -485,7 +485,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 <div id="tt" role="tooltip"></div>
 
 <script>
-const API = '/.netlify/functions/vendas';
+const API = '/api/vendas';
 const DEMO = new URLSearchParams(location.search).has('demo');
 const S = {senha: '', dados: null, csv: []};
 

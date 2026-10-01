@@ -1,6 +1,7 @@
 # Painel de vendas — quem vendeu e de onde veio
 
-Página: `https://SEU-SITE.netlify.app/vendas/` (com senha) · Exemplo sem senha: `/vendas/?demo`
+Código: pasta `painel-vendas/` (hospedado na **Vercel**). O site do diagnóstico continua no Netlify.
+Página: `https://SEU-PROJETO.vercel.app/` (com senha) · Exemplo sem senha: `/?demo`
 
 ## Como funciona
 
@@ -9,9 +10,9 @@ Página: `https://SEU-SITE.netlify.app/vendas/` (com senha) · Exemplo sem senha
    bio, diagnóstico, WhatsApp, direct). O link sai com:
    - `src=<canal>` e `sck=<vendedora>_<canal>` → a Hotmart guarda esses dois em cada venda;
    - `utm_source`, `utm_medium`, `utm_content`, `utm_campaign` → pro Google Analytics.
-2. **Hotmart avisa cada venda** (webhook) → `/.netlify/functions/hotmart` → aba **Vendas** da planilha.
+2. **Hotmart avisa cada venda** (webhook) → `/api/hotmart` → aba **Vendas** da planilha.
    Aprovação, reembolso, chargeback etc. atualizam a mesma linha (mesma Transação).
-3. **O painel** lê a planilha e mostra faturamento por vendedora, por canal e o cruzamento dos dois.
+3. **O painel** (`/api/vendas`) lê a planilha e calcula tudo.
 4. **Sem link?** Se o telefone de quem comprou é o mesmo WhatsApp de uma lead do diagnóstico,
    a venda conta como canal *Diagnóstico*. E dá pra corrigir qualquer venda na planilha,
    nas colunas **Vendedora (ajuste)** / **Canal (ajuste)** (ex.: `giovana`, `stories`).
@@ -19,30 +20,31 @@ Página: `https://SEU-SITE.netlify.app/vendas/` (com senha) · Exemplo sem senha
 
 ## Configuração (uma vez)
 
-1. **Planilha** — cola o `planilha-apps-script.gs` atualizado no Apps Script, troca o `TOKEN`
-   por uma senha longa e publica uma **nova versão** (Implantar → Gerenciar implantações → lápis → Nova versão).
-2. **Netlify → Environment variables**
+1. **Planilha** — cola o `diagnostico-extras/planilha-apps-script.gs` no Apps Script da planilha das leads,
+   troca o `TOKEN` por uma senha longa e publica uma **nova versão**
+   (Implantar → Gerenciar implantações → lápis → Nova versão).
+2. **Vercel** — projeto com *Root Directory* = `painel-vendas`. Em Settings → Environment Variables:
    | Variável | O que é |
    |---|---|
-   | `SHEET_WEBHOOK_URL` | já existe (link do Apps Script) |
+   | `SHEET_WEBHOOK_URL` | o mesmo link do Apps Script que está no Netlify |
    | `SHEET_TOKEN` | a mesma senha do `TOKEN` do Apps Script |
-   | `DASHBOARD_SENHA` | senha pra entrar no painel |
+   | `DASHBOARD_SENHA` | senha pra entrar no painel (você inventa) |
    | `HOTMART_HOTTOK` | o hottok da Hotmart (passo 3) |
-   Depois: *Deploys → Trigger deploy*.
+   Depois: Deployments → ⋯ → Redeploy (variável nova só vale depois de um deploy).
 3. **Hotmart** — Ferramentas → Webhook (API e notificações) → Cadastrar:
-   URL `https://SEU-SITE.netlify.app/.netlify/functions/hotmart`, versão **2.0.0**,
+   URL `https://SEU-PROJETO.vercel.app/api/hotmart`, versão **2.0.0**,
    eventos de compra (aprovada, completa, cancelada, reembolso, chargeback, pedido de reembolso,
-   atrasada, boleto impresso, expirada). Copia o **hottok** pro Netlify.
-4. **Nome da vendedora / canais novos** — `diagnostico-site/netlify/lib/atribuicao.mjs`.
+   atrasada, boleto impresso, expirada). Copia o **hottok** pra Vercel.
+4. **Nome da vendedora / canais novos / meta padrão** — `painel-vendas/lib/atribuicao.js`.
    O `id` vai dentro dos links: não mude depois que os links estiverem rodando (o `nome` pode).
 
 ## Pro redesign (Claude Design)
 
-A página `diagnostico-site/vendas/index.html` é só estrutura. Pode trocar todo o CSS/HTML,
+O visual fica em `painel-vendas/index.html`. Pode trocar todo o CSS/HTML,
 desde que os `id`s usados no `<script>` continuem existindo (ou o script seja adaptado).
 Use `?demo` pra ver com dados de exemplo.
 
-**Dados** — `GET /.netlify/functions/vendas` com header `x-senha`:
+**Dados** — `GET /api/vendas` com header `x-senha`:
 
 ```json
 {
