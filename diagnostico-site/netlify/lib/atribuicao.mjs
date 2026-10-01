@@ -7,7 +7,7 @@
 
 export const VENDEDORAS = [
   {id: 'manu', nome: 'Manu'},
-  {id: 'vendedora', nome: 'Vendedora'},
+  {id: 'giovana', nome: 'Giovana'},
 ];
 
 export const CANAIS = [

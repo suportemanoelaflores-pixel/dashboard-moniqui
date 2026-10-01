@@ -5,7 +5,7 @@ Página: `https://SEU-SITE.netlify.app/vendas/` (com senha) · Exemplo sem senha
 ## Como funciona
 
 1. **Links rastreáveis** — na aba *Criar links* você cola o link do checkout da Hotmart,
-   escolhe **quem vai mandar** (Manu ou vendedora) e **onde vai ser usado** (stories, ManyChat,
+   escolhe **quem vai mandar** (Manu ou Giovana) e **onde vai ser usado** (stories, ManyChat,
    bio, diagnóstico, WhatsApp, direct). O link sai com:
    - `src=<canal>` e `sck=<vendedora>_<canal>` → a Hotmart guarda esses dois em cada venda;
    - `utm_source`, `utm_medium`, `utm_content`, `utm_campaign` → pro Google Analytics.
@@ -14,7 +14,7 @@ Página: `https://SEU-SITE.netlify.app/vendas/` (com senha) · Exemplo sem senha
 3. **O painel** lê a planilha e mostra faturamento por vendedora, por canal e o cruzamento dos dois.
 4. **Sem link?** Se o telefone de quem comprou é o mesmo WhatsApp de uma lead do diagnóstico,
    a venda conta como canal *Diagnóstico*. E dá pra corrigir qualquer venda na planilha,
-   nas colunas **Vendedora (ajuste)** / **Canal (ajuste)** (ex.: `vendedora`, `stories`).
+   nas colunas **Vendedora (ajuste)** / **Canal (ajuste)** (ex.: `giovana`, `stories`).
 5. **Vendas antigas** — aba *Importar*: sobe o CSV do relatório de vendas da Hotmart.
 
 ## Configuração (uma vez)
@@ -47,17 +47,17 @@ Use `?demo` pra ver com dados de exemplo.
 ```json
 {
   "atualizadoEm": "2026-09-30T12:00:00.000Z",
-  "vendedoras": [{"id": "manu", "nome": "Manu"}, {"id": "vendedora", "nome": "Vendedora"}, {"id": "sem-vendedora", "nome": "Sem vendedora"}],
+  "vendedoras": [{"id": "manu", "nome": "Manu"}, {"id": "giovana", "nome": "Giovana"}, {"id": "sem-vendedora", "nome": "Sem vendedora"}],
   "canais": [{"id": "stories", "nome": "Stories"}, "...", {"id": "sem-rastreio", "nome": "Sem rastreio"}],
   "vendas": [{
     "transacao": "HP1234567890", "data": "2026-09-25T17:03:10.000Z",
     "status": "APPROVED", "pago": true, "devolvido": false,
     "produto": "Aceleradora Pronta Pra Vender", "valor": 5000, "moeda": "BRL", "pagamento": "PIX",
     "comprador": "Ana Paula",
-    "vendedora": {"id": "vendedora", "nome": "Vendedora"},
+    "vendedora": {"id": "giovana", "nome": "Giovana"},
     "canal": {"id": "stories", "nome": "Stories"},
     "origem": "link",
-    "src": "stories", "sck": "vendedora_stories"
+    "src": "stories", "sck": "giovana_stories"
   }]
 }
 ```
