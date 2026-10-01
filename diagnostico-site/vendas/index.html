@@ -20,141 +20,288 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cream:#FFF6F8;--cream-2:#FBE4EA;--cream-3:#F4CCD6;
-  --molho:#2F3DBC;--molho-2:#E18B9F;--molho-soft:#E6E8FA;
-  --wine:#1D2680;
-  --ink:#1B1D4A;--ink-2:#5A5C85;--ink-3:#9A9BBE;
-  --line:#F1D3DB;--card:#fff;
-  --ok:#1F8A5B;--bad:#C0392B;
-  --radius:16px;
+  --rosa:#E18B9F;--azul:#2F3DBC;--azul-esc:#1D2680;
+  --ink:#1B1D4A;--ink-2:#55588A;--ink-3:#8587AE;
+  --line:#F3DCE2;--card:#fff;
+  --ok:#1F8A5B;--ok-bg:#E2F3EA;--bad:#C0392B;--bad-bg:#FCE6E3;
+  --r:22px;
+  --sh:0 1px 2px rgba(29,38,128,.04),0 20px 44px -26px rgba(29,38,128,.30);
 }
+html{-webkit-text-size-adjust:100%}
 html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
-body{min-height:100dvh}
-h1,h2,.num{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+body{min-height:100dvh;overflow-x:hidden}
+h1,h2,h3,.num{font-family:'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--azul)}a:hover{color:var(--azul-esc)}
 button,input,select{font:inherit;color:inherit}
-.btn{min-height:44px;padding:0 18px;border-radius:12px;border:0;background:var(--molho);color:#fff;font-weight:700;cursor:pointer}
-.btn.sec{background:var(--molho-soft);color:var(--molho)}
-.btn.mini{min-height:34px;padding:0 12px;font-size:13px;border-radius:9px}
-.in{min-height:44px;width:100%;padding:0 12px;border:1.5px solid var(--cream-3);border-radius:12px;background:#fff;outline:none}
-.in:focus{border-color:var(--molho)}
-label.l{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:4px}
 [hidden]{display:none!important}
 
-header{position:sticky;top:0;z-index:20;background:rgba(255,246,248,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--molho)}
-.hd{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.brand{background:var(--wine);color:#fff;font-weight:700;font-size:13px;padding:5px 11px;border-radius:8px;white-space:nowrap}
-.brand span{color:var(--molho-2)}
-.tabs{display:flex;gap:4px;margin-left:auto;overflow-x:auto}
-.tab{min-height:36px;padding:0 12px;border-radius:99px;border:0;background:none;color:var(--ink-2);font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
-.tab.on{background:var(--molho);color:#fff}
+.btn{min-height:46px;padding:0 20px;border-radius:14px;border:0;background:var(--azul);color:#fff;font-weight:700;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,transform .12s;-webkit-tap-highlight-color:transparent}
+.btn:hover{background:var(--azul-esc)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sec{background:#E9EBFB;color:var(--azul)}
+.btn.sec:hover{background:#DCE0FA}
+.btn.mini{min-height:40px;padding:0 14px;font-size:13px;border-radius:11px}
+.in{min-height:46px;width:100%;padding:0 14px;border:1.5px solid var(--cream-3);border-radius:14px;background:#fff;outline:none;font-size:15px;transition:border-color .15s}
+.in:focus{border-color:var(--azul)}
+select.in{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;text-overflow:ellipsis;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%232F3DBC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 15px center}
+label.l{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-bottom:6px}
 
-main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+/* topo */
+header{position:sticky;top:0;z-index:30;background:rgba(255,246,248,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.hd{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;white-space:nowrap}
+.mk{width:38px;height:38px;flex-shrink:0;border-radius:12px;background:var(--azul-esc);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px;letter-spacing:-.02em}
+.mk span{color:var(--rosa)}
+.brand b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;line-height:1.1;letter-spacing:-.01em}
+.brand small{display:block;font-size:12px;color:var(--ink-3)}
+.tabs{margin-left:auto;display:flex;gap:4px;background:#fff;border:1px solid var(--line);padding:4px;border-radius:999px;box-shadow:var(--sh)}
+.tab{min-height:40px;padding:0 18px;border-radius:999px;border:0;background:none;color:var(--ink-2);font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent}
+.tab:hover{color:var(--azul)}
+.tab.on{background:var(--azul-esc);color:#fff}
+
+main{max-width:1200px;margin:0 auto;padding:28px 20px 80px}
 .view[hidden]{display:none}
-h1{font-size:26px;font-weight:800;margin-bottom:4px}
-.sub{color:var(--ink-2);font-size:13px;margin-bottom:16px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-.grid{display:grid;gap:12px}
-.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.kpi .lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.kpi .num{font-size:26px;font-weight:800;margin-top:4px}
-.kpi .det{font-size:12px;color:var(--ink-2)}
-.sec-t{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--molho);font-weight:700;margin:22px 0 10px}
-.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.filtros select{width:auto;min-width:150px}
+h1{font-size:clamp(28px,4.4vw,40px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
+.sub{color:var(--ink-2);font-size:14px;margin:8px 0 20px;max-width:680px;text-wrap:pretty}
+.kick{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rosa);margin-bottom:6px}
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;margin-bottom:20px}
+.page-h>div{flex:1 1 auto}
+.upd{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);background:#fff;border:1px solid var(--line);padding:8px 14px;border-radius:999px}
+.live{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(31,138,91,.5);animation:pulso 2s infinite}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(31,138,91,.45)}70%{box-shadow:0 0 0 8px rgba(31,138,91,0)}100%{box-shadow:0 0 0 0 rgba(31,138,91,0)}}
+@keyframes pulsoRosa{0%{box-shadow:0 0 0 0 rgba(217,115,140,.55)}70%{box-shadow:0 0 0 10px rgba(217,115,140,0)}100%{box-shadow:0 0 0 0 rgba(217,115,140,0)}}
 
-.barra{margin:10px 0}
-.barra .top{display:flex;justify-content:space-between;gap:8px;font-size:14px}
-.barra .top b{white-space:nowrap}
-.barra .trilho{height:10px;background:var(--cream-2);border-radius:99px;margin-top:5px;overflow:hidden}
-.barra .trilho i{display:block;height:100%;background:linear-gradient(90deg,var(--molho-2),var(--molho));border-radius:99px}
-.barra .det{font-size:12px;color:var(--ink-2);margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,2.4vw,26px);box-shadow:var(--sh);min-width:0}
+.grid{display:grid;gap:14px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g-mesa{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:16px}
+.bloco{margin-top:16px}
+.sec-t{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin:40px 0 14px}
+.sec-t::after{content:"";flex:1;height:1px;background:var(--line)}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.ch>div{flex:1 1 auto;min-width:0}
+.ch h2{font-size:20px;font-weight:800;line-height:1.15;display:flex;align-items:center;gap:10px}
+.ch p{font-size:13px;color:var(--ink-2);margin-top:4px;text-wrap:pretty}
+.lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.det{font-size:12.5px;color:var(--ink-2)}
 
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-3);padding:8px;border-bottom:1.5px solid var(--line);white-space:nowrap}
-td{padding:9px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
-td.n,th.n{text-align:right}
-.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;background:var(--molho-soft);color:var(--molho)}
-.tag.ok{background:#E3F4EC;color:var(--ok)}
-.tag.bad{background:#FBE5E2;color:var(--bad)}
-.tag.cinza{background:#EEEEF4;color:var(--ink-2)}
-.vazio{text-align:center;color:var(--ink-3);padding:26px 10px}
+/* META (hero) */
+.hero{position:relative;overflow:hidden;background:var(--azul-esc);color:#fff;border-radius:30px;padding:clamp(22px,4vw,44px);box-shadow:0 34px 70px -34px rgba(29,38,128,.7)}
+.hero::before{content:"";position:absolute;right:-18%;bottom:-70%;width:80%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(47,61,188,.95),rgba(47,61,188,0));pointer-events:none}
+.hero::after{content:"";position:absolute;right:-6%;top:-40%;width:42%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(225,139,159,.32),rgba(225,139,159,0));pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hero .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#C9CDF5}
+.status{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.status.ok{background:rgba(80,210,150,.16);color:#9BF2C9}
+.status.bad{background:rgba(225,139,159,.2);color:#FFC9D5}
+#b-meta{margin-left:auto;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+#b-meta:hover{background:rgba(255,255,255,.18)}
+.hero-main{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 28px;flex-wrap:wrap;margin-top:22px}
+.hero-main>div:first-child{flex:1 1 auto;min-width:0}
+.hero-num{font-size:clamp(36px,10vw,100px);font-weight:800;line-height:.92;letter-spacing:-.045em;white-space:nowrap}
+.hero-de{margin-top:12px;font-size:15px;color:#C9CDF5}
+.hero-de b{color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px}
+.hero-pct{text-align:right}
+.hero-pct .num{font-size:clamp(44px,7vw,80px);font-weight:800;line-height:.92;letter-spacing:-.04em;color:var(--rosa)}
+.hero-pct small{display:block;font-size:13px;color:#C9CDF5;margin-top:6px}
+.meta-trilho{position:relative;height:18px;background:rgba(255,255,255,.12);border-radius:999px;margin:32px 0 12px}
+.meta-trilho i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#E18B9F,#FFD6DF);border-radius:999px;transition:width 1s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 26px rgba(225,139,159,.55)}
+.meta-trilho b{position:absolute;top:-8px;bottom:-8px;width:3px;background:#fff;border-radius:3px;z-index:2}
+.meta-trilho b::before{content:"";position:absolute;top:-4px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.18)}
+.legenda{display:flex;justify-content:space-between;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:#C9CDF5}
+.legenda .mark{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.legenda .mark::before{content:"";width:3px;height:14px;border-radius:2px;background:#fff}
+.hero-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px;border-top:1px solid rgba(255,255,255,.14)}
+.hero-info>div{padding:20px 20px 0 0;min-width:0}
+.hero-info>div+div{padding-left:20px;border-left:1px solid rgba(255,255,255,.14)}
+.hero-info .lbl{color:#AEB3EE}
+.hero-info b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(20px,2.4vw,28px);line-height:1.15;margin-top:6px;letter-spacing:-.02em;overflow-wrap:anywhere}
 
-.link-out{display:flex;gap:8px;align-items:stretch;margin-top:12px}
-.link-out code{flex:1;min-width:0;background:var(--cream-2);border-radius:12px;padding:12px;font-size:12px;word-break:break-all}
-.aviso{background:var(--molho-soft);color:var(--wine);border-radius:12px;padding:12px;font-size:13px}
-.erro{background:#FBE5E2;color:var(--bad);border-radius:12px;padding:12px;font-size:13px}
+/* filtros */
+.filtros{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.filtros select{flex:0 1 230px;width:auto;min-width:0}
+.toolbar{margin:28px 0 16px}
 
-#login{max-width:380px;margin:12vh auto 0}
-.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;visibility:hidden;pointer-events:none;background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;transition:transform .3s,opacity .3s,visibility .3s;z-index:50}
-.toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
+/* KPIs */
+#kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.kpi{display:flex;flex-direction:column;gap:8px}
+.kpi .lbl{font-size:12px}
+.kpi .num{font-size:clamp(23px,3.2vw,36px);font-weight:800;line-height:1.05;letter-spacing:-.03em;overflow-wrap:anywhere}
+.kpi .det{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:auto;line-height:1.35}
+.kpi:first-child{background:var(--azul);border-color:var(--azul);color:#fff}
+.kpi:first-child .lbl{color:#C9CDF5}
+.kpi:first-child .det{color:#DDE0FA}
+.kpi:first-child .delta.sobe{background:rgba(255,255,255,.95)}
+.kpi:first-child .delta.desce{background:rgba(255,255,255,.95)}
+.delta{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.delta.sobe{background:var(--ok-bg);color:var(--ok)}
+.delta.desce{background:var(--bad-bg);color:var(--bad)}
+.delta.igual{background:#EEEEF5;color:var(--ink-2)}
 
-/* ── PAINEL ── */
-.lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-.det{font-size:12px;color:var(--ink-2)}
-.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.hero{background:linear-gradient(135deg,var(--wine),var(--molho));color:#fff;border:0;padding:20px}
-.hero .lbl{color:rgba(255,255,255,.7)}
-.hero .det{color:rgba(255,255,255,.85)}
-.hero-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-.hero-num{font-size:40px;font-weight:800;line-height:1.1;margin:2px 0}
-.hero-meta{text-align:right}
-.hero-meta .num{font-size:22px;font-weight:800;margin:2px 0 6px}
-.meta-trilho{position:relative;height:14px;background:rgba(255,255,255,.18);border-radius:99px;margin:16px 0 12px}
-.meta-trilho i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--molho-2),#fff);border-radius:99px;transition:width .6s ease}
-.meta-trilho b{position:absolute;top:-4px;bottom:-4px;width:3px;background:#FFD7E0;border-radius:2px}
-.hero-info{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.hero-info b{display:block;font-size:16px;margin-top:2px}
-.kpi .num{font-size:26px;font-weight:800;margin:4px 0 2px}
-.delta{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:99px;margin-right:4px}
-.delta.sobe{background:#E3F4EC;color:var(--ok)}
-.delta.desce{background:#FBE5E2;color:var(--bad)}
-.delta.igual{background:#EEEEF4;color:var(--ink-2)}
+/* gráficos */
 .grafico{position:relative}
 .grafico svg{display:block;width:100%;height:auto;overflow:visible}
-.grafico .b{fill:var(--molho)}
-.grafico .b:hover,.grafico .b.on{fill:var(--wine)}
+.grafico .b{fill:var(--azul);transition:fill .15s}
+.grafico g:hover .b,.grafico .b.on{fill:var(--rosa)}
+#dias-semana .b{fill:var(--rosa)}
+#dias-semana g:hover .b{fill:var(--azul-esc)}
 .grafico .hit{fill:transparent;cursor:pointer}
 .grafico text{font-size:11px;fill:var(--ink-3);font-family:'DM Sans',sans-serif}
-.grafico .grade{stroke:var(--line);stroke-width:1}
-.duelo-barra{display:flex;height:14px;border-radius:99px;overflow:hidden;gap:2px;margin-bottom:14px;background:var(--cream-2)}
-.duelo-barra i{display:block;height:100%}
-.duelo{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.duelo .pessoa{border:1px solid var(--line);border-radius:14px;padding:14px}
-.duelo .nome{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}
-.duelo .nome .coroa{margin-left:auto;font-size:11px;font-weight:700;color:var(--molho);background:var(--molho-soft);padding:2px 8px;border-radius:99px}
-.duelo .val{font-size:28px;font-weight:800;margin:6px 0 8px}
-.duelo dl{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13px}
-.duelo dt{color:var(--ink-2)}
-.duelo dd{font-weight:700;text-align:right}
-.ponto{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
-.pend{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
-.pend:last-child{border-bottom:0}
-.pend .q{flex:1;min-width:0}
-.pend .q b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btn.wa{background:#1F8A5B;min-height:36px;padding:0 12px;font-size:13px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center}
-.funil{display:grid;gap:8px}
-.funil .et{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:10px 12px;border-radius:12px;background:var(--cream-2)}
-.funil .et b{font-size:22px;font-family:'Bricolage Grotesque',sans-serif}
-.ult{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
-.ult:last-child{border-bottom:0}
-.ult .q{flex:1;min-width:0}
-.ult .q small{display:block;color:var(--ink-2);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ult .v{font-weight:700;white-space:nowrap}
-#tt{position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;line-height:1.35;padding:7px 10px;border-radius:9px;max-width:220px;opacity:0;transition:opacity .12s}
-#tt.on{opacity:1}
-@media(max-width:820px){.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-info{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:420px){.hero-num{font-size:32px}.hero-meta{text-align:left}}
+.grafico .grade{stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
 
-@media(max-width:820px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}}
-@media(max-width:420px){.kpi .num{font-size:22px}.filtros select{flex:1}}
+/* duelo */
+.duelo-barra{display:flex;height:12px;border-radius:999px;overflow:hidden;gap:3px;background:var(--cream-2);margin-bottom:22px}
+.duelo-barra i{display:block;height:100%;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+#por-vendedora{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch}
+.pessoa{--c:var(--azul);position:relative;flex:1 1 250px;min-width:0;border-radius:22px;padding:22px;background:color-mix(in srgb,var(--c) 6%,#fff);border:1.5px solid color-mix(in srgb,var(--c) 16%,#fff);transition:box-shadow .2s}
+.pessoa.lider{border-color:var(--c);box-shadow:0 22px 44px -26px var(--c)}
+.pessoa .nome{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;font-family:'Bricolage Grotesque',sans-serif}
+.pessoa .av{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;font-size:19px}
+.coroa{margin-left:auto;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--c);color:#fff;padding:6px 11px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.coroa::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
+.pessoa .val{font-size:clamp(30px,4.2vw,46px);font-weight:800;line-height:1;letter-spacing:-.035em;margin:20px 0 10px;overflow-wrap:anywhere}
+.pessoa .det{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.share{height:6px;background:rgba(27,29,74,.08);border-radius:99px;margin:16px 0;overflow:hidden}
+.share i{display:block;height:100%;background:var(--c);border-radius:99px}
+.pessoa dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:9px 14px;font-size:13.5px;border-top:1px solid rgba(27,29,74,.08);padding-top:16px}
+.pessoa dt{color:var(--ink-2)}
+.pessoa dd{font-weight:700;text-align:right;overflow-wrap:anywhere}
+.vs{flex:0 0 52px;height:52px;align-self:center;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em;box-shadow:0 0 0 6px #fff}
+.sem{flex-basis:100%;font-size:13px;color:var(--ink-2);text-align:center;padding-top:4px}
+.ponto{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
+
+/* barras horizontais */
+.barra{margin:0 0 18px;cursor:default}
+.barra:last-child{margin-bottom:0}
+.barra .top{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:500}
+.barra .top span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.barra .top b{white-space:nowrap;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:15px}
+.barra .trilho{height:10px;background:var(--cream-2);border-radius:99px;margin-top:8px;overflow:hidden}
+.barra .trilho i{display:block;height:100%;background:var(--azul);border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+#por-produto .trilho i{background:var(--rosa)}
+#por-pagamento .trilho i{background:var(--azul-esc)}
+.barra .det{font-size:12px;color:var(--ink-3);margin-top:5px}
+
+/* dinheiro na mesa */
+.mesa{background:linear-gradient(165deg,#FFE3EA 0%,#FFF6F8 75%);border:1.5px solid var(--rosa);box-shadow:0 24px 50px -30px rgba(217,115,140,.75)}
+.alerta{width:10px;height:10px;border-radius:50%;background:#D9738C;animation:pulsoRosa 1.8s infinite;flex-shrink:0}
+.mesa .kick{color:#B4506A;margin:0}
+#pendentes>.num{font-size:clamp(36px,5.5vw,56px)!important;color:#A8445F;line-height:1;letter-spacing:-.04em;margin:0 0 18px!important}
+.pend{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 16px;background:#fff;border:1px solid var(--line);border-radius:16px;margin-top:8px}
+.pend .q{flex:1;min-width:0}
+.pend .q b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+.pend .q .det{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.btn.wa{background:#1F8A5B;color:#fff;min-height:44px;padding:0 16px;font-size:14px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;flex-shrink:0}
+.btn.wa::before{content:"";width:8px;height:8px;border-radius:50%;background:#9BF2C9}
+.btn.wa:hover{background:#176E48;color:#fff}
+
+/* funil */
+.funil{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.funil .et{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:16px 12px;border-radius:16px;background:#fff;border:1.5px solid var(--line);min-width:0}
+.funil .et b{order:-1;font-size:30px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;line-height:1;letter-spacing:-.03em}
+.funil .et span{font-size:13px;color:var(--ink-2);text-wrap:balance}
+.funil .et:nth-child(1){grid-column:1/-1;background:var(--azul);border:0;color:#fff;border-radius:16px 16px 4px 4px;clip-path:polygon(0 0,100% 0,93% 100%,7% 100%);padding:20px 12%}
+.funil .et:nth-child(1) span{color:#DDE0FA}
+.funil .et:nth-child(2){grid-column:1/-1;background:var(--rosa);border:0;color:var(--ink);border-radius:4px 4px 16px 16px;clip-path:polygon(7% 0,93% 0,85% 100%,15% 100%);padding:20px 20%;margin:-6px 0 6px}
+.funil .et:nth-child(2) span{color:var(--ink)}
+.funil .et:nth-child(3) b{color:var(--azul)}
+
+/* últimas */
+.ult{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ult:last-child{border-bottom:0;padding-bottom:0}
+.ult:first-child{padding-top:0}
+.ult .ponto{width:12px;height:12px}
+.ult .q{flex:1;min-width:0}
+.ult .q b{font-size:15px}
+.ult .q small{display:block;color:var(--ink-2);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ult .v{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;white-space:nowrap}
+
+/* tabelas */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.card.tw{padding:8px 8px 4px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:12px;border-bottom:1.5px solid var(--line);white-space:nowrap;font-weight:700}
+td{padding:12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+tbody tr:hover td{background:#FFF9FA}
+tbody th{font-size:14px;letter-spacing:0;text-transform:none;color:var(--ink);border-bottom:1px solid var(--line)}
+td small{color:var(--ink-3);font-size:11.5px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:700;background:#E9EBFB;color:var(--azul)}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.bad{background:var(--bad-bg);color:var(--bad)}
+.tag.cinza{background:#EEEEF5;color:var(--ink-2)}
+.vazio{text-align:center;color:var(--ink-3);padding:30px 10px}
+
+/* links / importar */
+.link-out{display:flex;gap:8px;align-items:stretch}
+.link-out code{flex:1;min-width:0;background:var(--cream);border:1.5px dashed var(--cream-3);border-radius:14px;padding:14px;font-size:12.5px;word-break:break-all;color:var(--ink-2)}
+.aviso{background:#E9EBFB;color:var(--azul-esc);border-radius:16px;padding:14px 16px;font-size:13.5px}
+.erro{background:var(--bad-bg);color:var(--bad);border-radius:14px;padding:12px 14px;font-size:13.5px}
+.form-card{max-width:760px}
+#csv{padding:12px;min-height:56px;border-style:dashed}
+
+/* login */
+#login{max-width:400px;margin:10vh auto 0;padding:32px}
+#login .mk{width:48px;height:48px;font-size:18px;border-radius:15px;margin-bottom:22px}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;visibility:hidden;pointer-events:none;background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;font-weight:500;transition:transform .3s,opacity .3s,visibility .3s;z-index:60;box-shadow:0 14px 30px -10px rgba(27,29,74,.5)}
+.toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
+#tt{position:fixed;z-index:70;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.35;padding:8px 11px;border-radius:10px;max-width:230px;opacity:0;transition:opacity .12s;box-shadow:0 10px 24px -8px rgba(27,29,74,.5)}
+#tt.on{opacity:1}
+
+@media(max-width:900px){
+  #kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g-mesa{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:760px){
+  .hd{padding:10px 16px}
+  main{padding:20px 14px calc(110px + env(safe-area-inset-bottom))}
+  .tabs{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));margin:0;z-index:40;justify-content:space-between;padding:5px;box-shadow:0 16px 36px -10px rgba(29,38,128,.4)}
+  .tab{flex:1;min-height:50px;padding:0 4px;font-size:13px}
+  .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+  .g2{grid-template-columns:minmax(0,1fr)}
+  .hero{border-radius:24px}
+  .hero-info{grid-template-columns:minmax(0,1fr);margin-top:22px}
+  .hero-info>div,.hero-info>div+div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;border-left:0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .hero-info>div:last-child{border-bottom:0;padding-bottom:0}
+  .hero-info b{margin:0;text-align:right;font-size:19px}
+  .filtros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .filtros select{width:100%}
+  .toolbar .btn{grid-column:1/-1}
+  #v-vendas .filtros select:last-child{grid-column:1/-1}
+  .sec-t{margin:32px 0 12px}
+  .vs{margin:-4px auto;flex-basis:44px;height:44px}
+  /* celular: cartões da Manu e da Giovana um embaixo do outro, com o VS no meio */
+  #por-vendedora{flex-direction:column;flex-wrap:nowrap}
+  .pessoa{flex-basis:auto}
+  .vs{width:44px;align-self:center}
+  /* número nunca quebra no meio (R$ 53.079,|00) */
+  .kpi .num{white-space:nowrap;overflow-wrap:normal;font-size:clamp(17px,4.9vw,30px)}
+}
+@media(max-width:359px){
+  #kpis{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:420px){
+  .hero-pct{text-align:left}
+  .hero-main{flex-direction:column;align-items:flex-start}
+  #kpis{gap:10px}
+  .kpi{padding:16px}
+  .kpi .det{font-size:11.5px}
+  .brand small{display:none}
+  .link-out{flex-direction:column}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="hd">
-    <div class="brand">Manu <span>Flores</span></div>
+    <div class="brand"><div class="mk">M<span>F</span></div><div><b>Manu Flores</b><small>Painel comercial</small></div></div>
     <nav class="tabs" id="tabs" hidden>
       <button class="tab on" data-view="painel">Painel</button>
       <button class="tab" data-view="vendas">Vendas</button>
@@ -168,7 +315,9 @@ td.n,th.n{text-align:right}
 
 <!-- LOGIN -->
 <section id="login" class="card" hidden>
-  <h1>Painel de vendas</h1>
+  <div class="mk">M<span>F</span></div>
+  <p class="kick">Painel comercial</p>
+  <h1>Bem-vinda de volta</h1>
   <p class="sub">Digite a senha do painel.</p>
   <form id="f-login" class="grid">
     <input class="in" type="password" id="senha" placeholder="Senha" autocomplete="current-password" required>
@@ -179,34 +328,42 @@ td.n,th.n{text-align:right}
 
 <!-- PAINEL -->
 <section class="view" id="v-painel" hidden>
-  <h1 id="saudacao">Seu comercial</h1>
-  <p class="sub" id="atualizado">—</p>
+  <div class="page-h">
+    <div><p class="kick">Seu comercial</p><h1 id="saudacao">Seu comercial</h1></div>
+    <p class="upd"><span class="live"></span><span id="atualizado">—</span></p>
+  </div>
 
-  <!-- META DO MÊS (sempre o mês atual) -->
-  <div class="card hero">
+  <!-- META DO MÊS -->
+  <div class="hero">
     <div class="hero-top">
+      <span class="eyebrow">Faturamento de <span id="m-mes">—</span></span>
+      <span class="status" id="m-status" hidden></span>
+      <button class="btn mini" id="b-meta" type="button">Editar meta</button>
+    </div>
+    <div class="hero-main">
       <div>
-        <div class="lbl">Faturamento de <span id="m-mes">—</span></div>
         <div class="hero-num num" id="m-fat">—</div>
-        <div class="det" id="m-hoje"></div>
+        <div class="hero-de">de <b id="m-meta">—</b> de meta</div>
       </div>
-      <div class="hero-meta">
-        <div class="lbl">Meta</div>
-        <div class="num" id="m-meta">—</div>
-        <button class="btn mini sec" id="b-meta" type="button">Editar meta</button>
+      <div class="hero-pct">
+        <div class="num" id="m-pct">—</div>
+        <small>da meta atingido</small>
       </div>
     </div>
     <div class="meta-trilho" id="m-trilho" role="img"><i id="m-barra"></i><b id="m-ritmo" title="Onde você deveria estar hoje pra bater a meta"></b></div>
+    <div class="legenda">
+      <span class="mark">Onde você deveria estar hoje</span>
+      <span id="m-hoje"></span>
+    </div>
     <div class="hero-info">
-      <div><span class="lbl">Atingido</span><b id="m-pct">—</b></div>
       <div><span class="lbl">Projeção do mês</span><b id="m-proj">—</b></div>
       <div><span class="lbl">Falta</span><b id="m-falta">—</b></div>
       <div><span class="lbl">Por dia até o fim</span><b id="m-dia">—</b></div>
     </div>
   </div>
 
-  <div class="filtros" style="margin-top:18px">
-    <select class="in" id="f-periodo">
+  <div class="filtros toolbar">
+    <select class="in" id="f-periodo" aria-label="Período">
       <option value="mes">Este mês</option>
       <option value="mes-passado">Mês passado</option>
       <option value="7">Últimos 7 dias</option>
@@ -214,63 +371,73 @@ td.n,th.n{text-align:right}
       <option value="90">Últimos 90 dias</option>
       <option value="tudo">Tudo</option>
     </select>
-    <select class="in" id="f-produto"><option value="">Todos os produtos</option></select>
-    <button class="btn sec" id="b-atualizar" type="button">Atualizar</button>
+    <select class="in" id="f-produto" aria-label="Produto"><option value="">Todos os produtos</option></select>
+    <button class="btn sec" id="b-atualizar" type="button">Atualizar dados</button>
   </div>
   <p id="painel-erro" class="erro" hidden></p>
 
-  <!-- NÚMEROS DO PERÍODO (com comparação ao período anterior) -->
-  <div class="grid g3" id="kpis"></div>
+  <!-- NÚMEROS -->
+  <div id="kpis"></div>
 
-  <!-- EVOLUÇÃO -->
-  <div class="sec-t">Faturamento no período</div>
-  <div class="card"><div id="grafico" class="grafico"></div></div>
+  <div class="card bloco">
+    <div class="ch"><div><h2>Faturamento no tempo</h2><p>Toque numa barra para ver o dia.</p></div></div>
+    <div id="grafico" class="grafico"></div>
+  </div>
 
-  <!-- DUELO MANU × GIOVANA -->
   <div class="sec-t">Quem vendeu</div>
   <div class="card">
+    <div class="ch"><div><h2>Manu × Giovana</h2><p>Faturamento pago no período escolhido.</p></div></div>
     <div id="duelo-barra" class="duelo-barra"></div>
-    <div id="por-vendedora" class="grid g2 duelo"></div>
+    <div id="por-vendedora"></div>
   </div>
 
-  <div class="grid g2" style="margin-top:12px">
-    <div class="card"><div class="sec-t" style="margin-top:0">De onde vieram</div><div id="por-canal"></div></div>
-    <div class="card"><div class="sec-t" style="margin-top:0">O que mais vendeu</div><div id="por-produto"></div></div>
+  <div class="sec-t">Origem e produtos</div>
+  <div class="g2">
+    <div class="card"><div class="ch"><div><h2>De onde vieram</h2><p>Canal de cada venda paga.</p></div></div><div id="por-canal"></div></div>
+    <div class="card"><div class="ch"><div><h2>O que mais vendeu</h2><p>Faturamento por produto.</p></div></div><div id="por-produto"></div></div>
   </div>
 
-  <!-- DINHEIRO NA MESA + DIAGNÓSTICO -->
-  <div class="grid g2" style="margin-top:12px">
-    <div class="card">
-      <div class="sec-t" style="margin-top:0">Dinheiro na mesa</div>
-      <p class="det" style="margin-bottom:8px">Começaram a compra e ainda não pagaram (boleto, Pix ou atrasado). Chame no WhatsApp.</p>
+  <div class="sec-t">Para recuperar</div>
+  <div class="g-mesa">
+    <div class="card mesa">
+      <div class="ch"><div>
+        <p class="kick" style="display:flex;align-items:center;gap:8px"><span class="alerta"></span>Dinheiro na mesa</p>
+        <p>Começaram a compra e ainda não pagaram (boleto, Pix ou atrasado). Chame no WhatsApp.</p>
+      </div></div>
       <div id="pendentes"></div>
     </div>
     <div class="card">
-      <div class="sec-t" style="margin-top:0">Diagnóstico → venda</div>
+      <div class="ch"><div><h2>Diagnóstico → venda</h2><p>Quem fez o diagnóstico e virou cliente.</p></div></div>
       <div id="funil-diag"></div>
     </div>
   </div>
 
-  <div class="sec-t">Vendedora × canal</div>
-  <div class="card tw"><table id="cruzado"></table></div>
-
-  <div class="grid g2" style="margin-top:12px">
-    <div class="card"><div class="sec-t" style="margin-top:0">Melhores dias da semana</div><div id="dias-semana" class="grafico"></div></div>
-    <div class="card"><div class="sec-t" style="margin-top:0">Como pagaram</div><div id="por-pagamento"></div></div>
+  <div class="sec-t">Detalhes</div>
+  <div class="card">
+    <div class="ch"><div><h2>Vendedora × canal</h2><p>Onde cada uma vende melhor.</p></div></div>
+    <div class="tw"><table id="cruzado"></table></div>
   </div>
 
-  <div class="sec-t">Últimas vendas</div>
-  <div class="card" id="ultimas"></div>
+  <div class="g2 bloco">
+    <div class="card"><div class="ch"><div><h2>Melhores dias da semana</h2><p>Faturamento somado por dia.</p></div></div><div id="dias-semana" class="grafico"></div></div>
+    <div class="card"><div class="ch"><div><h2>Como pagaram</h2><p>Forma de pagamento das vendas pagas.</p></div></div><div id="por-pagamento"></div></div>
+  </div>
+
+  <div class="card bloco">
+    <div class="ch"><div><h2>Últimas vendas</h2><p>As mais recentes do período.</p></div></div>
+    <div id="ultimas"></div>
+  </div>
 </section>
 
 <!-- LISTA DE VENDAS -->
 <section class="view" id="v-vendas" hidden>
+  <p class="kick">Histórico</p>
   <h1>Vendas</h1>
   <p class="sub">Todas as vendas do período escolhido no painel. Pra corrigir quem vendeu, preencha "Vendedora (ajuste)" ou "Canal (ajuste)" na aba Vendas da planilha.</p>
   <div class="filtros">
-    <select class="in" id="f-vendedora"><option value="">Todas as vendedoras</option></select>
-    <select class="in" id="f-canal"><option value="">Todos os canais</option></select>
-    <select class="in" id="f-status">
+    <select class="in" id="f-vendedora" aria-label="Vendedora"><option value="">Todas as vendedoras</option></select>
+    <select class="in" id="f-canal" aria-label="Canal"><option value="">Todos os canais</option></select>
+    <select class="in" id="f-status" aria-label="Status">
       <option value="pagas">Só pagas</option>
       <option value="pendentes">Esperando pagamento</option>
       <option value="devolvidas">Reembolsos / chargeback</option>
@@ -282,11 +449,12 @@ td.n,th.n{text-align:right}
 
 <!-- GERADOR DE LINKS -->
 <section class="view" id="v-links" hidden>
+  <p class="kick">Rastreio</p>
   <h1>Criar link rastreável</h1>
   <p class="sub">Cole o link do checkout da Hotmart (ou da página de vendas na Hotmart). O link gerado leva quem vendeu e por onde a pessoa chegou.</p>
-  <div class="card grid">
+  <div class="card grid form-card">
     <div><label class="l" for="lk-base">Link do checkout</label><input class="in" id="lk-base" placeholder="https://pay.hotmart.com/A12345678B?off=abc123" inputmode="url"></div>
-    <div class="grid g2">
+    <div class="g2" style="gap:14px">
       <div><label class="l" for="lk-vend">Quem vai mandar o link</label><select class="in" id="lk-vend"></select></div>
       <div><label class="l" for="lk-canal">Onde o link vai ser usado</label><select class="in" id="lk-canal"></select></div>
     </div>
@@ -294,16 +462,18 @@ td.n,th.n{text-align:right}
     <div class="link-out"><code id="lk-out">Cole o link do checkout acima.</code><button class="btn" id="lk-copiar" type="button">Copiar</button></div>
     <button class="btn sec" id="lk-todos" type="button">Gerar todos de uma vez (cada vendedora × cada canal)</button>
   </div>
-  <div class="card tw" id="lk-tabela-box" style="margin-top:12px" hidden><table id="lk-tabela"></table></div>
-  <p class="aviso" style="margin-top:12px">Dica: no ManyChat, no link da bio e no botão do diagnóstico use sempre o link do canal certo. A vendedora usa os links dela quando manda o checkout no WhatsApp/Direct.</p>
+  <div class="card tw form-card" id="lk-tabela-box" style="margin-top:14px" hidden><table id="lk-tabela"></table></div>
+  <p class="aviso form-card" style="margin-top:14px">Dica: no ManyChat, no link da bio e no botão do diagnóstico use sempre o link do canal certo. A vendedora usa os links dela quando manda o checkout no WhatsApp/Direct.</p>
 </section>
 
 <!-- IMPORTAR CSV DA HOTMART -->
 <section class="view" id="v-importar" hidden>
+  <p class="kick">Hotmart</p>
   <h1>Importar vendas antigas</h1>
   <p class="sub">Na Hotmart: Vendas → Relatório de vendas → Exportar. Suba o arquivo aqui — vendas repetidas não duplicam.</p>
-  <div class="card grid">
-    <input class="in" type="file" id="csv" accept=".csv,text/csv" style="padding:10px">
+  <div class="card grid form-card">
+    <label class="l" for="csv">Arquivo CSV da Hotmart</label>
+    <input class="in" type="file" id="csv" accept=".csv,text/csv">
     <div id="csv-info"></div>
     <div class="tw"><table id="csv-prev"></table></div>
     <button class="btn" id="csv-enviar" type="button" hidden>Importar</button>
@@ -508,6 +678,8 @@ function renderMeta(){
   $('m-pct').textContent = pct(doMes.fat, meta) + '%';
   $('m-proj').textContent = proj == null ? 'a partir do dia 5' : brl(proj) + (meta ? (proj >= meta ? ' ✓ bate a meta' : ` (${pct(proj, meta)}%)`) : '');
   $('m-falta').textContent = falta ? brl(falta) : 'Meta batida! 🎉';
+  const st = $('m-status'), esperado = meta * Math.min(decorridos / diasMes, 1);
+  if (st){ st.hidden = !meta; st.textContent = !falta ? 'Meta batida' : doMes.fat >= esperado ? 'Acima do ritmo' : 'Abaixo do ritmo'; st.className = 'status ' + (!falta || doMes.fat >= esperado ? 'ok' : 'bad'); }
   $('m-dia').textContent = falta ? `${brl(falta / restantes)}${doMes.ticket ? ` · ~${Math.ceil(falta / doMes.ticket)} venda(s)` : ''}` : '—';
 }
 
@@ -519,8 +691,8 @@ function renderKpis(a, b, r){
     k('Vendas', a.qtd, delta(a.qtd, b && b.qtd), vs),
     k('Ticket médio', brl(a.ticket), delta(a.ticket, b && b.ticket), vs),
     k('Reembolsos', a.reembolso.toLocaleString('pt-BR', {maximumFractionDigits: 1}) + '%', delta(a.reembolso, b && b.reembolso, true), ` ${a.dev.length} pedido(s) · ${brl(a.fatDev)}`),
-    k('Vendas rastreadas', Math.round(a.rastreadas) + '%', '', `${a.qtd - Math.round(a.rastreadas / 100 * a.qtd)} sem link rastreável`),
-    k('Dinheiro na mesa', brl(a.naMesa), '', `${a.pend.length} compra(s) esperando pagamento`),
+    k('Vendas rastreadas', Math.round(a.rastreadas) + '%', delta(a.rastreadas, b && b.rastreadas), `${a.qtd - Math.round(a.rastreadas / 100 * a.qtd)} sem link rastreável`),
+    k('Dinheiro na mesa', brl(a.naMesa), delta(a.naMesa, b && b.naMesa, true), `${a.pend.length} compra(s) esperando pagamento`),
   ].join('');
 }
 
@@ -570,18 +742,21 @@ function graficoSemana(pagas, L){
 
 function renderDuelo(a, b){
   const grupos = agrupa(a.pagas, v => v.vendedora.id, v => v.vendedora.nome);
-  const pessoas = S.dados.vendedoras.filter(v => v.id !== 'sem-vendedora' || grupos.some(g => g.id === v.id));
+  const pessoas = S.dados.vendedoras.filter(v => v.id !== 'sem-vendedora');
+  const sem = grupos.find(g => g.id === 'sem-vendedora');
   const lider = grupos.find(g => g.id !== 'sem-vendedora');
   $('duelo-barra').innerHTML = a.fat ? grupos.map(g => `<i style="width:${g.valor / a.fat * 100}%;background:${corDe(g.id)}" data-tt="${esc(g.nome)} · ${pct(g.valor, a.fat)}% · ${esc(brl(g.valor))}"></i>`).join('') : '';
-  $('por-vendedora').innerHTML = pessoas.map(p => {
+  const card = p => {
     const g = grupos.find(x => x.id === p.id) || {valor: 0, qtd: 0, itens: []};
     const gAntes = b ? b.pagas.filter(v => v.vendedora.id === p.id) : null;
     const canal = agrupa(g.itens, v => v.canal.id, v => v.canal.nome)[0];
     const prod = agrupa(g.itens, v => v.produto || '—')[0];
-    return `<div class="pessoa">
-      <div class="nome"><span class="ponto" style="background:${corDe(p.id)}"></span>${esc(p.nome)}${lider && lider.id === p.id && g.valor ? '<span class="coroa">Na frente</span>' : ''}</div>
+    const frente = lider && lider.id === p.id && g.valor;
+    return `<div class="pessoa${frente ? ' lider' : ''}" style="--c:${corDe(p.id)}">
+      <div class="nome"><span class="av">${esc(p.nome.charAt(0))}</span>${esc(p.nome)}${frente ? '<span class="coroa">Na frente</span>' : ''}</div>
       <div class="val num">${brl(g.valor)}</div>
-      <div class="det" style="margin-bottom:8px">${gAntes ? delta(g.valor, soma(gAntes)) : ''}${pct(g.valor, a.fat)}% do faturamento</div>
+      <div class="det">${gAntes ? delta(g.valor, soma(gAntes)) : ''}${pct(g.valor, a.fat)}% do faturamento</div>
+      <div class="share"><i style="width:${pct(g.valor, a.fat)}%"></i></div>
       <dl>
         <dt>Vendas</dt><dd>${g.qtd}</dd>
         <dt>Ticket médio</dt><dd>${brl(g.qtd ? g.valor / g.qtd : 0)}</dd>
@@ -589,7 +764,9 @@ function renderDuelo(a, b){
         <dt>Mais vendido</dt><dd>${prod ? esc(prod.nome) : '—'}</dd>
       </dl>
     </div>`;
-  }).join('');
+  };
+  $('por-vendedora').innerHTML = pessoas.map(card).join('<div class="vs">VS</div>')
+    + (sem ? `<p class="sem">Sem vendedora: ${brl(sem.valor)} em ${sem.qtd} venda(s) · ${pct(sem.valor, a.fat)}% do faturamento</p>` : '');
 }
 
 function barras(grupos, total){
@@ -692,7 +869,7 @@ function montarLink(base, vend, canal, camp){
   let u;
   try { u = new URL(base.trim()); } catch { return null; }
   if (!/^https?:$/.test(u.protocol)) return null;
-  const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const slug = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   u.searchParams.set('src', canal);
   u.searchParams.set('sck', `${vend}_${canal}`);
   u.searchParams.set('utm_source', canal);
